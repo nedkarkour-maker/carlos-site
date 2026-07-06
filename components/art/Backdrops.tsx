@@ -41,6 +41,34 @@ export function TopoLines({ className = "" }: { className?: string }) {
   );
 }
 
+/** Minimal ILCA dinghy line art — About section accent. */
+export function SailboatLine({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden
+      className={className}
+      viewBox="0 0 300 260"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    >
+      {/* mast */}
+      <path d="M150 28 L150 196" />
+      {/* sail with a hint of camber */}
+      <path d="M150 34 C 196 92, 216 148, 224 188 L153 188" />
+      <path d="M150 44 L96 188 L147 188" opacity="0.55" />
+      {/* boom */}
+      <path d="M150 150 L228 162" opacity="0.7" />
+      {/* hull */}
+      <path d="M74 196 L238 196 C 232 214, 214 226, 188 228 L112 228 C 92 224, 80 212, 74 196 Z" />
+      {/* waterline wake */}
+      <path d="M46 238 C 90 232, 130 244, 170 238 S 240 232, 264 238" opacity="0.5" />
+      <path d="M70 250 C 110 245, 150 254, 190 249" opacity="0.3" />
+    </svg>
+  );
+}
+
 /** Wind streamlines — subscribe band backdrop. */
 export function WindLines({ className = "" }: { className?: string }) {
   return (

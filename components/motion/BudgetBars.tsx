@@ -2,12 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { BudgetItem } from "@/config/content";
-import { EASE_GLIDE } from "@/lib/motion";
+import { EASE_GLIDE, onEnterViewport } from "@/lib/motion";
 import CountUp from "./CountUp";
-
-gsap.registerPlugin(ScrollTrigger);
 
 /**
  * The season budget: total counts up, each line's bar glides from 0 to its
@@ -30,21 +27,13 @@ export default function BudgetBars({
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const tween = gsap.fromTo(
-      el.querySelectorAll("[data-bar-fill]"),
-      { scaleX: 0 },
-      {
-        scaleX: 1,
-        duration: 1.3,
-        ease: EASE_GLIDE,
-        stagger: 0.15,
-        scrollTrigger: { trigger: el, start: "top 85%", once: true },
-      },
-    );
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
+    return onEnterViewport(el, () => {
+      gsap.fromTo(
+        el.querySelectorAll("[data-bar-fill]"),
+        { scaleX: 0 },
+        { scaleX: 1, duration: 1.3, ease: EASE_GLIDE, stagger: 0.15 },
+      );
+    });
   }, []);
 
   return (

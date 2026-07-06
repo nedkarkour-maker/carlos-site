@@ -20,7 +20,6 @@ export default function Home() {
         <Hero />
         <WaveDivider fill="var(--sail)" className="bg-teal-900" />
         <About />
-        <WaveDivider fill="var(--teal-950)" />
         <StoryScroll />
         <Numbers />
         <WaveDivider fill="var(--sail)" className="bg-teal-900" />

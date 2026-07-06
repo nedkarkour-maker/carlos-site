@@ -19,7 +19,18 @@ Shared style for all three prompts (append to each):
 
 ---
 
-## 1. `stats-topo.png` — stats section background
+## 1. `sailboat-line.png` — About section accent
+
+- **Dimensions:** 1024 × 1024 (aspect ratio 1:1)
+- **Used in:** bottom-right corner of the About section, at 14% opacity.
+- **Prompt:** Minimal single-weight line drawing of an ILCA dinghy (small
+  one-person racing sailboat with a single tall sail) seen from the side,
+  with two thin wake lines under the hull. Dark ink `#4a565a` linework on a
+  plain solid warm off-white `#F6F3EC` background, nothing else in frame.
+  Absolutely no text, no letters, no numbers, no watermark, no signature.
+  *(don't append the shared dark-teal style to this one)*
+
+## 2. `stats-topo.png` — stats section background
 
 - **Dimensions:** 1600 × 900 (aspect ratio 16:9)
 - **Used in:** "The work, in numbers" section, at 20% opacity behind the stats.
@@ -27,7 +38,7 @@ Shared style for all three prompts (append to each):
   open ocean, thin concentric depth-contour lines only, barely visible, low
   contrast so text can sit on top. *(+ shared style)*
 
-## 2. `wind-flow.png` — subscribe band background
+## 3. `wind-flow.png` — subscribe band background
 
 - **Dimensions:** 2100 × 900 (aspect ratio 21:9)
 - **Used in:** the teal "Follow the campaign" subscribe band, at 15% opacity.
@@ -35,7 +46,7 @@ Shared style for all three prompts (append to each):
   left to right like wind over water, thin elegant curved lines with varying
   spacing, aerodynamic feel, dark teal background. *(+ shared style)*
 
-## 3. `venues-chart.png` — season timeline background
+## 4. `venues-chart.png` — season timeline background
 
 - **Dimensions:** 1600 × 900 (aspect ratio 16:9)
 - **Used in:** behind the horizontal 2026 season timeline, at 8% opacity.

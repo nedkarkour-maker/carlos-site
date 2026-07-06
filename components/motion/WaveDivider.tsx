@@ -1,13 +1,8 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-
 /**
- * A thin sea-swell divider between sections. Two overlapping wave paths
- * drift slowly in opposite directions (transform-only). `fill` is the color
- * of the section BELOW the divider, drawn over the section above.
- * Static under prefers-reduced-motion.
+ * A thin, static sea-swell divider between sections — two layered wave
+ * shapes, no animation (deliberately: constant background motion cheapens
+ * the page and costs frames). `fill` is the color of the section BELOW the
+ * divider, drawn over the section above. Server-rendered, zero JS.
  */
 export default function WaveDivider({
   fill,
@@ -17,55 +12,23 @@ export default function WaveDivider({
   fill: string;
   className?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const tweens = [
-      gsap.to(el.querySelector("[data-wave-a]"), {
-        xPercent: -25,
-        duration: 26,
-        ease: "none",
-        repeat: -1,
-        yoyo: true,
-      }),
-      gsap.to(el.querySelector("[data-wave-b]"), {
-        xPercent: 25,
-        duration: 34,
-        ease: "none",
-        repeat: -1,
-        yoyo: true,
-      }),
-    ];
-    return () => tweens.forEach((t) => t.kill());
-  }, []);
-
   return (
-    <div
-      ref={ref}
-      aria-hidden
-      className={`relative -mb-px h-[70px] overflow-hidden ${className}`}
-    >
+    <div aria-hidden className={`relative -mb-px h-[60px] overflow-hidden ${className}`}>
       <svg
-        data-wave-a
-        className="absolute bottom-0 left-[-50%] h-full w-[200%]"
-        viewBox="0 0 1200 70"
+        className="absolute bottom-0 left-0 h-full w-full"
+        viewBox="0 0 1200 60"
         preserveAspectRatio="none"
-        style={{ fill, opacity: 0.45 }}
+        style={{ fill, opacity: 0.4 }}
       >
-        <path d="M0 42 C 150 18, 300 60, 450 40 S 750 12, 900 38 S 1120 58, 1200 34 L1200 70 L0 70 Z" />
+        <path d="M0 36 C 150 14, 300 52, 450 34 S 750 10, 900 32 S 1120 50, 1200 28 L1200 60 L0 60 Z" />
       </svg>
       <svg
-        data-wave-b
-        className="absolute bottom-0 left-[-50%] h-full w-[200%]"
-        viewBox="0 0 1200 70"
+        className="absolute bottom-0 left-0 h-full w-full"
+        viewBox="0 0 1200 60"
         preserveAspectRatio="none"
         style={{ fill }}
       >
-        <path d="M0 52 C 200 30, 380 64, 560 48 S 880 24, 1040 50 S 1160 62, 1200 46 L1200 70 L0 70 Z" />
+        <path d="M0 45 C 200 26, 380 55, 560 41 S 880 20, 1040 43 S 1160 53, 1200 39 L1200 60 L0 60 Z" />
       </svg>
     </div>
   );

@@ -202,7 +202,8 @@ export default function Schedule({
                 alt={photo.alt}
                 fill
                 sizes="(max-width: 768px) 50vw, 33vw"
-                className="origin-top scale-110 object-cover"
+                className="object-cover"
+                style={{ objectPosition: photo.focus ?? "50% 50%" }}
                 loading="lazy"
               />
             </div>

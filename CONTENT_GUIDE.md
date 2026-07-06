@@ -93,6 +93,17 @@ Find `story` in `config/content.ts`. Each photo is one block:
    `"/images/your-file-name.jpg"` — the name must match exactly, including
    capital letters.
 
+Two extras worth knowing:
+
+- **`focus`** — when a photo gets cropped to fill the screen, this decides
+  which part stays visible. `focus: "50% 30%"` keeps the point slightly
+  above center. Nudge the numbers until the subject sits right.
+- **`public/images/clean/`** holds copies of the press photos with the
+  event sponsor banners cropped off. Prefer these for big displays. If you
+  add new press photos with banners, add a line to
+  `scripts/crop-banners.mjs` and run `node scripts/crop-banners.mjs`
+  (or ask a developer — it's a 2-minute job).
+
 ## Sponsors
 
 Find `sponsors` under `backers`:

@@ -17,6 +17,12 @@ export interface CtaLink {
 export interface ImageRef {
   src: string;
   alt: string;
+  /**
+   * Which part of the photo to keep in view when it gets cropped to fit,
+   * as "x% y%" — e.g. "50% 30%" keeps the point slightly above center.
+   * Leave out for "50% 50%" (center).
+   */
+  focus?: string;
 }
 
 /* ------------------------------------------------------------------ site */
@@ -73,9 +79,12 @@ export const hero: HeroContent = {
   primaryCta: { label: "My project", href: "#about" },
   secondaryCta: { label: "How you can help", href: "#help" },
   countdown: { target: "2028-07-14T00:00:00", label: "Days to LA 2028" },
+  // Photos in /images/clean/ are web-ready copies with the event banners
+  // cropped off (made by scripts/crop-banners.mjs).
   image: {
-    src: "/images/29062024-5P7A0650.jpg",
+    src: "/images/clean/hero-viana.jpg",
     alt: "Carlos Charabati racing at the ILCA 4 Youth World Championship",
+    focus: "70% 35%",
   },
 };
 
@@ -114,6 +123,8 @@ export interface StoryFrame {
   kicker: string;
   /** One-line caption shown over the photo. */
   caption: string;
+  /** Optional framing, "x% y%" — see ImageRef.focus above. */
+  focus?: string;
 }
 
 export interface StoryContent {
@@ -135,24 +146,27 @@ export const story: StoryContent = {
       alt: "Carlos hiking hard upwind under the CAN sail",
       kicker: "01 · The upwind grind",
       caption: "Flat-out hiking. Every wave is a decision.",
+      focus: "55% 45%",
     },
     {
-      src: "/images/ZAG_5526.jpg",
+      src: "/images/clean/story-spray.jpg",
       alt: "Carlos driving through heavy spray at the ILCA 4 Youth Worlds",
       kicker: "02 · Heavy air",
       caption: "When it blows, the race becomes physical.",
+      focus: "40% 30%",
     },
     {
-      src: "/images/26062024-DJI_0231.jpg",
+      src: "/images/clean/story-aerial.jpg",
       alt: "Aerial view of the ILCA fleet converging on a mark",
       kicker: "03 · The mark rounding",
       caption: "Seventy boats, one mark, no room for error.",
     },
     {
-      src: "/images/IMG_3906.JPG",
-      alt: "Carlos receiving his medal at the championship ceremony",
-      kicker: "04 · The podium",
+      src: "/images/clean/story-worldchamp.jpg",
+      alt: "Carlos and his coach celebrating the world title, number-one signs up",
+      kicker: "04 · The title",
       caption: "World champion — and the road is just starting.",
+      focus: "60% 30%",
     },
   ],
 };
@@ -235,16 +249,17 @@ export const schedule: ScheduleContent = {
   ],
   photos: [
     {
-      src: "/images/ZAG_5526.jpg",
-      alt: "Carlos hiking upwind in heavy spray at the ILCA 4 Youth Worlds",
+      src: "/images/clean/fleet-upwind.jpg",
+      alt: "Carlos's CAN 219619 sail leading a packed ILCA fleet upwind",
+      focus: "75% 60%",
     },
     {
-      src: "/images/IMG_5623.JPG",
-      alt: "Carlos racing his ILCA dinghy under the CAN sail",
+      src: "/images/clean/race-viana-1.jpg",
+      alt: "Carlos trimming between races at the Youth Worlds in Viana",
     },
     {
-      src: "/images/26062024-DJI_0231.jpg",
-      alt: "Aerial view of the ILCA fleet rounding a mark",
+      src: "/images/clean/race-viana-2.jpg",
+      alt: "Carlos smiling on the water at the Youth Worlds in Viana",
     },
   ],
 };

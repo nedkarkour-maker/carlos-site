@@ -45,25 +45,30 @@ export default function StoryScroll() {
         const photo = frame.querySelector("[data-story-photo]");
         const caption = frame.querySelector("[data-story-caption]");
 
-        // Every frame slowly pushes in while it is on screen.
-        tl.fromTo(
-          photo,
-          { scale: i === 0 ? 1 : 1.06 },
-          { scale: i === 0 ? 1.06 : 1.12, duration: 1 },
-          i,
-        );
         if (i > 0) {
-          tl.fromTo(frame, { opacity: 0 }, { opacity: 1, duration: 0.45 }, i - 0.45);
+          // Incoming frame cross-fades over the previous one with a gentle
+          // settle — the only transform in the whole sequence.
+          tl.fromTo(
+            frame,
+            { opacity: 0 },
+            { opacity: 1, duration: 0.5 },
+            i - 0.5,
+          ).fromTo(
+            photo,
+            { scale: 1.05 },
+            { scale: 1, duration: 0.9, ease: "power1.out" },
+            i - 0.5,
+          );
         }
         tl.fromTo(
           caption,
-          { opacity: 0, y: 28 },
+          { opacity: 0, y: 24 },
           { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
           i === 0 ? 0.02 : i - 0.25,
         );
-        // Caption drifts out before the next frame takes over.
+        // Caption fades out before the next frame takes over.
         if (i < frames.length - 1) {
-          tl.to(caption, { opacity: 0, y: -18, duration: 0.2 }, i + 0.5);
+          tl.to(caption, { opacity: 0, duration: 0.2 }, i + 0.45);
         }
       });
     }, section);
@@ -103,6 +108,7 @@ export default function StoryScroll() {
                     fill
                     sizes="(max-width: 1180px) 100vw, 1180px"
                     className="object-cover"
+                    style={{ objectPosition: frame.focus ?? "50% 50%" }}
                   />
                 </div>
                 <figcaption className="mt-3">
@@ -134,13 +140,14 @@ export default function StoryScroll() {
           className="absolute inset-0"
           style={{ zIndex: i, opacity: i === 0 ? 1 : 0 }}
         >
-          <div data-story-photo className="absolute inset-0 will-change-transform">
+          <div data-story-photo className="absolute inset-0">
             <Image
               src={frame.src}
               alt={frame.alt}
               fill
               sizes="100vw"
               className="object-cover"
+              style={{ objectPosition: frame.focus ?? "50% 50%" }}
               loading={i === 0 ? undefined : "lazy"}
             />
           </div>

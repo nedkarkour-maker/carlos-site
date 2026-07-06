@@ -66,7 +66,7 @@ export default function Backers() {
     // Slide one full copy's width, then wrap — a seamless loop.
     const tween = gsap.to(row, {
       xPercent: -50,
-      duration: backers.sponsors.length * 5,
+      duration: backers.sponsors.length * 7,
       ease: "none",
       repeat: -1,
     });

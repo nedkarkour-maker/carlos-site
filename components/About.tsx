@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { about } from "@/config/content";
+import { generatedImage } from "@/lib/generated";
+import { SailboatLine } from "./art/Backdrops";
 import Reveal from "./Reveal";
 
 /** Renders **double-asterisk** spans from config copy as bold text. */
@@ -20,9 +22,24 @@ function BoldText({ text }: { text: string }) {
 }
 
 export default function About() {
+  const boat = generatedImage("sailboat-line.png");
   return (
-    <section id="about" className="scroll-mt-20 py-[90px]">
-      <Reveal className="wrap grid items-center gap-8 md:grid-cols-[0.95fr_1.05fr] md:gap-[54px]">
+    <section id="about" className="relative scroll-mt-20 overflow-hidden py-[90px]">
+      {/* Quiet sailing-boat accent in the corner; upgraded automatically when
+          public/images/generated/sailboat-line.png exists. */}
+      {boat ? (
+        <Image
+          src={boat}
+          alt=""
+          aria-hidden
+          width={300}
+          height={260}
+          className="pointer-events-none absolute -right-8 bottom-6 hidden w-[280px] opacity-[0.14] lg:block"
+        />
+      ) : (
+        <SailboatLine className="pointer-events-none absolute -right-8 bottom-6 hidden w-[280px] text-ink-soft opacity-[0.14] lg:block" />
+      )}
+      <Reveal className="wrap relative grid items-center gap-8 md:grid-cols-[0.95fr_1.05fr] md:gap-[54px]">
         <div className="relative min-h-[300px] overflow-hidden rounded-[10px] md:min-h-[440px]">
           <Image
             src={about.image.src}

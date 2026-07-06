@@ -33,6 +33,16 @@ const STYLE =
 
 const ASSETS = [
   {
+    file: "sailboat-line.png",
+    aspectRatio: "1:1",
+    prompt:
+      "Minimal single-weight line drawing of an ILCA dinghy (small one-person " +
+      "racing sailboat with a single tall sail) seen from the side, with two " +
+      "thin wake lines under the hull. Dark ink #4a565a linework on a plain " +
+      "solid warm off-white #F6F3EC background, nothing else in frame. " +
+      "Absolutely no text, no letters, no numbers, no watermark, no signature.",
+  },
+  {
     file: "stats-topo.png",
     aspectRatio: "16:9",
     prompt:

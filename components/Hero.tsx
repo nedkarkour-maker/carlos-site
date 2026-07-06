@@ -19,11 +19,11 @@ export default function Hero() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = gsap.context(() => {
-      // Ken Burns — a slow, continuous push-in on the photo. Transform only.
+      // One slow settle on the photo as the page opens — then it rests.
       gsap.fromTo(
         "[data-hero-photo]",
-        { scale: 1.02 },
-        { scale: 1.14, duration: 22, ease: "none" },
+        { scale: 1.08 },
+        { scale: 1, duration: 6, ease: "power2.out", clearProps: "transform" },
       );
 
       // Entrance: headline lines rise out of their masks, then the copy,
@@ -49,14 +49,15 @@ export default function Hero() {
       ref={sectionRef}
       className="relative flex min-h-[94vh] items-center overflow-hidden bg-teal-900 text-sail"
     >
-      <div data-hero-photo className="absolute inset-0 will-change-transform">
+      <div data-hero-photo className="absolute inset-0">
         <Image
           src={hero.image.src}
           alt={hero.image.alt}
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[70%_35%]"
+          className="object-cover"
+          style={{ objectPosition: hero.image.focus ?? "50% 50%" }}
         />
       </div>
       <div

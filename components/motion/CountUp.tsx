@@ -2,16 +2,15 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { EASE_GLIDE } from "@/lib/motion";
-
-gsap.registerPlugin(ScrollTrigger);
+import { EASE_GLIDE, onEnterViewport } from "@/lib/motion";
 
 /**
  * Counts a number up from 0 when it scrolls into view, easing out as it
  * settles. Accepts display strings like "4,000", "≈ €22,000" or "42" —
  * anything around the number (currency signs, separators) is preserved.
- * Under prefers-reduced-motion the final value renders immediately.
+ * The final value is server-rendered and only replaced once the animation
+ * actually starts, so the number is always visible even without JS.
+ * Under prefers-reduced-motion it stays static.
  */
 export default function CountUp({
   value,
@@ -37,28 +36,22 @@ export default function CountUp({
     const target = Number(match[0].replace(/,/g, ""));
     const prefix = value.slice(0, match.index);
     const suffix = value.slice((match.index ?? 0) + match[0].length);
-    const counter = { n: 0 };
-    el.textContent = prefix + "0" + suffix;
 
-    const tween = gsap.to(counter, {
-      n: target,
-      duration,
-      delay,
-      ease: EASE_GLIDE,
-      scrollTrigger: { trigger: el, start: "top 88%", once: true },
-      onUpdate: () => {
-        el.textContent =
-          prefix + Math.round(counter.n).toLocaleString("en-US") + suffix;
-      },
+    return onEnterViewport(el, () => {
+      const counter = { n: 0 };
+      gsap.to(counter, {
+        n: target,
+        duration,
+        delay,
+        ease: EASE_GLIDE,
+        onUpdate: () => {
+          el.textContent =
+            prefix + Math.round(counter.n).toLocaleString("en-US") + suffix;
+        },
+      });
     });
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
   }, [value, delay, duration]);
 
-  // Server-renders the final value (good for SEO / no-JS); the tween
-  // restarts it from 0 on viewport entry.
   return (
     <span ref={ref} className={className}>
       {value}
