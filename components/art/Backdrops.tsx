@@ -69,6 +69,72 @@ export function SailboatLine({ className = "" }: { className?: string }) {
   );
 }
 
+/**
+ * Abstract nautical route chart — season timeline backdrop. Graticule grid,
+ * a dashed route through four venue marks, and a compass rose. Deliberately
+ * abstract (no real coastlines) so it reads as chartwork, not a wrong map.
+ */
+export function VenuesChart({ className = "" }: { className?: string }) {
+  // Venue marks roughly evoking Cascais → Kiel → Kingston → Bodrum.
+  const marks = [
+    { x: 250, y: 420 },
+    { x: 520, y: 150 },
+    { x: 130, y: 200 },
+    { x: 890, y: 380 },
+  ];
+  return (
+    <svg
+      aria-hidden
+      className={className}
+      viewBox="0 0 1000 560"
+      preserveAspectRatio="xMidYMid slice"
+      fill="none"
+      stroke="currentColor"
+    >
+      {/* graticule */}
+      {Array.from({ length: 9 }, (_, i) => (
+        <line key={`v${i}`} x1={i * 125} y1="0" x2={i * 125} y2="560" strokeWidth="1" opacity="0.16" />
+      ))}
+      {Array.from({ length: 5 }, (_, i) => (
+        <line key={`h${i}`} x1="0" y1={i * 140} x2="1000" y2={i * 140} strokeWidth="1" opacity="0.16" />
+      ))}
+      {/* depth-sounding dots sprinkled like a chart */}
+      {[
+        [80, 90], [340, 60], [700, 100], [930, 60], [60, 330], [420, 300],
+        [640, 250], [820, 200], [180, 520], [500, 500], [760, 480], [950, 520],
+      ].map(([x, y], i) => (
+        <circle key={`d${i}`} cx={x} cy={y} r="1.6" fill="currentColor" stroke="none" opacity="0.35" />
+      ))}
+      {/* dashed route through the venues */}
+      <path
+        d={`M ${marks[0].x} ${marks[0].y} C 320 300, 420 180, ${marks[1].x} ${marks[1].y}
+            S 260 120, ${marks[2].x} ${marks[2].y}
+            M ${marks[2].x} ${marks[2].y} C 400 320, 680 460, ${marks[3].x} ${marks[3].y}`}
+        strokeWidth="1.5"
+        strokeDasharray="2 7"
+        strokeLinecap="round"
+        opacity="0.6"
+      />
+      {/* venue marks */}
+      {marks.map((m, i) => (
+        <g key={`m${i}`}>
+          <circle cx={m.x} cy={m.y} r="5" strokeWidth="1.5" opacity="0.8" />
+          <circle cx={m.x} cy={m.y} r="12" strokeWidth="1" opacity="0.3" />
+        </g>
+      ))}
+      {/* compass rose */}
+      <g transform="translate(910 90)" opacity="0.55">
+        <circle r="26" strokeWidth="1" />
+        <circle r="3" strokeWidth="1" />
+        <path d="M0 -40 L6 -8 L0 -14 L-6 -8 Z" fill="currentColor" stroke="none" />
+        <path d="M0 40 L5 10 L0 14 L-5 10 Z" strokeWidth="1" />
+        <line x1="-34" y1="0" x2="-12" y2="0" strokeWidth="1" />
+        <line x1="12" y1="0" x2="34" y2="0" strokeWidth="1" />
+      </g>
+    </svg>
+  );
+}
+
 /** Wind streamlines — subscribe band backdrop. */
 export function WindLines({ className = "" }: { className?: string }) {
   return (

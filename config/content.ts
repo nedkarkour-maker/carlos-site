@@ -112,6 +112,23 @@ export const about: AboutContent = {
   },
 };
 
+/* ------------------------------------------------------------- statement */
+
+export interface StatementContent {
+  /** One entry per line. Each line lights up word by word as you scroll. */
+  lines: string[];
+}
+
+// The full-screen "statement" between the hero and the story — big, slow,
+// confident. Keep it to 2–4 short lines; the last one lands the punch.
+export const statement: StatementContent = {
+  lines: [
+    "World champion at 18.",
+    "7th of 124 at the Men's Worlds at 19.",
+    "LA 2028 isn't a dream. It's the plan.",
+  ],
+};
+
 /* ----------------------------------------------------------------- story */
 
 export interface StoryFrame {

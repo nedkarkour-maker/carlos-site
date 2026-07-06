@@ -5,6 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { schedule } from "@/config/content";
+import { VenuesChart } from "./art/Backdrops";
 import Reveal from "./Reveal";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -89,7 +90,7 @@ export default function Schedule({
     <section id="schedule" ref={sectionRef} className="scroll-mt-20">
       {/* ------------------------------------------------ horizontal (md+) */}
       <div className="relative hidden h-screen flex-col justify-center overflow-hidden py-10 md:motion-safe:flex">
-        {mapSrc && (
+        {mapSrc ? (
           <Image
             src={mapSrc}
             alt=""
@@ -98,6 +99,8 @@ export default function Schedule({
             sizes="100vw"
             className="object-cover opacity-[0.08]"
           />
+        ) : (
+          <VenuesChart className="absolute inset-0 h-full w-full text-ink opacity-[0.08]" />
         )}
         <div className="wrap relative w-full">{heading}</div>
         <div data-track className="relative mt-14 flex w-max items-stretch will-change-transform">

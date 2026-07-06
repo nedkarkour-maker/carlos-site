@@ -4,7 +4,10 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { hero, site } from "@/config/content";
+
+gsap.registerPlugin(ScrollTrigger);
 import Countdown from "./Countdown";
 import Magnetic from "./motion/Magnetic";
 
@@ -29,8 +32,11 @@ export default function Hero() {
       // Entrance: headline lines rise out of their masks, then the copy,
       // CTAs and telemetry glide in.
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      // The hidden state is a CSS percent-translate class, which GSAP parses
+      // into its pixel `y` component — so `y: 0` (not yPercent) is what
+      // actually raises the lines out of the mask.
       tl.to("[data-hero-line]", {
-        yPercent: 0,
+        y: 0,
         duration: 1.1,
         stagger: 0.14,
         delay: 0.15,
@@ -39,6 +45,21 @@ export default function Hero() {
         { opacity: 1, y: 0, duration: 0.9, stagger: 0.12 },
         "-=0.7",
       );
+
+      // Exit: as you scroll away, the copy lifts off and the photo recedes —
+      // the page hands over to the statement below.
+      gsap
+        .timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom 25%",
+            scrub: 0.4,
+          },
+        })
+        .to("[data-hero-content]", { yPercent: -14, opacity: 0 }, 0)
+        .to("[data-hero-dim]", { opacity: 0.65 }, 0);
     }, section);
 
     return () => ctx.revert();
@@ -69,8 +90,14 @@ export default function Hero() {
         aria-hidden
         className="absolute inset-0 bg-gradient-to-r from-teal-900/80 via-teal-900/30 to-transparent"
       />
+      {/* Scroll-driven dim layer — eases the hand-off into the dark statement. */}
+      <div
+        aria-hidden
+        data-hero-dim
+        className="absolute inset-0 bg-teal-950 opacity-0"
+      />
 
-      <div className="wrap relative w-full py-28">
+      <div data-hero-content className="wrap relative w-full py-28">
         <p
           data-hero-fade
           className="mb-[22px] font-mono text-[13px] uppercase tracking-[.2em] text-red-bright motion-safe:translate-y-4 motion-safe:opacity-0"
@@ -137,6 +164,18 @@ export default function Hero() {
             label={hero.countdown.label}
           />
         </div>
+      </div>
+
+      {/* Scroll cue — fades in with the entrance, lifts away with the exit. */}
+      <div
+        aria-hidden
+        data-hero-fade
+        className="absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 motion-safe:opacity-0"
+      >
+        <span className="font-mono text-[10px] uppercase tracking-[.3em] text-sail/60">
+          Scroll
+        </span>
+        <span className="h-9 w-px bg-gradient-to-b from-sail/70 to-transparent" />
       </div>
     </section>
   );

@@ -1,8 +1,8 @@
 /**
- * A thin, static sea-swell divider between sections — two layered wave
- * shapes, no animation (deliberately: constant background motion cheapens
- * the page and costs frames). `fill` is the color of the section BELOW the
- * divider, drawn over the section above. Server-rendered, zero JS.
+ * A thin, static sea-swell divider between sections — one crisp wave shape,
+ * no animation (deliberately: constant background motion cheapens the page
+ * and costs frames). `fill` is the color of the section BELOW the divider,
+ * drawn over the section above. Server-rendered, zero JS.
  */
 export default function WaveDivider({
   fill,
@@ -13,22 +13,14 @@ export default function WaveDivider({
   className?: string;
 }) {
   return (
-    <div aria-hidden className={`relative -mb-px h-[60px] overflow-hidden ${className}`}>
+    <div aria-hidden className={`relative -mb-px h-[56px] overflow-hidden ${className}`}>
       <svg
         className="absolute bottom-0 left-0 h-full w-full"
-        viewBox="0 0 1200 60"
-        preserveAspectRatio="none"
-        style={{ fill, opacity: 0.4 }}
-      >
-        <path d="M0 36 C 150 14, 300 52, 450 34 S 750 10, 900 32 S 1120 50, 1200 28 L1200 60 L0 60 Z" />
-      </svg>
-      <svg
-        className="absolute bottom-0 left-0 h-full w-full"
-        viewBox="0 0 1200 60"
+        viewBox="0 0 1200 56"
         preserveAspectRatio="none"
         style={{ fill }}
       >
-        <path d="M0 45 C 200 26, 380 55, 560 41 S 880 20, 1040 43 S 1160 53, 1200 39 L1200 60 L0 60 Z" />
+        <path d="M0 40 C 180 18, 360 50, 560 34 S 900 12, 1080 34 S 1170 46, 1200 40 L1200 56 L0 56 Z" />
       </svg>
     </div>
   );

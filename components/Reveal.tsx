@@ -25,12 +25,13 @@ export default function Reveal({
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     return onEnterViewport(el, () => {
+      // No clearProps here: the inline end-state must keep overriding the
+      // motion-safe hidden classes, or the content re-hides after the tween.
       gsap.to(el, {
         opacity: 1,
         y: 0,
         duration: DURATION,
         ease: EASE_GLIDE,
-        clearProps: "opacity,transform",
       });
     });
   }, []);

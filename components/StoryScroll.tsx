@@ -28,18 +28,33 @@ export default function StoryScroll() {
 
     const ctx = gsap.context(() => {
       const frames = gsap.utils.toArray<HTMLElement>("[data-story-frame]");
+      const fills = gsap.utils.toArray<HTMLElement>("[data-story-fill]");
       const tl = gsap.timeline({
         defaults: { ease: "none" },
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          // ~90vh of scroll per frame transition keeps the pace unhurried.
-          end: () => `+=${(frames.length - 1) * window.innerHeight * 0.9}`,
+          // ~90vh of scroll per frame keeps the pace unhurried; the extra
+          // half-screen lets the last frame breathe before unpinning.
+          end: () =>
+            `+=${(frames.length - 0.5) * window.innerHeight * 0.9}`,
           pin: true,
           scrub: 0.6,
           anticipatePin: 1,
         },
       });
+
+      // Story-style progress segments: each fills while its frame is active.
+      fills.forEach((fill, i) => {
+        tl.fromTo(
+          fill,
+          { scaleX: 0 },
+          { scaleX: 1, duration: i === fills.length - 1 ? 0.5 : 1 },
+          i,
+        );
+      });
+      // Dummy tail so the timeline (and pin) extends past the last caption.
+      tl.to({}, { duration: 0.01 }, frames.length - 0.5);
 
       frames.forEach((frame, i) => {
         const photo = frame.querySelector("[data-story-photo]");
@@ -77,7 +92,7 @@ export default function StoryScroll() {
   }, [reduced]);
 
   const header = (
-    <div className="wrap pointer-events-none absolute inset-x-0 top-0 z-20 pt-14">
+    <div className="wrap pointer-events-none absolute inset-x-0 top-0 z-20 pt-24">
       <p className="font-mono text-xs uppercase tracking-[.18em] text-red-bright">
         {story.eyebrow}
       </p>
@@ -158,17 +173,32 @@ export default function StoryScroll() {
           />
           <div
             data-story-caption
-            className="wrap absolute inset-x-0 bottom-0 z-10 pb-16"
+            className="wrap absolute inset-x-0 bottom-0 z-10 pb-20"
           >
             <span className="font-mono text-xs uppercase tracking-[.14em] text-red-bright">
               {frame.kicker}
             </span>
-            <p className="mt-2 max-w-[560px] font-display text-[clamp(22px,3.4vw,38px)] font-extrabold leading-[1.12] tracking-[-0.01em]">
+            <p className="mt-2 max-w-[680px] font-display text-[clamp(26px,4vw,46px)] font-extrabold leading-[1.1] tracking-[-0.015em]">
               {frame.caption}
             </p>
           </div>
         </div>
       ))}
+
+      {/* Progress segments — one per frame, filling as the story advances. */}
+      <div className="wrap pointer-events-none absolute inset-x-0 bottom-0 z-20 flex gap-2 pb-10">
+        {story.frames.map((frame) => (
+          <span
+            key={frame.src}
+            className="h-[3px] w-8 overflow-hidden rounded-full bg-white/25"
+          >
+            <span
+              data-story-fill
+              className="block h-full w-full origin-left scale-x-0 bg-red-bright"
+            />
+          </span>
+        ))}
+      </div>
     </section>
   );
 }

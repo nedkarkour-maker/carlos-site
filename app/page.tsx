@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
+import Statement from "@/components/Statement";
 import StoryScroll from "@/components/StoryScroll";
 import Numbers from "@/components/Numbers";
 import Schedule from "@/components/Schedule";
@@ -18,9 +19,11 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <WaveDivider fill="var(--sail)" className="bg-teal-900" />
-        <About />
+        <Statement />
         <StoryScroll />
+        <WaveDivider fill="var(--sail)" className="bg-teal-950" />
+        <About />
+        <WaveDivider fill="var(--teal-900)" />
         <Numbers />
         <WaveDivider fill="var(--sail)" className="bg-teal-900" />
         <Schedule mapSrc={generatedImage("venues-chart.png")} />

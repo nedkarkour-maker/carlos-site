@@ -2,6 +2,7 @@ import Image from "next/image";
 import { about } from "@/config/content";
 import { generatedImage } from "@/lib/generated";
 import { SailboatLine } from "./art/Backdrops";
+import Parallax from "./motion/Parallax";
 import Reveal from "./Reveal";
 
 /** Renders **double-asterisk** spans from config copy as bold text. */
@@ -40,15 +41,16 @@ export default function About() {
         <SailboatLine className="pointer-events-none absolute -right-8 bottom-6 hidden w-[280px] text-ink-soft opacity-[0.14] lg:block" />
       )}
       <Reveal className="wrap relative grid items-center gap-8 md:grid-cols-[0.95fr_1.05fr] md:gap-[54px]">
-        <div className="relative min-h-[300px] overflow-hidden rounded-[10px] md:min-h-[440px]">
+        <Parallax className="relative min-h-[300px] rounded-[10px] md:min-h-[440px]">
           <Image
             src={about.image.src}
             alt={about.image.alt}
             fill
             sizes="(max-width: 768px) 100vw, 45vw"
             className="object-cover"
+            style={{ objectPosition: about.image.focus ?? "50% 50%" }}
           />
-        </div>
+        </Parallax>
         <div>
           <p className="mb-4 font-mono text-xs uppercase tracking-[.18em] text-red-dark">
             {about.eyebrow}

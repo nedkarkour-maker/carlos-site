@@ -18,7 +18,8 @@ function loadKey() {
   const env = readFileSync(path.join(root, ".env.local"), "utf8");
   const match = env.match(/^GEMINI_API_KEY=(.+)$/m);
   if (!match) throw new Error("GEMINI_API_KEY not found in .env.local");
-  return match[1].trim();
+  // Tolerate surrounding quotes and whitespace.
+  return match[1].trim().replace(/^["']|["']$/g, "");
 }
 
 const KEY = loadKey();
