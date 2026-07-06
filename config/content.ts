@@ -74,8 +74,8 @@ export const hero: HeroContent = {
   secondaryCta: { label: "How you can help", href: "#help" },
   countdown: { target: "2028-07-14T00:00:00", label: "Days to LA 2028" },
   image: {
-    src: "/images/IMG_5623.JPG",
-    alt: "Carlos Charabati racing his ILCA dinghy under the CAN sail",
+    src: "/images/29062024-5P7A0650.jpg",
+    alt: "Carlos Charabati racing at the ILCA 4 Youth World Championship",
   },
 };
 
@@ -185,8 +185,8 @@ export const schedule: ScheduleContent = {
       alt: "Carlos hiking upwind in heavy spray at the ILCA 4 Youth Worlds",
     },
     {
-      src: "/images/29062024-5P7A0650.jpg",
-      alt: "Carlos rounding a mark during a championship race",
+      src: "/images/IMG_5623.JPG",
+      alt: "Carlos racing his ILCA dinghy under the CAN sail",
     },
     {
       src: "/images/26062024-DJI_0231.jpg",
@@ -312,14 +312,15 @@ export interface BackersContent {
 
 export const backers: BackersContent = {
   label: "Proudly supported by",
-  // TODO: drop logo files into /public/images/sponsors and add logo: "/images/sponsors/…"
   sponsors: [
-    { name: "Sail Canada" },
-    { name: "Voile Québec" },
-    { name: "Wind Athletes Canada" },
+    { name: "Sail Canada", logo: "/images/sponsors/sail-canada.png" },
+    { name: "Voile Québec", logo: "/images/sponsors/voile-quebec.png" },
+    { name: "Wind Athletes Canada", logo: "/images/sponsors/wind-athletes.png" },
+    // The Peter Kelly Athlete Assistance Fund is a memorial fund (via Wind
+    // Athletes Canada / PCYC) with no logo of its own — monogram by design.
     { name: "Peter Kelly Fund" },
-    { name: "YC Pointe-Claire" },
-    { name: "Clube Naval de Cascais" },
+    { name: "YC Pointe-Claire", logo: "/images/sponsors/pcyc.png" },
+    { name: "Clube Naval de Cascais", logo: "/images/sponsors/cn-cascais.png" },
   ],
   joinCta: {
     title: "Maybe you?",

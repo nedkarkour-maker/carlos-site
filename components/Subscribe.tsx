@@ -39,7 +39,7 @@ export default function Subscribe() {
   }
 
   return (
-    <section id="subscribe" className="scroll-mt-20 bg-red text-white">
+    <section id="subscribe" className="scroll-mt-20 bg-teal-800 text-sail">
       <div className="wrap flex flex-wrap items-center justify-between gap-[30px] py-[60px]">
         <div>
           <h2 className="font-display text-[clamp(22px,3vw,34px)] font-extrabold">
@@ -68,12 +68,12 @@ export default function Subscribe() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder={subscribe.placeholder}
               disabled={status.state === "loading"}
-              className="min-w-[240px] rounded-[3px] bg-white px-3.5 py-[13px] font-mono text-sm text-ink placeholder:text-ink-soft focus:outline-2 focus:outline-ink disabled:opacity-70"
+              className="min-w-[240px] rounded-[3px] bg-white px-3.5 py-[13px] font-mono text-sm text-ink placeholder:text-ink-soft focus:outline-2 focus:outline-red-bright disabled:opacity-70"
             />
             <button
               type="submit"
               disabled={status.state === "loading"}
-              className="rounded-[2px] bg-ink px-[18px] py-[13px] text-sm font-semibold transition hover:-translate-y-px hover:bg-black disabled:opacity-70 disabled:hover:translate-y-0"
+              className="rounded-[2px] bg-red px-[18px] py-[13px] text-sm font-semibold text-white transition hover:-translate-y-px hover:bg-red-bright disabled:opacity-70 disabled:hover:translate-y-0"
             >
               {status.state === "loading" ? subscribe.buttonBusy : subscribe.button}
             </button>

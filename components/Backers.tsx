@@ -15,12 +15,12 @@ function initials(name: string) {
 function SponsorLogo({ sponsor }: { sponsor: Sponsor }) {
   if (sponsor.logo) {
     return (
-      <span className="relative h-12 w-12">
+      <span className="relative h-12 w-24">
         <Image
           src={sponsor.logo}
           alt={`${sponsor.name} logo`}
           fill
-          sizes="48px"
+          sizes="96px"
           className="object-contain"
         />
       </span>

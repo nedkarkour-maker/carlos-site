@@ -12,11 +12,16 @@ export default function Hero() {
         fill
         priority
         sizes="100vw"
-        className="object-cover object-[65%_30%]"
+        className="object-cover object-[70%_35%]"
       />
       <div
         aria-hidden
         className="absolute inset-0 bg-gradient-to-b from-teal-900/60 via-teal-900/40 to-teal-900/90"
+      />
+      {/* Darkens the text column so copy stays readable over the white sail. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-gradient-to-r from-teal-900/80 via-teal-900/30 to-transparent"
       />
 
       <div className="wrap relative w-full py-28">
