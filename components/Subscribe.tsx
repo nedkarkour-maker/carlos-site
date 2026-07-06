@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { subscribe } from "@/config/content";
+import { WindLines } from "./art/Backdrops";
 
 type Status =
   | { state: "idle" }
@@ -9,7 +11,12 @@ type Status =
   | { state: "success" }
   | { state: "error"; message: string };
 
-export default function Subscribe() {
+export default function Subscribe({
+  windSrc = null,
+}: {
+  /** Generated wind-flow art (passed from the page); SVG fallback if null. */
+  windSrc?: string | null;
+}) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>({ state: "idle" });
 
@@ -39,8 +46,23 @@ export default function Subscribe() {
   }
 
   return (
-    <section id="subscribe" className="scroll-mt-20 bg-teal-800 text-sail">
-      <div className="wrap flex flex-wrap items-center justify-between gap-[30px] py-[60px]">
+    <section
+      id="subscribe"
+      className="relative scroll-mt-20 overflow-hidden bg-teal-800 text-sail"
+    >
+      {windSrc ? (
+        <Image
+          src={windSrc}
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          className="object-cover opacity-15"
+        />
+      ) : (
+        <WindLines className="absolute inset-0 h-full w-full" />
+      )}
+      <div className="wrap relative flex flex-wrap items-center justify-between gap-[30px] py-[60px]">
         <div>
           <h2 className="font-display text-[clamp(22px,3vw,34px)] font-extrabold">
             {subscribe.title}

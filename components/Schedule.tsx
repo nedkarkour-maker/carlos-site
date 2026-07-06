@@ -15,7 +15,12 @@ gsap.registerPlugin(ScrollTrigger);
  * underneath and each stop pops in as it reaches the course. On mobile and
  * under prefers-reduced-motion it falls back to the vertical timeline.
  */
-export default function Schedule() {
+export default function Schedule({
+  mapSrc = null,
+}: {
+  /** Generated nautical venue map (passed from the page); omitted if null. */
+  mapSrc?: string | null;
+}) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -83,8 +88,18 @@ export default function Schedule() {
   return (
     <section id="schedule" ref={sectionRef} className="scroll-mt-20">
       {/* ------------------------------------------------ horizontal (md+) */}
-      <div className="hidden h-screen flex-col justify-center overflow-hidden py-10 md:motion-safe:flex">
-        <div className="wrap w-full">{heading}</div>
+      <div className="relative hidden h-screen flex-col justify-center overflow-hidden py-10 md:motion-safe:flex">
+        {mapSrc && (
+          <Image
+            src={mapSrc}
+            alt=""
+            aria-hidden
+            fill
+            sizes="100vw"
+            className="object-cover opacity-[0.08]"
+          />
+        )}
+        <div className="wrap relative w-full">{heading}</div>
         <div data-track className="relative mt-14 flex w-max items-stretch will-change-transform">
           {/* The race-course line, drawn as you scroll. */}
           <svg

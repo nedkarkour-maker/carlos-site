@@ -1,11 +1,27 @@
+import Image from "next/image";
 import { numbers } from "@/config/content";
+import { generatedImage } from "@/lib/generated";
+import { TopoLines } from "./art/Backdrops";
 import Reveal from "./Reveal";
 import CountUp from "./motion/CountUp";
 
 export default function Numbers() {
+  const topo = generatedImage("stats-topo.png");
   return (
-    <section className="bg-teal-900 py-[90px] text-sail">
-      <Reveal className="wrap">
+    <section className="relative overflow-hidden bg-teal-900 py-[90px] text-sail">
+      {topo ? (
+        <Image
+          src={topo}
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          className="object-cover opacity-20"
+        />
+      ) : (
+        <TopoLines className="absolute inset-0 h-full w-full" />
+      )}
+      <Reveal className="wrap relative">
         <p className="mb-4 font-mono text-xs uppercase tracking-[.18em] text-red-bright">
           {numbers.eyebrow}
         </p>

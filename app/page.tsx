@@ -10,6 +10,7 @@ import Backers from "@/components/Backers";
 import Subscribe from "@/components/Subscribe";
 import Footer from "@/components/Footer";
 import WaveDivider from "@/components/motion/WaveDivider";
+import { generatedImage } from "@/lib/generated";
 
 export default function Home() {
   return (
@@ -23,11 +24,11 @@ export default function Home() {
         <StoryScroll />
         <Numbers />
         <WaveDivider fill="var(--sail)" className="bg-teal-900" />
-        <Schedule />
+        <Schedule mapSrc={generatedImage("venues-chart.png")} />
         <NewsletterTeaser />
         <HowYouCanHelp />
         <Backers />
-        <Subscribe />
+        <Subscribe windSrc={generatedImage("wind-flow.png")} />
       </main>
       <Footer />
     </>
