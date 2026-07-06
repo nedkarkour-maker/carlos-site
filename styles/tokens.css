@@ -1,0 +1,16 @@
+:root {
+  --teal-950: #07222c;
+  --teal-900: #0A2530;
+  --teal-800: #103948;
+  --teal-700: #16505f;
+  --sail: #F6F3EC;
+  --sail-2: #ECE7DB;
+  --ink: #15201F;
+  --ink-soft: #4a565a;
+  --red: #D42E2E;
+  --red-dark: #b3231f;
+  --red-bright: #ec3b36;
+  --line: rgba(255,255,255,.14);
+  --line-dark: rgba(21,32,31,.13);
+  --maxw: 1180px;
+}
