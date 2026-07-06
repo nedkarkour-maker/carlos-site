@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { EASE_GLIDE } from "@/lib/motion";
+import { EASE_GLIDE, usePrefersReducedMotion } from "@/lib/motion";
 
 const DIGITS = "0123456789";
 
@@ -47,10 +47,9 @@ export default function Countdown({
   label: string;
 }) {
   const [days, setDays] = useState<number | null>(null);
-  const [reduced, setReduced] = useState(false);
+  const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
-    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     const targetMs = new Date(target).getTime();
     const compute = () =>
       setDays(Math.max(0, Math.ceil((targetMs - Date.now()) / 86_400_000)));
