@@ -103,6 +103,60 @@ export const about: AboutContent = {
   },
 };
 
+/* ----------------------------------------------------------------- story */
+
+export interface StoryFrame {
+  /** Photo in /public/images — drop a file there and put its name here. */
+  src: string;
+  /** Short description of the photo for screen readers. */
+  alt: string;
+  /** Small red label above the caption, e.g. "01 · Upwind". */
+  kicker: string;
+  /** One-line caption shown over the photo. */
+  caption: string;
+}
+
+export interface StoryContent {
+  eyebrow: string;
+  title: string;
+  /** 3–5 photos work best. They play in order as the visitor scrolls. */
+  frames: StoryFrame[];
+}
+
+// The full-screen photo sequence ("scrollytelling") between About and the
+// numbers. To swap a photo: change `src`. To add one: copy a whole block
+// { src: ..., alt: ..., kicker: ..., caption: ... } and adjust.
+export const story: StoryContent = {
+  eyebrow: "One race, four moments",
+  title: "What a race actually looks like.",
+  frames: [
+    {
+      src: "/images/IMG_5623.JPG",
+      alt: "Carlos hiking hard upwind under the CAN sail",
+      kicker: "01 · The upwind grind",
+      caption: "Flat-out hiking. Every wave is a decision.",
+    },
+    {
+      src: "/images/ZAG_5526.jpg",
+      alt: "Carlos driving through heavy spray at the ILCA 4 Youth Worlds",
+      kicker: "02 · Heavy air",
+      caption: "When it blows, the race becomes physical.",
+    },
+    {
+      src: "/images/26062024-DJI_0231.jpg",
+      alt: "Aerial view of the ILCA fleet converging on a mark",
+      kicker: "03 · The mark rounding",
+      caption: "Seventy boats, one mark, no room for error.",
+    },
+    {
+      src: "/images/IMG_3906.JPG",
+      alt: "Carlos receiving his medal at the championship ceremony",
+      kicker: "04 · The podium",
+      caption: "World champion — and the road is just starting.",
+    },
+  ],
+};
+
 /* --------------------------------------------------------------- numbers */
 
 export interface Stat {

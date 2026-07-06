@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
+import StoryScroll from "@/components/StoryScroll";
 import Numbers from "@/components/Numbers";
 import Schedule from "@/components/Schedule";
 import NewsletterTeaser from "@/components/NewsletterTeaser";
@@ -16,6 +17,7 @@ export default function Home() {
       <main>
         <Hero />
         <About />
+        <StoryScroll />
         <Numbers />
         <Schedule />
         <NewsletterTeaser />

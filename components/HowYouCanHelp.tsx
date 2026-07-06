@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { help } from "@/config/content";
 import Reveal from "./Reveal";
+import BudgetBars from "./motion/BudgetBars";
 
 const ctaClass =
   "mt-[22px] inline-block rounded-[2px] bg-red px-[18px] py-2.5 text-center text-sm font-semibold text-white transition hover:-translate-y-px hover:bg-red-bright";
@@ -65,24 +66,11 @@ export default function HowYouCanHelp() {
           ))}
         </div>
 
-        <div className="mt-[46px] flex flex-wrap items-center gap-9 rounded-[10px] bg-teal-800 px-[30px] py-7 text-sail">
-          <div className="whitespace-nowrap font-mono text-[34px] font-semibold leading-tight text-red-bright">
-            {help.budget.amount}
-            <span className="mt-1 block font-sans text-[13px] font-normal text-sail/60">
-              {help.budget.note}
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-[26px] font-mono text-[13px]">
-            {help.budget.breakdown.map((item) => (
-              <div key={item.label} className="uppercase text-sail/60">
-                {item.label}
-                <span className="mt-[3px] block text-xl normal-case text-sail">
-                  {item.share}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <BudgetBars
+          amount={help.budget.amount}
+          note={help.budget.note}
+          breakdown={help.budget.breakdown}
+        />
       </Reveal>
     </section>
   );
