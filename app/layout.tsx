@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "../styles/tokens.css";
 import "./globals.css";
+import MotionProvider from "@/components/motion/MotionProvider";
+import ScrollProgress from "@/components/motion/ScrollProgress";
 
 // Configure Archivo (Headings)
 const archivo = Archivo({ 
@@ -39,6 +41,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${archivo.variable} ${plexSans.variable} ${plexMono.variable} font-sans antialiased bg-[var(--sail)] text-[var(--ink)]`}>
+        <MotionProvider />
+        <ScrollProgress />
         {children}
       </body>
     </html>
