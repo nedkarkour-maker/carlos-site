@@ -32,8 +32,29 @@ export const site = {
   role: "ILCA Sailor",
   country: "CAN",
   sailNumber: "219619",
+  /**
+   * Canonical production URL — used for social-share metadata, the sitemap
+   * and structured data. Set NEXT_PUBLIC_SITE_URL once a custom domain
+   * exists; on Vercel the production URL is picked up automatically.
+   */
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000"),
+  contactEmail: "c.charabati@icloud.com",
   supportUrl: "https://www.windathletes.ca/athletes/carlos-charabati",
-  instagramUrl: "#", // TODO: real Instagram profile URL
+  instagramUrl: "https://www.instagram.com/carlos_charabati",
+  /**
+   * Link to the sponsorship deck (PDF or Drive). While empty, the
+   * "Request the deck" card emails Carlos instead — nothing dead ships.
+   */
+  sponsorDeckUrl: "",
+  /**
+   * One line about what's happening right now, shown in the hero next to
+   * the sail number — e.g. "Training block · Cascais". Empty hides it.
+   */
+  now: "Training block · Cascais [DRAFT]",
 } as const;
 
 /* ------------------------------------------------------------------- nav */
@@ -127,6 +148,27 @@ export const statement: StatementContent = {
     "7th of 124 at the Men's Worlds at 19.",
     "LA 2028 isn't a dream. It's the plan.",
   ],
+};
+
+/* --------------------------------------------------------- latest result */
+
+export interface LatestResultContent {
+  /** The finish itself, e.g. "7th of 124". Rendered in red. */
+  result: string;
+  /** The event it came from, e.g. "ILCA 7 Men's Worlds · Kiel 2025". */
+  event: string;
+  /** Optional link — a newsletter recap or official results page. */
+  href?: string;
+  linkLabel?: string;
+}
+
+// Slim band under the hero. Update after every regatta — it's the cheapest
+// way to make the site feel alive.
+export const latestResult: LatestResultContent = {
+  result: "7th of 124",
+  event: "ILCA 7 Men's Worlds · Kiel 2025",
+  href: "/newsletter/mens-worlds-kiel-2025",
+  linkLabel: "Read the recap",
 };
 
 /* ----------------------------------------------------------------- story */
@@ -225,6 +267,13 @@ export interface ScheduleStop {
   major?: boolean;
   /** Optional red pill, e.g. "Key event". */
   tag?: string;
+  /**
+   * Position on the season chart (VenueMap), as percentages of the chart
+   * area — x: 0 (left/west) to 100 (right/east), y: 0 (top) to 100.
+   * `label` is the short venue name shown next to the mark. Leave out to
+   * keep a stop off the chart.
+   */
+  coords?: { x: number; y: number; label: string };
 }
 
 export interface ScheduleContent {
@@ -243,6 +292,7 @@ export const schedule: ScheduleContent = {
       title: "Season restart · training base",
       where: "Building the year's foundation [DRAFT — from your calendar]",
       major: true,
+      coords: { x: 24, y: 34, label: "Montréal" },
     },
     {
       when: "FALL 2026",
@@ -250,11 +300,13 @@ export const schedule: ScheduleContent = {
       where: "Kingston, Ontario",
       major: true,
       tag: "Key event",
+      coords: { x: 14, y: 40, label: "Kingston" },
     },
     {
       when: "2026",
       title: "Training blocks · Europe",
       where: "Cascais & Mediterranean venues",
+      coords: { x: 58, y: 56, label: "Cascais" },
     },
     {
       when: "2026",
@@ -262,6 +314,7 @@ export const schedule: ScheduleContent = {
       where: "Bodrum, Türkiye",
       major: true,
       tag: "Key event",
+      coords: { x: 90, y: 60, label: "Bodrum" },
     },
   ],
   photos: [
@@ -347,7 +400,16 @@ export const help: HelpContent = {
         "Reach across a growing social audience",
         "Talks & appearances at your events",
       ],
-      cta: { label: "Request the deck", href: "#" }, // TODO: sponsorship-deck link or mailto
+      // Until a deck link exists (site.sponsorDeckUrl), this emails Carlos
+      // directly with a prefilled subject.
+      cta: site.sponsorDeckUrl
+        ? { label: "Request the deck", href: site.sponsorDeckUrl, external: true }
+        : {
+            label: "Request the deck",
+            href: `mailto:${site.contactEmail}?subject=${encodeURIComponent(
+              "Sponsorship deck — Carlos Charabati",
+            )}`,
+          },
     },
     {
       index: "03",
@@ -472,7 +534,7 @@ export const footer: FooterContent = {
       heading: "Connect",
       links: [
         { label: "Subscribe", href: "/#subscribe" },
-        { label: "Contact", href: "#" }, // TODO: contact email or form
+        { label: "Contact", href: `mailto:${site.contactEmail}` },
       ],
     },
   ],
