@@ -87,41 +87,52 @@ more pinned sections. Uniqueness comes from content-led touches:
 - Production domain: unknown → `site.url` reads `NEXT_PUBLIC_SITE_URL`,
   then Vercel's production-URL env, then localhost.
 
-## Plan status (approved plan: finish-and-harden pass)
+## Plan status (approved plan: finish-and-harden pass) — COMPLETE
 
-Full task list + specs: **`NEXT_STEPS_PROMPT.md`** (paste-able prompt the
-user will run in VS Code). Approved plan file also at
-`~/.claude/plans/linked-hatching-scott.md`.
+The full finish-and-harden pass from `NEXT_STEPS_PROMPT.md` shipped
+2026-07-08 (session 2). That prompt file is now historical — delete it
+once the branch is merged. Everything below is implemented and verified:
 
-DONE (lint + build verified green at this state):
-- `config/content.ts`: real links, mailto deck fallback, `site.url`,
-  `site.now`, `latestResult` content block, `stops[].coords` for the
-  future venue map, footer Contact mailto.
-- `app/about/page.tsx`, `app/schedule/page.tsx`: blank placeholders →
-  `redirect("/#about")` / `redirect("/#schedule")`.
+1. Security headers (`next.config.ts`): CSP (+'unsafe-eval'/ws: only in
+   dev), nosniff, X-Frame-Options DENY, Referrer-Policy,
+   Permissions-Policy — verified on both `next start` and `next dev`.
+2. Awareness layer: `metadataBase`/OG/twitter in layout (description
+   lives in `site.description` in config), `app/opengraph-image.jpg`
+   (1200×630 crop via `scripts/make-og-image.mjs`, re-runnable) +
+   alt.txt, `app/sitemap.ts` (home, /newsletter, non-draft posts — all
+   4 posts are still draft:true so none listed yet, by design),
+   `app/robots.ts` (disallow /api/), JSON-LD Person on the homepage,
+   OG on newsletter posts (cover image when set).
+3. Subscribe hardening: honeypot `company` + `elapsedMs` ≥3s time-trap
+   (both silently drop with `{ok:true}` BEFORE any MailerLite code),
+   Sec-Fetch-Site/Origin same-origin check (403). Verified by POSTing
+   all paths. STILL MANUAL: enable double opt-in in the MailerLite
+   dashboard. Residual risk [Likely small]: browser autofill could fill
+   the hidden "company" field for some users; the fake-success reply
+   would hide it — if signups ever look broken, check that first.
+4. Content touches: Now line in hero telemetry (`site.now`),
+   `LatestResult` teal-950 strip between Hero and Statement,
+   `VenueMap` chart synced both directions with the Schedule timeline
+   (lifted state, keyboard accessible, labels flip left near the right
+   edge so they don't clip), Footer renders non-`/` hrefs as `<a>`.
+5. Housekeeping: real README, deleted 5 default SVGs + 3 byte-identical
+   duplicate photos (IMG_3906/5623/5624.jpeg; the referenced .JPG
+   versions stay), [DRAFT] copy left in place.
 
-REMAINING (specced in NEXT_STEPS_PROMPT.md):
-1. Security headers in `next.config.ts` (CSP + friends; dev needs
-   'unsafe-eval'/ws: or HMR breaks).
-2. Awareness layer: layout metadata + `app/opengraph-image.jpg` (sharp
-   crop of hero-viana, 1200×630) + alt.txt, `app/sitemap.ts`,
-   `app/robots.ts`, JSON-LD Person on homepage, OG on newsletter posts.
-3. Subscribe hardening: honeypot `company` field + `elapsedMs` time-trap
-   (silent drops), Sec-Fetch-Site/Origin check; enable double opt-in in
-   MailerLite dashboard (manual step, not code).
-4. Content touches: Now line in hero telemetry, `LatestResult` strip
-   (teal-950 band between Hero and Statement), `VenueMap` synced with
-   Schedule via lifted React state (NOT inside the pinned section),
-   Footer renders non-`/` hrefs as plain `<a>`.
-5. Housekeeping: real README, delete unused default svgs + duplicate
-   photos (grep first; Vercel is case-sensitive), keep [DRAFT] copy.
+Verification run (all green): lint, build, headers/sitemap/robots/OG/
+JSON-LD curl checks, /about + /schedule 307s, subscribe drop + 403
+paths, Playwright interaction suite (map↔timeline sync both ways,
+keyboard, honeypot invisible, no console errors), full screenshot tour
+at 1440/390 eyeballed.
 
 Doc findings already made (Next 16 bundled docs, so no re-reading needed):
 `redirect()` from `next/navigation` throws, don't wrap in try;
 `headers()` in next.config with `source: "/:path*"`; sitemap/robots/
 opengraph-image are `app/`-root file conventions; static OG image =
 `app/opengraph-image.jpg` + `opengraph-image.alt.txt`; `metadataBase`
-required for absolute OG URLs.
+required for absolute OG URLs. New this session: the repo's eslint
+(react-hooks/purity) rejects `useRef(Date.now())` in render — seed
+refs like that inside `useEffect` (see Subscribe.tsx).
 
 ## Actions log
 
@@ -133,3 +144,13 @@ required for absolute OG URLs.
   `NEXT_STEPS_PROMPT.md` with the remaining specced tasks. Nothing
   committed to git yet: current diff = content.ts, about/schedule pages,
   HANDOFF.md, NEXT_STEPS_PROMPT.md.
+- 2026-07-08 (session 2, VS Code): Implemented the entire remaining
+  pass — security headers, awareness layer (metadata/OG image/sitemap/
+  robots/JSON-LD/newsletter OG), subscribe hardening (honeypot +
+  time-trap + same-origin), content touches (Now line, LatestResult,
+  VenueMap with timeline sync, Footer link fix), housekeeping (README,
+  asset cleanup). One in-browser fix after screenshot review: VenueMap
+  labels near the right edge flip to the dot's left (Bodrum clipped on
+  mobile). Full verification green (see plan status above). Left
+  uncommitted for the user's review; MailerLite double opt-in still to
+  be enabled in the dashboard by the user.

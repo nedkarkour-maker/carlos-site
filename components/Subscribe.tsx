@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { subscribe } from "@/config/content";
 import { WindLines } from "./art/Backdrops";
@@ -18,7 +18,14 @@ export default function Subscribe({
   windSrc?: string | null;
 }) {
   const [email, setEmail] = useState("");
+  // Honeypot — people never see the field, so a value marks a bot.
+  const [company, setCompany] = useState("");
   const [status, setStatus] = useState<Status>({ state: "idle" });
+  // Second bot signal: humans don't submit within 3 s of the page mounting.
+  const mountedAt = useRef<number | null>(null);
+  useEffect(() => {
+    mountedAt.current ??= Date.now();
+  }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -27,7 +34,11 @@ export default function Subscribe({
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({
+          email,
+          company,
+          elapsedMs: Date.now() - (mountedAt.current ?? Date.now()),
+        }),
       });
       if (res.ok) {
         setStatus({ state: "success" });
@@ -78,6 +89,18 @@ export default function Subscribe({
           </p>
         ) : (
           <form className="flex flex-wrap items-start gap-2.5" onSubmit={onSubmit}>
+            {/* Honeypot: parked off-screen, out of the tab order and hidden
+                from assistive tech. Form-filler bots fill it anyway. */}
+            <input
+              type="text"
+              name="company"
+              tabIndex={-1}
+              aria-hidden="true"
+              autoComplete="off"
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
+              className="absolute -left-[9999px] h-px w-px"
+            />
             <label htmlFor="newsletter-email" className="sr-only">
               Email address
             </label>

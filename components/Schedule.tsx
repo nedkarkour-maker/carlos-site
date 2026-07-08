@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { schedule } from "@/config/content";
 import { VenuesChart } from "./art/Backdrops";
 import Reveal from "./Reveal";
+import VenueMap from "./VenueMap";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,6 +24,9 @@ export default function Schedule({
   mapSrc?: string | null;
 }) {
   const sectionRef = useRef<HTMLElement>(null);
+  // Which stop is highlighted — shared between the timeline and the venue
+  // chart below it, so hovering either one lights up the other.
+  const [active, setActive] = useState<number | null>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -121,18 +125,26 @@ export default function Schedule({
             />
           </svg>
           <div className="w-[max(calc((100vw-var(--maxw))/2+24px),24px)] shrink-0" />
-          {schedule.stops.map((stop) => (
+          {schedule.stops.map((stop, i) => (
             <article
               data-stop
               key={`${stop.when}-${stop.title}`}
+              onMouseEnter={() => setActive(i)}
+              onFocus={() => setActive(i)}
               className={`relative mr-8 w-[340px] shrink-0 rounded-[10px] border bg-white px-7 py-6 pt-[76px] shadow-sm ${
-                stop.major ? "border-red/40" : "border-line-dark"
+                active === i
+                  ? "border-red/60"
+                  : stop.major
+                    ? "border-red/40"
+                    : "border-line-dark"
               }`}
             >
               <span
                 aria-hidden
                 className={`absolute left-7 top-[38px] h-[13px] w-[13px] rounded-full border-2 border-sail bg-red ${
-                  stop.major ? "shadow-[0_0_0_5px_rgba(212,46,46,.18)]" : ""
+                  stop.major || active === i
+                    ? "shadow-[0_0_0_5px_rgba(212,46,46,.18)]"
+                    : ""
                 }`}
               />
               <span className="font-mono text-[13px] tracking-[.04em] text-red-dark">
@@ -162,15 +174,19 @@ export default function Schedule({
       <Reveal className="wrap py-[90px] md:motion-safe:hidden">
         {heading}
         <ol className="mt-[46px] border-l-2 border-line-dark pl-7 md:pl-[30px]">
-          {schedule.stops.map((stop) => (
+          {schedule.stops.map((stop, i) => (
             <li
               key={`${stop.when}-${stop.title}`}
+              onMouseEnter={() => setActive(i)}
+              onFocus={() => setActive(i)}
               className="relative grid grid-cols-[90px_1fr] gap-3.5 border-b border-line-dark py-5 last:border-b-0 md:grid-cols-[120px_1fr] md:gap-6"
             >
               <span
                 aria-hidden
                 className={`absolute -left-[35px] top-[26px] h-[11px] w-[11px] rounded-full border-2 border-sail bg-red md:-left-[37px] ${
-                  stop.major ? "shadow-[0_0_0_4px_rgba(212,46,46,.2)]" : ""
+                  stop.major || active === i
+                    ? "shadow-[0_0_0_4px_rgba(212,46,46,.2)]"
+                    : ""
                 }`}
               />
               <span className="pt-0.5 font-mono text-[13px] tracking-[.04em] text-red-dark">
@@ -191,6 +207,15 @@ export default function Schedule({
           ))}
         </ol>
       </Reveal>
+
+      {/* Season chart — hover or tab between venues; syncs with the
+          timeline above. Outside the pinned section on purpose: anything
+          inside it would throw off the GSAP pin measurements. */}
+      {schedule.stops.some((stop) => stop.coords) && (
+        <div className="wrap pb-[90px] md:motion-safe:pt-[70px]">
+          <VenueMap active={active} onActivate={setActive} />
+        </div>
+      )}
 
       {/* Photo strip below the timeline, both layouts. */}
       <Reveal className="wrap pb-[90px]">

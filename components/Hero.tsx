@@ -163,6 +163,16 @@ export default function Hero() {
             target={hero.countdown.target}
             label={hero.countdown.label}
           />
+          {site.now && (
+            <div>
+              <div className="font-mono text-[22px] font-semibold leading-tight">
+                {site.now}
+              </div>
+              <div className="mt-1 font-mono text-[11px] uppercase tracking-[.14em] text-sail/65">
+                Now
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

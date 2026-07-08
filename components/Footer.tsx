@@ -32,12 +32,23 @@ export default function Footer() {
               <ul>
                 {column.links.map((link) => (
                   <li key={link.label} className="mb-[9px]">
-                    <Link
-                      href={link.href}
-                      className="transition-colors hover:text-sail"
-                    >
-                      {link.label}
-                    </Link>
+                    {/* next/link is for in-app routes; mailto: and other
+                        external hrefs need a plain anchor. */}
+                    {link.href.startsWith("/") ? (
+                      <Link
+                        href={link.href}
+                        className="transition-colors hover:text-sail"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={link.href}
+                        className="transition-colors hover:text-sail"
+                      >
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>

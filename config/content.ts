@@ -33,6 +33,12 @@ export const site = {
   country: "CAN",
   sailNumber: "219619",
   /**
+   * One-line pitch for search results and social-share previews — the text
+   * under the link when the site is pasted into WhatsApp/LinkedIn/email.
+   */
+  description:
+    "Canadian ILCA sailor, 2024 ILCA 4 Youth World Champion, 7th at the 2025 Men's Worlds — campaigning toward LA 2028. Follow the journey, partner with the campaign, or support it directly.",
+  /**
    * Canonical production URL — used for social-share metadata, the sitemap
    * and structured data. Set NEXT_PUBLIC_SITE_URL once a custom domain
    * exists; on Vercel the production URL is picked up automatically.
