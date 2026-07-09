@@ -153,61 +153,56 @@ export const statement: StatementContent = {
   ],
 };
 
-/* ----------------------------------------------------------------- story */
+/* ------------------------------------------------------------------ race */
 
-export interface StoryFrame {
-  /** Photo in /public/images — drop a file there and put its name here. */
-  src: string;
-  /** Short description of the photo for screen readers. */
-  alt: string;
-  /** Small red label above the caption, e.g. "01 · Upwind". */
+export interface RaceStep {
+  /** Small red label above the caption, e.g. "01 · The course". */
   kicker: string;
-  /** One-line caption shown over the photo. */
+  /** One-line monospace caption for this scroll step. */
   caption: string;
-  /** Optional framing, "x% y%" — see ImageRef.focus above. */
-  focus?: string;
 }
 
-export interface StoryContent {
+export interface RaceContent {
   eyebrow: string;
   title: string;
-  /** 3–5 photos work best. They play in order as the visitor scrolls. */
-  frames: StoryFrame[];
+  /**
+   * One entry per scroll step of the animated race, in storyboard order:
+   * course overview, countdown, start/upwind, windward mark, downwind,
+   * finish. The captions here are free to edit; the choreography itself
+   * lives in components/RaceScroll.tsx and always plays these six beats.
+   */
+  steps: RaceStep[];
 }
 
-// The full-screen photo sequence ("scrollytelling") between About and the
-// numbers. To swap a photo: change `src`. To add one: copy a whole block
-// { src: ..., alt: ..., kicker: ..., caption: ... } and adjust.
-export const story: StoryContent = {
-  eyebrow: "One race, four moments",
-  title: "What a race actually looks like.",
-  frames: [
+export const race: RaceContent = {
+  eyebrow: "One race, start to finish",
+  title: "What a race looks like.",
+  steps: [
     {
-      src: "/images/IMG_5623.JPG",
-      alt: "Carlos hiking hard upwind under the CAN sail",
-      kicker: "01 · The upwind grind",
-      caption: "Flat-out hiking. Every wave is a decision.",
-      focus: "55% 45%",
+      kicker: "01 · The course",
+      caption: "An ILCA 7 race. One sailor, one sail, ~45 minutes.",
     },
     {
-      src: "/images/clean/story-spray.jpg",
-      alt: "Carlos driving through heavy spray at the ILCA 4 Youth Worlds",
-      kicker: "02 · Heavy air",
-      caption: "When it blows, the race becomes physical.",
-      focus: "40% 30%",
+      kicker: "02 · The countdown",
+      caption: "70 sailors fight for space on one start line.",
     },
     {
-      src: "/images/clean/story-aerial.jpg",
-      alt: "Aerial view of the ILCA fleet converging on a mark",
-      kicker: "03 · The mark rounding",
-      caption: "Seventy boats, one mark, no room for error.",
+      kicker: "03 · Upwind",
+      caption:
+        "You can't sail straight into the wind — the first leg is a zigzag climb, tack after tack.",
     },
     {
-      src: "/images/clean/story-worldchamp.jpg",
-      alt: "Carlos and his coach celebrating the world title, number-one signs up",
-      kicker: "04 · The title",
-      caption: "World champion — and the road is just starting.",
-      focus: "60% 30%",
+      kicker: "04 · The windward mark",
+      caption: "Everyone arrives at the same corner at the same time.",
+    },
+    {
+      kicker: "05 · Downwind",
+      caption:
+        "Sails all the way out, surfing every wave — the fastest and most unstable point of the race.",
+    },
+    {
+      kicker: "06 · The finish",
+      caption: "45 minutes of racing. Then you line up and do it again.",
     },
   ],
 };

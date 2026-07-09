@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Statement from "@/components/Statement";
-import StoryScroll from "@/components/StoryScroll";
+import RaceScroll from "@/components/RaceScroll";
 import Numbers from "@/components/Numbers";
 import Schedule from "@/components/Schedule";
 import PhotoStrip from "@/components/PhotoStrip";
@@ -50,7 +50,7 @@ export default function Home() {
         <HowYouCanHelp />
         <Budget />
         <Subscribe windSrc={generatedImage("wind-flow.png")} />
-        <StoryScroll />
+        <RaceScroll />
         <Backers />
       </main>
       <Footer />
