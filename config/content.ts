@@ -470,6 +470,8 @@ export const backers: BackersContent = {
 /* ------------------------------------------------------------- subscribe */
 
 export interface SubscribeContent {
+  eyebrow: string;
+  /** Rendered in the hero's huge display type — keep it to a few words. */
   title: string;
   body: string;
   placeholder: string;
@@ -478,9 +480,12 @@ export interface SubscribeContent {
   success: string;
   /** Shown if the request fails without a specific error message. */
   errorFallback: string;
+  /** Small link to the newsletter archive under the form. */
+  archive: CtaLink;
 }
 
 export const subscribe: SubscribeContent = {
+  eyebrow: "How you can support",
   title: "Follow the campaign.",
   body: "One email when something happens — a result, a training block, a milestone. No spam, ever.",
   placeholder: "you@email.com",
@@ -488,6 +493,7 @@ export const subscribe: SubscribeContent = {
   buttonBusy: "Subscribing…",
   success: "Thank you for subscribing!",
   errorFallback: "Something went wrong — please try again later.",
+  archive: { label: "Read past updates →", href: "/newsletter" },
 };
 
 /* ---------------------------------------------------------------- footer */

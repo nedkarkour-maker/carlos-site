@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { subscribe } from "@/config/content";
 import { WindLines } from "./art/Backdrops";
 
@@ -73,22 +74,28 @@ export default function Subscribe({
       ) : (
         <WindLines className="absolute inset-0 h-full w-full" />
       )}
-      <div className="wrap relative flex flex-wrap items-center justify-between gap-[30px] py-[60px]">
-        <div>
-          <h2 className="font-display text-[clamp(22px,3vw,34px)] font-extrabold">
-            {subscribe.title}
-          </h2>
-          <p className="mt-1.5 max-w-[430px] text-[15px] opacity-90">
-            {subscribe.body}
-          </p>
-        </div>
+      {/* The visual anchor of the lower page: one oversized headline, one
+          field, one button — nothing else competes. */}
+      <div className="wrap relative py-[90px]">
+        <p className="mb-4 font-mono text-xs uppercase tracking-[.18em] text-sail/60">
+          {subscribe.eyebrow}
+        </p>
+        <h2 className="font-display text-[clamp(40px,7.5vw,104px)] font-black uppercase leading-[0.98] tracking-[-0.02em] text-red-bright">
+          {subscribe.title}
+        </h2>
+        <p className="mt-5 max-w-[480px] text-[15px] opacity-90">
+          {subscribe.body}
+        </p>
 
         {status.state === "success" ? (
-          <p className="font-mono text-base font-semibold" role="status">
+          <p className="mt-8 font-mono text-base font-semibold" role="status">
             {subscribe.success}
           </p>
         ) : (
-          <form className="flex flex-wrap items-start gap-2.5" onSubmit={onSubmit}>
+          <form
+            className="mt-8 flex max-w-[560px] flex-wrap items-start gap-2.5"
+            onSubmit={onSubmit}
+          >
             {/* Honeypot: parked off-screen, out of the tab order and hidden
                 from assistive tech. Form-filler bots fill it anyway. */}
             <input
@@ -113,12 +120,12 @@ export default function Subscribe({
               onChange={(e) => setEmail(e.target.value)}
               placeholder={subscribe.placeholder}
               disabled={status.state === "loading"}
-              className="min-w-[240px] rounded-[3px] bg-white px-3.5 py-[13px] font-mono text-sm text-ink placeholder:text-ink-soft focus:outline-2 focus:outline-red-bright disabled:opacity-70"
+              className="min-w-[240px] flex-1 rounded-[3px] bg-white px-3.5 py-[13px] font-mono text-sm text-ink placeholder:text-ink-soft focus:outline-2 focus:outline-red-bright disabled:opacity-70"
             />
             <button
               type="submit"
               disabled={status.state === "loading"}
-              className="rounded-[2px] bg-red px-[18px] py-[13px] text-sm font-semibold text-white transition hover:-translate-y-px hover:bg-red-bright disabled:opacity-70 disabled:hover:translate-y-0"
+              className="rounded-[2px] bg-red px-[22px] py-[13px] text-sm font-semibold text-white transition hover:-translate-y-px hover:bg-red-bright disabled:opacity-70 disabled:hover:translate-y-0"
             >
               {status.state === "loading" ? subscribe.buttonBusy : subscribe.button}
             </button>
@@ -129,6 +136,13 @@ export default function Subscribe({
             )}
           </form>
         )}
+
+        <Link
+          href={subscribe.archive.href}
+          className="mt-7 inline-block font-mono text-[13px] text-sail/70 transition-colors hover:text-sail"
+        >
+          {subscribe.archive.label}
+        </Link>
       </div>
     </section>
   );

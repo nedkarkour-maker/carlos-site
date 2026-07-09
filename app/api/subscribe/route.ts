@@ -24,9 +24,47 @@ function isCrossSite(request: Request): boolean {
   return false;
 }
 
+/**
+ * Best-effort rate limit: a per-IP sliding window in module memory. On
+ * serverless this state is per-instance and resets on cold start — that
+ * still blunts list-bombing bursts, without adding a KV dependency.
+ */
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const hits = new Map<string, number[]>();
+
+function isRateLimited(request: Request): boolean {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  if (recent.length >= RATE_LIMIT) {
+    hits.set(ip, recent);
+    return true;
+  }
+  recent.push(now);
+  hits.set(ip, recent);
+  // Drop fully-expired IPs so the map can't grow without bound.
+  if (hits.size > 5000) {
+    for (const [key, times] of hits) {
+      if (times.every((t) => now - t >= RATE_WINDOW_MS)) hits.delete(key);
+    }
+  }
+  return false;
+}
+
 export async function POST(request: Request) {
   if (isCrossSite(request)) {
     return NextResponse.json({ error: "Forbidden." }, { status: 403 });
+  }
+
+  if (isRateLimited(request)) {
+    return NextResponse.json(
+      { error: "Too many attempts — please try again in a few minutes." },
+      { status: 429 },
+    );
   }
 
   let email: unknown;
