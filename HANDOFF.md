@@ -148,20 +148,40 @@ tsc + eslint; `npm run build` green at wrap-up. Pushed for Vercel preview.
   screenshot looked empty only because dev image-optimizer + lazy-load
   needed ~3s after scroll; loaded:true confirmed after waiting.
 
-### Remaining work (next session)
+### 4E + Part 5 — DONE (same session, after token top-up)
 
-1. **4E footer** per the changed spec above (arrow links under brand;
-   JS-assembled mailto; add `site.linkedinUrl` to config; leave columns).
-2. **Part 5 verification** still to run end-to-end: section order on both
-   viewports; edit funding.json/rank-*.json and confirm the page follows;
-   keyboard-scroll the race; subscribe route rejects bad email/honeypot
-   (client validation + server 429 path); no secrets in client bundle;
-   console clean at 375px and desktop; then update this file + push.
-3. Delete `race-shots.tmp.mjs` when done (repo root, untracked, listed in
-   .git/info/exclude) — Playwright screenshot harness from this session;
-   targets the ALREADY-RUNNING dev server on **localhost:3113**
-   (PID 36460, started outside this session — port 3000 is blocked by it).
-4. MailerLite double opt-in: still manual, still pending (dashboard).
+- `9fdf8a4` 4E: three arrow links under the footer brand (Send an email
+  to Carlos / Instagram / LinkedIn), per the revised spec. New
+  `EmailLink` client component assembles the mailto on click from config
+  (optional subject prop); footer Contact and the deck-request card use
+  it too. Verified: **no `mailto:` and no address anywhere in served
+  HTML** — note that passing a mailto href as a prop to a client
+  component leaks it via the RSC payload; pass only the subject.
+  `site.linkedinUrl` added to config.
+- Part 5 verification, all green:
+  section order matches the spec at 1440 and 375, zero console errors;
+  countdown reads T–736 (correct for 2026-07-09); funding.json edit
+  (raised 5500) → "€5,500 raised of €22,000 (25%)" and sponsor moved
+  rank-2→rank-3 re-renders the pyramid (both reverted after the test);
+  race advances with keyboard PageDown to the finish caption; reduced
+  motion → static wheel (ring 48.6%), six static race frames, no bar
+  animation; subscribe route: cross-site 403, bad email 400, honeypot
+  and <3s submits get fake `{ok:true}`, 6th request in 10 min → 429;
+  production build green; client chunks contain no MAILERLITE strings.
+- `race-shots.tmp.mjs` deleted. Branch pushed → Vercel preview.
+- One oddity: commit `646be60` ("your update message") is the user's own
+  commit of the previous handoff update — harmless, but reword it if the
+  branch ever gets rebased anyway.
+
+### Still manual / open
+
+1. MailerLite double opt-in: still pending in the dashboard.
+2. Sponsor URLs in data/sponsors/*.json are mostly `""` — fill in real
+   sites when Carlos confirms them (only Wind Athletes is set).
+3. `[DRAFT]` copy still ships (about paragraph 3, schedule stop 1,
+   budget note) — content task for Carlos.
+4. A dev server from an earlier session still runs on localhost:3113
+   (PID 36460); port 3000 is blocked while it lives.
 
 ### Session-3 gotchas worth keeping
 
