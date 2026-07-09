@@ -426,16 +426,11 @@ export const help: HelpContent = {
 
 /* --------------------------------------------------------------- backers */
 
-export interface Sponsor {
-  name: string;
-  /** Path to a logo image in /public — a monogram placeholder renders until provided. */
-  logo?: string;
-}
-
+// The sponsor logos themselves live in data/sponsors/rank-*.json (rank-1 =
+// top/widest row of the pyramid) — see the README there for how to edit.
 export interface BackersContent {
   label: string;
-  sponsors: Sponsor[];
-  /** The "maybe you?" card inviting new partners. */
+  /** The "maybe you?" card at the pyramid's tip, inviting new partners. */
   joinCta: {
     title: string;
     body: string;
@@ -445,16 +440,6 @@ export interface BackersContent {
 
 export const backers: BackersContent = {
   label: "Proudly supported by",
-  sponsors: [
-    { name: "Sail Canada", logo: "/images/sponsors/sail-canada.png" },
-    { name: "Voile Québec", logo: "/images/sponsors/voile-quebec.png" },
-    { name: "Wind Athletes Canada", logo: "/images/sponsors/wind-athletes.png" },
-    // The Peter Kelly Athlete Assistance Fund is a memorial fund (via Wind
-    // Athletes Canada / PCYC) with no logo of its own — monogram by design.
-    { name: "Peter Kelly Fund" },
-    { name: "YC Pointe-Claire", logo: "/images/sponsors/pcyc.png" },
-    { name: "Clube Naval de Cascais", logo: "/images/sponsors/cn-cascais.png" },
-  ],
   joinCta: {
     title: "Maybe you?",
     body: "There's room on the sail.",
