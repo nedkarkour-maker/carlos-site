@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { help } from "@/config/content";
+import EmailLink from "./EmailLink";
 import Reveal from "./Reveal";
 
 const ctaClass =
@@ -56,6 +57,19 @@ export default function HowYouCanHelp() {
                 >
                   {card.cta.label}
                 </a>
+              ) : card.cta.href.startsWith("mailto:") ? (
+                // Assembled in JS on click so the address stays out of the
+                // HTML that email scrapers harvest; only the subject line
+                // is passed down.
+                <EmailLink
+                  subject={
+                    new URL(card.cta.href).searchParams.get("subject") ??
+                    undefined
+                  }
+                  className={ctaClass}
+                >
+                  {card.cta.label}
+                </EmailLink>
               ) : (
                 <Link href={card.cta.href} className={ctaClass}>
                   {card.cta.label}

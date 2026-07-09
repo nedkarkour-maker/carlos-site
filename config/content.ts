@@ -51,6 +51,7 @@ export const site = {
   contactEmail: "c.charabati@icloud.com",
   supportUrl: "https://www.windathletes.ca/athletes/carlos-charabati",
   instagramUrl: "https://www.instagram.com/carlos_charabati",
+  linkedinUrl: "https://www.linkedin.com/in/carlos-charabati/",
   /**
    * Link to the sponsorship deck (PDF or Drive). While empty, the
    * "Request the deck" card emails Carlos instead — nothing dead ships.
@@ -483,14 +484,31 @@ export interface FooterColumn {
   links: CtaLink[];
 }
 
+export interface FooterBrandLink {
+  label: string;
+  href?: string;
+  /**
+   * Renders as a button that assembles the mailto in JS on click, so the
+   * address never appears in the page HTML for scrapers to harvest.
+   */
+  email?: boolean;
+}
+
 export interface FooterContent {
   tagline: string;
+  /** Arrow links under the brand name: contact + socials. */
+  brandLinks: FooterBrandLink[];
   columns: FooterColumn[];
   donationNote: string;
 }
 
 export const footer: FooterContent = {
   tagline: `${site.role} · ${site.country} ${site.sailNumber}`,
+  brandLinks: [
+    { label: "Send an email to Carlos", email: true },
+    { label: "Instagram", href: site.instagramUrl },
+    { label: "LinkedIn", href: site.linkedinUrl },
+  ],
   columns: [
     {
       heading: "Story",
