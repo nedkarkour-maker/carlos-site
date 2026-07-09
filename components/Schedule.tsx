@@ -7,7 +7,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { schedule } from "@/config/content";
 import { VenuesChart } from "./art/Backdrops";
 import Reveal from "./Reveal";
-import VenueMap from "./VenueMap";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -208,17 +207,8 @@ export default function Schedule({
         </ol>
       </Reveal>
 
-      {/* Season chart — hover or tab between venues; syncs with the
-          timeline above. Outside the pinned section on purpose: anything
-          inside it would throw off the GSAP pin measurements. */}
-      {schedule.stops.some((stop) => stop.coords) && (
-        <div className="wrap pb-[90px] md:motion-safe:pt-[70px]">
-          <VenueMap active={active} onActivate={setActive} />
-        </div>
-      )}
-
       {/* Photo strip below the timeline, both layouts. */}
-      <Reveal className="wrap pb-[90px]">
+      <Reveal className="wrap pb-[90px] md:motion-safe:pt-[70px]">
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
           {schedule.photos.map((photo) => (
             <div

@@ -1,7 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import LatestResult from "@/components/LatestResult";
 import Statement from "@/components/Statement";
 import StoryScroll from "@/components/StoryScroll";
 import Numbers from "@/components/Numbers";
@@ -39,7 +38,6 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <LatestResult />
         <Statement />
         <StoryScroll />
         <WaveDivider fill="var(--sail)" className="bg-teal-950" />

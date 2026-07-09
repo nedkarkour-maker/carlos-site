@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { hero, site } from "@/config/content";
+import { hero } from "@/config/content";
 
 gsap.registerPlugin(ScrollTrigger);
 import Countdown from "./Countdown";
@@ -116,14 +116,6 @@ export default function Hero() {
             </span>
           ))}
         </h1>
-        <p
-          data-hero-fade
-          className="mt-6 max-w-[680px] font-display text-[clamp(19px,2.6vw,30px)] font-semibold leading-[1.2] tracking-[-0.01em] motion-safe:translate-y-4 motion-safe:opacity-0"
-        >
-          {hero.thesis.before}
-          <b className="text-red-bright">{hero.thesis.highlight}</b>
-          {hero.thesis.after}
-        </p>
 
         <div
           data-hero-fade
@@ -151,28 +143,10 @@ export default function Hero() {
           data-hero-fade
           className="mt-[46px] flex flex-wrap items-end gap-[30px] motion-safe:translate-y-4 motion-safe:opacity-0"
         >
-          <div className="inline-flex flex-col items-center rounded border-[1.5px] border-sail bg-teal-950/40 px-3 py-[7px] font-mono font-semibold leading-tight">
-            <span className="text-xs tracking-[.2em] text-red-bright">
-              {site.country}
-            </span>
-            <span className="text-[22px] tracking-[.12em]">
-              {site.sailNumber}
-            </span>
-          </div>
           <Countdown
             target={hero.countdown.target}
             label={hero.countdown.label}
           />
-          {site.now && (
-            <div>
-              <div className="font-mono text-[22px] font-semibold leading-tight">
-                {site.now}
-              </div>
-              <div className="mt-1 font-mono text-[11px] uppercase tracking-[.14em] text-sail/65">
-                Now
-              </div>
-            </div>
-          )}
         </div>
       </div>
 

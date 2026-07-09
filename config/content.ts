@@ -56,11 +56,6 @@ export const site = {
    * "Request the deck" card emails Carlos instead — nothing dead ships.
    */
   sponsorDeckUrl: "",
-  /**
-   * One line about what's happening right now, shown in the hero next to
-   * the sail number — e.g. "Training block · Cascais". Empty hides it.
-   */
-  now: "Training block · Cascais [DRAFT]",
 } as const;
 
 /* ------------------------------------------------------------------- nav */
@@ -86,8 +81,6 @@ export interface HeroContent {
   kicker: string;
   /** One array entry per line of the headline. */
   nameLines: string[];
-  /** `highlight` is rendered in Canadian red. */
-  thesis: { before: string; highlight: string; after: string };
   primaryCta: CtaLink;
   secondaryCta: CtaLink;
   countdown: { target: string; label: string };
@@ -97,12 +90,6 @@ export interface HeroContent {
 export const hero: HeroContent = {
   kicker: "ILCA Sailor · Engineer · Montréal → the Olympics",
   nameLines: ["Carlos", "Charabati"],
-  thesis: {
-    before:
-      "World champion at 18. Engineering student at McGill & CentraleSupélec. ",
-    highlight: "Chasing the Olympic Games",
-    after: " — one season at a time.",
-  },
   primaryCta: { label: "My project", href: "#about" },
   secondaryCta: { label: "How you can help", href: "#help" },
   countdown: { target: "2028-07-14T00:00:00", label: "Days to LA 2028" },
@@ -154,27 +141,6 @@ export const statement: StatementContent = {
     "7th of 124 at the Men's Worlds at 19.",
     "LA 2028 isn't a dream. It's the plan.",
   ],
-};
-
-/* --------------------------------------------------------- latest result */
-
-export interface LatestResultContent {
-  /** The finish itself, e.g. "7th of 124". Rendered in red. */
-  result: string;
-  /** The event it came from, e.g. "ILCA 7 Men's Worlds · Kiel 2025". */
-  event: string;
-  /** Optional link — a newsletter recap or official results page. */
-  href?: string;
-  linkLabel?: string;
-}
-
-// Slim band under the hero. Update after every regatta — it's the cheapest
-// way to make the site feel alive.
-export const latestResult: LatestResultContent = {
-  result: "7th of 124",
-  event: "ILCA 7 Men's Worlds · Kiel 2025",
-  href: "/newsletter/mens-worlds-kiel-2025",
-  linkLabel: "Read the recap",
 };
 
 /* ----------------------------------------------------------------- story */
@@ -273,13 +239,6 @@ export interface ScheduleStop {
   major?: boolean;
   /** Optional red pill, e.g. "Key event". */
   tag?: string;
-  /**
-   * Position on the season chart (VenueMap), as percentages of the chart
-   * area — x: 0 (left/west) to 100 (right/east), y: 0 (top) to 100.
-   * `label` is the short venue name shown next to the mark. Leave out to
-   * keep a stop off the chart.
-   */
-  coords?: { x: number; y: number; label: string };
 }
 
 export interface ScheduleContent {
@@ -298,7 +257,6 @@ export const schedule: ScheduleContent = {
       title: "Season restart · training base",
       where: "Building the year's foundation [DRAFT — from your calendar]",
       major: true,
-      coords: { x: 24, y: 34, label: "Montréal" },
     },
     {
       when: "FALL 2026",
@@ -306,13 +264,11 @@ export const schedule: ScheduleContent = {
       where: "Kingston, Ontario",
       major: true,
       tag: "Key event",
-      coords: { x: 14, y: 40, label: "Kingston" },
     },
     {
       when: "2026",
       title: "Training blocks · Europe",
       where: "Cascais & Mediterranean venues",
-      coords: { x: 58, y: 56, label: "Cascais" },
     },
     {
       when: "2026",
@@ -320,7 +276,6 @@ export const schedule: ScheduleContent = {
       where: "Bodrum, Türkiye",
       major: true,
       tag: "Key event",
-      coords: { x: 90, y: 60, label: "Bodrum" },
     },
   ],
   photos: [
