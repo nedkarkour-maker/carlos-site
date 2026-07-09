@@ -97,29 +97,48 @@ export default function Hero() {
         className="absolute inset-0 bg-teal-950 opacity-0"
       />
 
-      <div data-hero-content className="wrap relative w-full py-28">
-        <p
-          data-hero-fade
-          className="mb-[22px] font-mono text-[13px] uppercase tracking-[.2em] text-red-bright motion-safe:translate-y-4 motion-safe:opacity-0"
-        >
-          {hero.kicker}
-        </p>
-        <h1 className="font-display text-[clamp(46px,9vw,124px)] font-black uppercase leading-[1.03] tracking-[-0.02em]">
-          {hero.nameLines.map((line) => (
-            <span key={line} className="block overflow-hidden">
-              <span
-                data-hero-line
-                className="block motion-safe:translate-y-[110%]"
-              >
-                {line}
+      {/* Mobile: kicker + name, wheel, CTAs stack in DOM order. Desktop
+          (lg): the wheel moves to its own right-hand column spanning both
+          rows, with the CTAs back under the name. */}
+      <div
+        data-hero-content
+        className="wrap relative grid w-full items-center gap-y-9 py-28 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-12"
+      >
+        <div>
+          <p
+            data-hero-fade
+            className="mb-[22px] font-mono text-[13px] uppercase tracking-[.2em] text-red-bright motion-safe:translate-y-4 motion-safe:opacity-0"
+          >
+            {hero.kicker}
+          </p>
+          <h1 className="font-display text-[clamp(46px,9vw,124px)] font-black uppercase leading-[1.03] tracking-[-0.02em]">
+            {hero.nameLines.map((line) => (
+              <span key={line} className="block overflow-hidden">
+                <span
+                  data-hero-line
+                  className="block motion-safe:translate-y-[110%]"
+                >
+                  {line}
+                </span>
               </span>
-            </span>
-          ))}
-        </h1>
+            ))}
+          </h1>
+        </div>
 
         <div
           data-hero-fade
-          className="mt-[34px] flex flex-wrap gap-3 motion-safe:translate-y-4 motion-safe:opacity-0"
+          className="justify-self-center motion-safe:translate-y-4 motion-safe:opacity-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center lg:justify-self-end"
+        >
+          <Countdown
+            start={hero.countdown.start}
+            target={hero.countdown.target}
+            label={hero.countdown.label}
+          />
+        </div>
+
+        <div
+          data-hero-fade
+          className="flex flex-wrap gap-3 motion-safe:translate-y-4 motion-safe:opacity-0 lg:col-start-1 lg:row-start-2"
         >
           <Magnetic>
             <Link
@@ -137,16 +156,6 @@ export default function Hero() {
               {hero.secondaryCta.label}
             </Link>
           </Magnetic>
-        </div>
-
-        <div
-          data-hero-fade
-          className="mt-[46px] flex flex-wrap items-end gap-[30px] motion-safe:translate-y-4 motion-safe:opacity-0"
-        >
-          <Countdown
-            target={hero.countdown.target}
-            label={hero.countdown.label}
-          />
         </div>
       </div>
 

@@ -83,7 +83,11 @@ export interface HeroContent {
   nameLines: string[];
   primaryCta: CtaLink;
   secondaryCta: CtaLink;
-  countdown: { target: string; label: string };
+  /**
+   * The wheel counts days until `target` and fills its ring with the share
+   * of the road already travelled since `start`.
+   */
+  countdown: { start: string; target: string; label: string };
   image: ImageRef;
 }
 
@@ -92,7 +96,13 @@ export const hero: HeroContent = {
   nameLines: ["Carlos", "Charabati"],
   primaryCta: { label: "My project", href: "#about" },
   secondaryCta: { label: "How you can help", href: "#help" },
-  countdown: { target: "2028-07-14T00:00:00", label: "Days to LA 2028" },
+  // start = the day after Paris 2024 closed: the first day of this quad.
+  // target = the LA 2028 opening ceremony.
+  countdown: {
+    start: "2024-08-12T00:00:00",
+    target: "2028-07-14T00:00:00",
+    label: "Days to LA 2028",
+  },
   // Photos in /images/clean/ are web-ready copies with the event banners
   // cropped off (made by scripts/crop-banners.mjs).
   image: {
