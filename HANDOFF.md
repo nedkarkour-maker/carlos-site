@@ -87,6 +87,93 @@ more pinned sections. Uniqueness comes from content-led touches:
 - Production domain: unknown → `site.url` reads `NEXT_PUBLIC_SITE_URL`,
   then Vercel's production-URL env, then localhost.
 
+## Structure v2 redesign (2026-07-09, session 3) — IN PROGRESS
+
+User pasted a full overhaul prompt (deletions, countdown wheel, new
+section order, funding bar, big newsletter CTA, scroll-driven race
+animation, sponsor pyramid, footer). Branch: **`redesign/structure-v2`**
+(cut from motion-redesign tip). One commit per section, all verified by
+tsc + eslint; `npm run build` green at wrap-up. Pushed for Vercel preview.
+
+### Decisions the user made in-session (AskUserQuestion)
+
+1. **Venue map**: deleted (VenueMap.tsx + coords config); timeline kept.
+   "Do not modify Season ahead" applies to the timeline only.
+2. **Newsletter teaser**: deleted entirely ("too long, nothing sparks
+   attention"); a one-line "Read past updates →" link now sits in the
+   Subscribe section; archive stays in the navbar.
+3. **Footer 4E — SPEC CHANGED, NOT the icon circles from the prompt.**
+   User's words: under "Carlos Charabati" in the footer, add arrow links
+   for "Send an email to carlos", "instagram" and "linkedin" (like the
+   existing "→ Instagram" line). LinkedIn URL:
+   https://www.linkedin.com/in/carlos-charabati/ . Keep the rest of the
+   footer as-is. Assemble the mailto in JS on click (scraper resistance,
+   from the original 4E spec) — needs a small client component.
+
+### Shipped (commits, oldest first)
+
+- `2c48608` Part 1 deletions: hero bio/thesis, sail badge, Now line,
+  LatestResult strip, VenueMap — components, config and imports.
+- `8c0d1d1` Part 2: Countdown.tsx rewritten as SVG ring wheel (props
+  start/target/label; ring = elapsed share of 2024-08-12 → 2028-07-14,
+  ~48.6% today, T-736 verified). Hero is now a lg: 2-col grid — wheel
+  right on desktop, below the name on mobile. IO + gsap count-up once;
+  reduced motion renders final state.
+- `cb2d22e` Part 3: order = hero, statement, about, numbers, schedule,
+  PhotoStrip (new, config `photoStrip`, 6 reused photos), help, Budget
+  (extracted BudgetBars), subscribe, race, backers, footer. Teaser
+  deleted; `#news` → `#subscribe` (help card 01).
+- `bbf768a` 4A: data/funding.json {goal, raised, currency} →
+  FundingBar (motion/) under BudgetBars; data/README.md explains the
+  one-line raised edit.
+- `edd1aae` 4B: Subscribe reworked — eyebrow "How you can support",
+  oversized red display title, one field + button, archive link.
+  Route: added per-IP sliding-window rate limit (5/10min, in-memory,
+  best-effort on serverless) BEFORE body parse; 429 on trip.
+- `aa0de87` 4C: RaceScroll.tsx replaces StoryScroll.tsx (deleted, story
+  config → race config). Sticky 100vh SVG under a 600vh track, scrubbed
+  GSAP timeline: aspect-aware viewBox camera (CAMERA keyframes at t 0,1,
+  2,3,3.5,4,4.5,5,6; expandBox() fits viewport aspect, rebuilt on real
+  resizes), 7-boat fleet on waypoint choreography (boatPath generator;
+  Carlos red, b1 is the downwind rival), mono captions per step, 3-2-1
+  ticks, progress segments, time-based wind pulse. Reduced motion: six
+  static SVG frames (positionsAt(t=i+1); steps 1&6 use a 4:3 box).
+  Verified with Playwright screenshots, desktop+mobile, zero console
+  errors.
+- `cc8f861` 4D: Backers.tsx rebuilt as inverted pyramid from
+  data/sponsors/rank-1..4.json (+README). Plain logos, no cards, per-row
+  shrinking sizes, wordmark fallback (Peter Kelly Fund), 2 placeholder
+  slots (rank-2, rank-4), "Maybe you?" at the tip → /#help. Marquee gone;
+  `sponsors` removed from config. NOTE: logos ARE fine — an early
+  screenshot looked empty only because dev image-optimizer + lazy-load
+  needed ~3s after scroll; loaded:true confirmed after waiting.
+
+### Remaining work (next session)
+
+1. **4E footer** per the changed spec above (arrow links under brand;
+   JS-assembled mailto; add `site.linkedinUrl` to config; leave columns).
+2. **Part 5 verification** still to run end-to-end: section order on both
+   viewports; edit funding.json/rank-*.json and confirm the page follows;
+   keyboard-scroll the race; subscribe route rejects bad email/honeypot
+   (client validation + server 429 path); no secrets in client bundle;
+   console clean at 375px and desktop; then update this file + push.
+3. Delete `race-shots.tmp.mjs` when done (repo root, untracked, listed in
+   .git/info/exclude) — Playwright screenshot harness from this session;
+   targets the ALREADY-RUNNING dev server on **localhost:3113**
+   (PID 36460, started outside this session — port 3000 is blocked by it).
+4. MailerLite double opt-in: still manual, still pending (dashboard).
+
+### Session-3 gotchas worth keeping
+
+- Playwright + Lenis/ScrollTrigger: measure the track AFTER ~2s
+  (pin-spacers shift layout), re-measure per shot, and pin scroll by
+  calling window.scrollTo every rAF for ~240 frames; `networkidle` never
+  fires on the dev server (HMR socket) — use `load`.
+- The countdown screenshot mid-animation reads a wrong number (581) —
+  it's the count-up tween, not a math bug; final value verified 736.
+- eslint react-hooks/purity: seed refs in useEffect (Subscribe.tsx
+  pattern) — Countdown/RaceScroll follow it.
+
 ## Plan status (approved plan: finish-and-harden pass) — COMPLETE
 
 The full finish-and-harden pass from `NEXT_STEPS_PROMPT.md` shipped
