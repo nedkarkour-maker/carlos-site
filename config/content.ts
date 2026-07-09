@@ -255,7 +255,6 @@ export interface ScheduleContent {
   eyebrow: string;
   title: string;
   stops: ScheduleStop[];
-  photos: ImageRef[];
 }
 
 export const schedule: ScheduleContent = {
@@ -288,22 +287,42 @@ export const schedule: ScheduleContent = {
       tag: "Key event",
     },
   ],
-  photos: [
-    {
-      src: "/images/clean/fleet-upwind.jpg",
-      alt: "Carlos's CAN 219619 sail leading a packed ILCA fleet upwind",
-      focus: "75% 60%",
-    },
-    {
-      src: "/images/clean/race-viana-1.jpg",
-      alt: "Carlos trimming between races at the Youth Worlds in Viana",
-    },
-    {
-      src: "/images/clean/race-viana-2.jpg",
-      alt: "Carlos smiling on the water at the Youth Worlds in Viana",
-    },
-  ],
 };
+
+/* ------------------------------------------------------------ photo strip */
+
+// The image strip after the schedule — a breather between text sections.
+// Swap, add or remove entries freely; 6 keeps the grid balanced on both
+// mobile (2 columns) and desktop (3 columns).
+export const photoStrip: ImageRef[] = [
+  {
+    src: "/images/clean/fleet-upwind.jpg",
+    alt: "Carlos's CAN 219619 sail leading a packed ILCA fleet upwind",
+    focus: "75% 60%",
+  },
+  {
+    src: "/images/clean/race-viana-1.jpg",
+    alt: "Carlos trimming between races at the Youth Worlds in Viana",
+  },
+  {
+    src: "/images/IMG_5623.JPG",
+    alt: "Carlos hiking hard upwind under the CAN sail",
+    focus: "55% 45%",
+  },
+  {
+    src: "/images/clean/story-spray.jpg",
+    alt: "Carlos driving through heavy spray at the ILCA 4 Youth Worlds",
+    focus: "40% 30%",
+  },
+  {
+    src: "/images/clean/story-aerial.jpg",
+    alt: "Aerial view of the ILCA fleet converging on a mark",
+  },
+  {
+    src: "/images/clean/race-viana-2.jpg",
+    alt: "Carlos smiling on the water at the Youth Worlds in Viana",
+  },
+];
 
 /* ------------------------------------------------------------ newsletter */
 
@@ -360,7 +379,7 @@ export const help: HelpContent = {
       index: "01",
       title: "Follow & share",
       body: "The simplest help there is: subscribe to the updates, follow on Instagram, and pass the story along to someone who'd care.",
-      cta: { label: "Follow the journey", href: "#news" },
+      cta: { label: "Follow the journey", href: "#subscribe" },
     },
     {
       index: "02",

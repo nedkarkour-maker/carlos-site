@@ -5,8 +5,9 @@ import Statement from "@/components/Statement";
 import StoryScroll from "@/components/StoryScroll";
 import Numbers from "@/components/Numbers";
 import Schedule from "@/components/Schedule";
-import NewsletterTeaser from "@/components/NewsletterTeaser";
+import PhotoStrip from "@/components/PhotoStrip";
 import HowYouCanHelp from "@/components/HowYouCanHelp";
+import Budget from "@/components/Budget";
 import Backers from "@/components/Backers";
 import Subscribe from "@/components/Subscribe";
 import Footer from "@/components/Footer";
@@ -39,17 +40,18 @@ export default function Home() {
       <main>
         <Hero />
         <Statement />
-        <StoryScroll />
         <WaveDivider fill="var(--sail)" className="bg-teal-950" />
         <About />
         <WaveDivider fill="var(--teal-900)" />
         <Numbers />
         <WaveDivider fill="var(--sail)" className="bg-teal-900" />
         <Schedule mapSrc={generatedImage("venues-chart.png")} />
-        <NewsletterTeaser />
+        <PhotoStrip />
         <HowYouCanHelp />
-        <Backers />
+        <Budget />
         <Subscribe windSrc={generatedImage("wind-flow.png")} />
+        <StoryScroll />
+        <Backers />
       </main>
       <Footer />
     </>

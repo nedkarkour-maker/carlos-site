@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { help } from "@/config/content";
 import Reveal from "./Reveal";
-import BudgetBars from "./motion/BudgetBars";
 
 const ctaClass =
   "mt-[22px] inline-block rounded-[2px] bg-red px-[18px] py-2.5 text-center text-sm font-semibold text-white transition hover:-translate-y-px hover:bg-red-bright";
@@ -65,12 +64,6 @@ export default function HowYouCanHelp() {
             </div>
           ))}
         </div>
-
-        <BudgetBars
-          amount={help.budget.amount}
-          note={help.budget.note}
-          breakdown={help.budget.breakdown}
-        />
       </Reveal>
     </section>
   );
