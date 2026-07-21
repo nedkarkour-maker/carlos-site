@@ -1,3 +1,43 @@
+# Archived: RaceScroll.tsx — the scroll-driven race animation
+
+**Archived 2026-07-21.** Pulled from the homepage in favor of a YouTube
+embed (`components/RaceVideo.tsx`) — not because it was wrong, but because
+it wasn't finished, and the section needed to ship. The intent is to come
+back and finish the animation later; this file preserves the full working
+source so nothing is lost.
+
+## What it was
+
+A top-down ILCA race that played as you scrolled: a sticky full-viewport
+SVG under a 600vh track, with a scrubbed GSAP timeline driving an
+aspect-aware viewBox "camera", a 7-boat fleet on waypoint choreography
+(Carlos is the red sail), per-step monospace captions, a 3-2-1 start
+sequence, progress segments, and a time-based wind pulse. Under
+`prefers-reduced-motion` it rendered six static framed scenes instead.
+
+## What drove it
+
+- `race.steps` in `config/content.ts` — six `{ kicker, caption }` entries
+  (course overview, countdown, start/upwind, windward mark, downwind,
+  finish). That storyboard config was removed together with the component;
+  `race` now only carries `eyebrow`, `title`, `videoUrl`, `videoTitle` and
+  `caption` for the video section. To resurrect the animation, restore the
+  `RaceStep`/`steps` config from the code block below (the captions are
+  embedded in the git history of `config/content.ts` too, at commit
+  `aa0de87`).
+- It mounted in `app/page.tsx` between `<Subscribe />` and `<Backers />` —
+  the same slot `RaceVideo` occupies now.
+
+## Restoring it
+
+1. Copy the code block below back to `components/RaceScroll.tsx`.
+2. Restore `RaceStep` + `steps` to the `race` export in
+   `config/content.ts`.
+3. Swap `<RaceVideo />` for `<RaceScroll />` in `app/page.tsx`.
+
+## Full source at time of archiving
+
+```tsx
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -566,3 +606,4 @@ export default function RaceScroll() {
     </section>
   );
 }
+```

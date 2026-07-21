@@ -2,12 +2,13 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Statement from "@/components/Statement";
-import RaceScroll from "@/components/RaceScroll";
+import RaceVideo from "@/components/RaceVideo";
 import Numbers from "@/components/Numbers";
 import Schedule from "@/components/Schedule";
 import PhotoStrip from "@/components/PhotoStrip";
 import HowYouCanHelp from "@/components/HowYouCanHelp";
 import Budget from "@/components/Budget";
+import NewsletterTeaser from "@/components/NewsletterTeaser";
 import Backers from "@/components/Backers";
 import Subscribe from "@/components/Subscribe";
 import Footer from "@/components/Footer";
@@ -49,8 +50,9 @@ export default function Home() {
         <PhotoStrip />
         <HowYouCanHelp />
         <Budget />
+        <NewsletterTeaser />
         <Subscribe windSrc={generatedImage("wind-flow.png")} />
-        <RaceScroll />
+        <RaceVideo />
         <Backers />
       </main>
       <Footer />

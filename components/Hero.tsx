@@ -2,14 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { hero } from "@/config/content";
 
 gsap.registerPlugin(ScrollTrigger);
 import Countdown from "./Countdown";
-import Magnetic from "./motion/Magnetic";
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -29,8 +27,8 @@ export default function Hero() {
         { scale: 1, duration: 6, ease: "power2.out", clearProps: "transform" },
       );
 
-      // Entrance: headline lines rise out of their masks, then the copy,
-      // CTAs and telemetry glide in.
+      // Entrance: headline lines rise out of their masks, then the kicker,
+      // wheel and scroll cue glide in.
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
       // The hidden state is a CSS percent-translate class, which GSAP parses
       // into its pixel `y` component — so `y: 0` (not yPercent) is what
@@ -97,9 +95,10 @@ export default function Hero() {
         className="absolute inset-0 bg-teal-950 opacity-0"
       />
 
-      {/* Mobile: kicker + name, wheel, CTAs stack in DOM order. Desktop
-          (lg): the wheel moves to its own right-hand column spanning both
-          rows, with the CTAs back under the name. */}
+      {/* Mobile: kicker + name, then the wheel, in DOM order. Desktop (lg):
+          the wheel moves to its own right-hand column beside the name. The
+          scroll cue at the bottom is the only onward affordance — no CTA
+          buttons compete with it. */}
       <div
         data-hero-content
         className="wrap relative grid w-full items-center gap-y-9 py-28 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-12"
@@ -127,35 +126,13 @@ export default function Hero() {
 
         <div
           data-hero-fade
-          className="justify-self-center motion-safe:translate-y-4 motion-safe:opacity-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center lg:justify-self-end"
+          className="justify-self-center motion-safe:translate-y-4 motion-safe:opacity-0 lg:col-start-2 lg:self-center lg:justify-self-end"
         >
           <Countdown
             start={hero.countdown.start}
             target={hero.countdown.target}
             label={hero.countdown.label}
           />
-        </div>
-
-        <div
-          data-hero-fade
-          className="flex flex-wrap gap-3 motion-safe:translate-y-4 motion-safe:opacity-0 lg:col-start-1 lg:row-start-2"
-        >
-          <Magnetic>
-            <Link
-              href={hero.primaryCta.href}
-              className="inline-block rounded-[2px] bg-red px-[18px] py-2.5 text-sm font-semibold text-white transition hover:bg-red-bright"
-            >
-              {hero.primaryCta.label}
-            </Link>
-          </Magnetic>
-          <Magnetic>
-            <Link
-              href={hero.secondaryCta.href}
-              className="inline-block rounded-[2px] border border-line px-[18px] py-2.5 text-sm font-semibold text-sail transition hover:bg-white/10"
-            >
-              {hero.secondaryCta.label}
-            </Link>
-          </Magnetic>
         </div>
       </div>
 

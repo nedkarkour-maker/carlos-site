@@ -14,6 +14,9 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",
+  // The race section's YouTube embed (privacy-enhanced domain) — without
+  // this line, default-src 'self' silently blocks the iframe.
+  "frame-src https://www.youtube-nocookie.com",
   `connect-src 'self'${dev ? " ws:" : ""}`,
   "frame-ancestors 'none'",
   "object-src 'none'",

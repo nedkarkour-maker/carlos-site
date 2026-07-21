@@ -82,8 +82,6 @@ export interface HeroContent {
   kicker: string;
   /** One array entry per line of the headline. */
   nameLines: string[];
-  primaryCta: CtaLink;
-  secondaryCta: CtaLink;
   /**
    * The wheel counts days until `target` and fills its ring with the share
    * of the road already travelled since `start`.
@@ -95,8 +93,6 @@ export interface HeroContent {
 export const hero: HeroContent = {
   kicker: "ILCA Sailor · Engineer · Montréal → the Olympics",
   nameLines: ["Carlos", "Charabati"],
-  primaryCta: { label: "My project", href: "#about" },
-  secondaryCta: { label: "How you can help", href: "#help" },
   // start = the day after Paris 2024 closed: the first day of this quad.
   // target = the LA 2028 opening ceremony.
   countdown: {
@@ -144,8 +140,8 @@ export interface StatementContent {
   lines: string[];
 }
 
-// The full-screen "statement" between the hero and the story — big, slow,
-// confident. Keep it to 2–4 short lines; the last one lands the punch.
+// The full-screen "statement" right after the hero — big, slow, confident.
+// Keep it to 2–4 short lines; the last one lands the punch.
 export const statement: StatementContent = {
   lines: [
     "World champion at 18.",
@@ -156,56 +152,32 @@ export const statement: StatementContent = {
 
 /* ------------------------------------------------------------------ race */
 
-export interface RaceStep {
-  /** Small red label above the caption, e.g. "01 · The course". */
-  kicker: string;
-  /** One-line monospace caption for this scroll step. */
-  caption: string;
-}
-
 export interface RaceContent {
   eyebrow: string;
   title: string;
   /**
-   * One entry per scroll step of the animated race, in storyboard order:
-   * course overview, countdown, start/upwind, windward mark, downwind,
-   * finish. The captions here are free to edit; the choreography itself
-   * lives in components/RaceScroll.tsx and always plays these six beats.
+   * The YouTube video shown in this section, as an "embed" link:
+   * https://www.youtube-nocookie.com/embed/VIDEO_ID
+   * To swap the video: open any YouTube link, copy the part after
+   * "watch?v=" (the 11-character ID), and paste it after /embed/ here.
    */
-  steps: RaceStep[];
+  videoUrl: string;
+  /**
+   * What the video is, in a few words — read aloud by screen readers and
+   * shown while the player loads. Update it when you swap the video.
+   */
+  videoTitle: string;
+  /** One short line under the video. */
+  caption: string;
 }
 
 export const race: RaceContent = {
   eyebrow: "One race, start to finish",
   title: "What a race looks like.",
-  steps: [
-    {
-      kicker: "01 · The course",
-      caption: "An ILCA 7 race. One sailor, one sail, ~45 minutes.",
-    },
-    {
-      kicker: "02 · The countdown",
-      caption: "70 sailors fight for space on one start line.",
-    },
-    {
-      kicker: "03 · Upwind",
-      caption:
-        "You can't sail straight into the wind — the first leg is a zigzag climb, tack after tack.",
-    },
-    {
-      kicker: "04 · The windward mark",
-      caption: "Everyone arrives at the same corner at the same time.",
-    },
-    {
-      kicker: "05 · Downwind",
-      caption:
-        "Sails all the way out, surfing every wave — the fastest and most unstable point of the race.",
-    },
-    {
-      kicker: "06 · The finish",
-      caption: "45 minutes of racing. Then you line up and do it again.",
-    },
-  ],
+  videoUrl: "https://www.youtube-nocookie.com/embed/rwNQ0mbh3qM",
+  videoTitle: "Quick guide to Olympic sailing (video)",
+  caption:
+    "New to sailing? A short explainer of how an Olympic race works — the course, the start, and the fight to round every mark first.",
 };
 
 /* --------------------------------------------------------------- numbers */
@@ -323,11 +295,17 @@ export const photoStrip: ImageRef[] = [
 /* ------------------------------------------------------------ newsletter */
 
 // Posts themselves live as .mdx files in content/newsletter/ — the homepage
-// teaser and the archive both read from there (see lib/newsletter.ts).
+// "Follow along" section and the /newsletter archive both read from there.
+// Posts with `draft: true` in their frontmatter stay hidden everywhere; the
+// homepage shows the newest three published ones (and disappears entirely
+// while no post is published yet).
 export interface NewsletterContent {
+  /** Small red label above the title, on the homepage and the archive. */
   eyebrow: string;
   title: string;
+  /** One-sentence description under the title. */
   intro: string;
+  /** Text of the link from the homepage section to the full archive. */
   allPostsLabel: string;
 }
 
@@ -452,16 +430,25 @@ export const backers: BackersContent = {
 
 export interface SubscribeContent {
   eyebrow: string;
-  /** Rendered in the hero's huge display type — keep it to a few words. */
+  /**
+   * The section's oversized red headline — also reused as the heading
+   * inside the signup window. Keep it to a few words.
+   */
   title: string;
   body: string;
+  /**
+   * The huge red button that opens the signup window. Keep it to a word or
+   * three — it renders big.
+   */
+  ctaLabel: string;
   placeholder: string;
+  /** The submit button inside the signup window, and its "working…" state. */
   button: string;
   buttonBusy: string;
   success: string;
   /** Shown if the request fails without a specific error message. */
   errorFallback: string;
-  /** Small link to the newsletter archive under the form. */
+  /** Small link to the newsletter archive, under the big red button. */
   archive: CtaLink;
 }
 
@@ -469,6 +456,7 @@ export const subscribe: SubscribeContent = {
   eyebrow: "How you can support",
   title: "Follow the campaign.",
   body: "One email when something happens — a result, a training block, a milestone. No spam, ever.",
+  ctaLabel: "Join the crew",
   placeholder: "you@email.com",
   button: "Subscribe",
   buttonBusy: "Subscribing…",

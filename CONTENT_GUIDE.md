@@ -70,20 +70,48 @@ breakdown: [
 Edit the amount, or any label/percentage. Bars resize automatically.
 (Keep the percentages adding up to 100 so it reads honestly.)
 
-## Change the big photo story (the full-screen scrolling photos)
+## Change the photo strip
 
-Find `story` in `config/content.ts`. Each photo is one block:
+Find `photoStrip` in `config/content.ts`. Each photo is one block:
 
 ```ts
 {
-  src: "/images/ZAG_5526.jpg",
-  alt: "Carlos driving through heavy spray",   // for screen readers
-  kicker: "02 · Heavy air",                    // small red label
-  caption: "When it blows, the race becomes physical.",
+  src: "/images/clean/fleet-upwind.jpg",
+  alt: "Carlos leading a packed ILCA fleet upwind",  // for screen readers
+  focus: "75% 60%",                                  // optional crop point
 },
 ```
 
-3–5 photos work best. To add one: copy a block, change the four lines.
+Six photos keep the grid balanced; swap, add or remove freely.
+
+## Swap the race video
+
+The "What a race looks like" section plays a YouTube video. To change it,
+find `race` in `config/content.ts`:
+
+```ts
+videoUrl: "https://www.youtube-nocookie.com/embed/rwNQ0mbh3qM",
+videoTitle: "Quick guide to Olympic sailing (video)",
+```
+
+Open the YouTube video you want, copy the 11-character code after
+`watch?v=` in its address, and paste it after `/embed/` in `videoUrl`
+(keep the `youtube-nocookie.com/embed/` part — it's the privacy-friendly
+player). Update `videoTitle` to say what the new video is, and `caption`
+(the line under the video) if it no longer fits.
+
+## Change the subscribe button
+
+The big red button in the "Follow the campaign" section is `ctaLabel`
+under `subscribe`:
+
+```ts
+ctaLabel: "Join the crew",
+```
+
+Keep it to a word or three — it renders huge. (`button` and `buttonBusy`
+are the smaller submit button inside the signup window that opens when
+someone clicks it.)
 
 ## Add or swap a photo (anywhere)
 
@@ -106,21 +134,36 @@ Two extras worth knowing:
 
 ## Sponsors
 
-Find `sponsors` under `backers`:
+Sponsor logos live in **`data/sponsors/`** — one file per pyramid row
+(`rank-1.json` is the top, widest row; `rank-4.json` the smallest). Add a
+sponsor by adding a block to the right file:
 
-```ts
-{ name: "New Sponsor", logo: "/images/sponsors/new-sponsor.png" },
+```json
+{ "name": "New Sponsor", "logo": "/images/sponsors/new-sponsor.png", "url": "https://sponsor.com" }
 ```
 
-Upload the logo into `public/images/sponsors/` first. If you leave out the
-`logo:` line, a circle with the sponsor's initials shows instead. The logos
-scroll in a slow loop automatically.
+Upload the logo into `public/images/sponsors/` first. The README inside
+`data/sponsors/` walks through the details (moving a sponsor between rows,
+what happens when a logo is missing, and so on).
 
 ## Newsletter posts
 
 Posts are files in **`content/newsletter/`**. To add one, copy an existing
 `.mdx` file, rename it (the filename becomes the web address), and edit the
 title/date at the top and the text below.
+
+Each post starts with a few lines between `---` marks. The one that
+controls visibility is:
+
+```
+draft: true
+```
+
+While `draft: true`, the post is invisible to visitors everywhere — the
+archive, the homepage, search engines. Change it to `draft: false` to
+publish. The homepage "Follow along" section shows the newest three
+published posts automatically (and hides itself completely while every
+post is still a draft — that's why it may not appear yet).
 
 ## Background art (optional)
 
