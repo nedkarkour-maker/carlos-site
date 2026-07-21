@@ -1,5 +1,9 @@
 import Link from "next/link";
 import { footer, site } from "@/config/content";
+import EmailLink from "./EmailLink";
+
+const brandLinkClass =
+  "font-mono text-[13px] transition-colors hover:text-sail";
 
 export default function Footer() {
   return (
@@ -15,14 +19,26 @@ export default function Footer() {
               <span className="text-red-bright">.</span>
             </Link>
             <p className="mt-2.5 font-mono text-[13px]">{footer.tagline}</p>
-            <p className="mt-3.5">
-              <a
-                href={site.instagramUrl}
-                className="font-mono text-[13px] transition-colors hover:text-sail"
-              >
-                → Instagram
-              </a>
-            </p>
+            <ul className="mt-3.5 space-y-[9px]">
+              {footer.brandLinks.map((link) => (
+                <li key={link.label}>
+                  {link.email ? (
+                    <EmailLink className={brandLinkClass}>
+                      → {link.label}
+                    </EmailLink>
+                  ) : (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={brandLinkClass}
+                    >
+                      → {link.label}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
           {footer.columns.map((column) => (
             <div key={column.heading}>
@@ -32,12 +48,28 @@ export default function Footer() {
               <ul>
                 {column.links.map((link) => (
                   <li key={link.label} className="mb-[9px]">
-                    <Link
-                      href={link.href}
-                      className="transition-colors hover:text-sail"
-                    >
-                      {link.label}
-                    </Link>
+                    {/* next/link is for in-app routes; external hrefs need a
+                        plain anchor; mailto links are assembled in JS so the
+                        address stays out of the HTML. */}
+                    {link.href.startsWith("/") ? (
+                      <Link
+                        href={link.href}
+                        className="transition-colors hover:text-sail"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : link.href.startsWith("mailto:") ? (
+                      <EmailLink className="transition-colors hover:text-sail">
+                        {link.label}
+                      </EmailLink>
+                    ) : (
+                      <a
+                        href={link.href}
+                        className="transition-colors hover:text-sail"
+                      >
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>

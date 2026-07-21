@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Sail Canada",
+    "logo": "/images/sponsors/sail-canada.png",
+    "url": ""
+  },
+  {
+    "name": "YC Pointe-Claire",
+    "logo": "/images/sponsors/pcyc.png",
+    "url": ""
+  },
+  {
+    "name": "",
+    "logo": "",
+    "url": "",
+    "placeholder": true
+  }
+]

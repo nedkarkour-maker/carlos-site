@@ -22,9 +22,18 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = getPost(slug);
-  return post
-    ? { title: `${post.title} — Carlos Charabati`, description: post.excerpt }
-    : {};
+  if (!post) return {};
+  return {
+    title: `${post.title} — Carlos Charabati`,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      // Post covers are /public paths; metadataBase makes them absolute.
+      // Without a cover, the site-wide opengraph-image applies.
+      ...(post.cover ? { images: [post.cover] } : {}),
+    },
+  };
 }
 
 /* Token-styled building blocks for the MDX body. */

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "../styles/tokens.css";
 import "./globals.css";
+import MotionProvider from "@/components/motion/MotionProvider";
+import ScrollProgress from "@/components/motion/ScrollProgress";
+import { site } from "@/config/content";
 
 // Configure Archivo (Headings)
 const archivo = Archivo({ 
@@ -26,9 +29,24 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const title = `${site.name} — ${site.role}`;
+
 export const metadata: Metadata = {
-  title: "Carlos Charabati — ILCA Sailor",
-  description: "ILCA Sailor · Engineer · Montréal → the Olympics",
+  // Base for every relative URL in metadata (OG image, per-post covers, …).
+  metadataBase: new URL(site.url),
+  title,
+  description: site.description,
+  openGraph: {
+    type: "website",
+    siteName: site.name,
+    locale: "en_CA",
+    url: "/",
+    title,
+    description: site.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({
@@ -39,6 +57,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${archivo.variable} ${plexSans.variable} ${plexMono.variable} font-sans antialiased bg-[var(--sail)] text-[var(--ink)]`}>
+        <MotionProvider />
+        <ScrollProgress />
         {children}
       </body>
     </html>

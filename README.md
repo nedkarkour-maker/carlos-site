@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# carlos-site
 
-## Getting Started
+Sponsorship and support site for **Carlos Charabati** — Canadian ILCA sailor
+(CAN 219619), 2024 ILCA 4 Youth World Champion, campaigning toward LA 2028.
 
-First, run the development server:
+Next.js (App Router) · React · Tailwind v4 · TypeScript · GSAP + Lenis motion.
+
+## Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev     # local dev server (http://localhost:3000)
+npm run build   # production build
+npm run start   # serve the production build
+npm run lint    # eslint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create `.env.local` (never committed) with:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Required | What it does |
+| --- | --- | --- |
+| `MAILERLITE_API_KEY` | for the subscribe form | MailerLite API token. Without it the form returns a friendly 503. |
+| `MAILERLITE_GROUP_ID` | for the subscribe form | The MailerLite group new subscribers join. |
+| `NEXT_PUBLIC_SITE_URL` | optional | Canonical production URL used for social-share metadata, the sitemap and structured data. Falls back to Vercel's production URL, then localhost. |
+| `GEMINI_API_KEY` | optional | Only for regenerating background art via `scripts/generate-images.mjs`. |
 
-## Learn More
+**MailerLite:** enable *double opt-in* in the MailerLite dashboard so every
+signup is confirmed by email — the form's honeypot and time-trap stop casual
+bots, but confirmed opt-in is what protects sender reputation.
 
-To learn more about Next.js, take a look at the following resources:
+## Editing the site
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **All visitor-facing copy** lives in [`config/content.ts`](config/content.ts)
+  — see [`CONTENT_GUIDE.md`](CONTENT_GUIDE.md) for a field-by-field guide.
+- **Newsletter posts** are MDX files in `content/newsletter/`.
+- **Photos** go in `public/images/` (filename case matters in production —
+  Vercel is case-sensitive).
+- **Working notes for dev/AI sessions** are in [`HANDOFF.md`](HANDOFF.md).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `node scripts/crop-banners.mjs` — re-crops the press photos into the
+  web-ready copies in `public/images/clean/`.
+- `node scripts/make-og-image.mjs` — regenerates the 1200×630 social-share
+  card (`app/opengraph-image.jpg`) from the hero photo.
+- `node scripts/generate-images.mjs` — regenerates the atmospheric background
+  art in `public/images/generated/` (needs `GEMINI_API_KEY`).
+- `node scripts/screenshot-tour.mjs <baseUrl> <outDir>` — scrolls through the
+  running site and screenshots every section at desktop and mobile widths.

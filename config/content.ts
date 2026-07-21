@@ -17,6 +17,12 @@ export interface CtaLink {
 export interface ImageRef {
   src: string;
   alt: string;
+  /**
+   * Which part of the photo to keep in view when it gets cropped to fit,
+   * as "x% y%" — e.g. "50% 30%" keeps the point slightly above center.
+   * Leave out for "50% 50%" (center).
+   */
+  focus?: string;
 }
 
 /* ------------------------------------------------------------------ site */
@@ -26,8 +32,31 @@ export const site = {
   role: "ILCA Sailor",
   country: "CAN",
   sailNumber: "219619",
+  /**
+   * One-line pitch for search results and social-share previews — the text
+   * under the link when the site is pasted into WhatsApp/LinkedIn/email.
+   */
+  description:
+    "Canadian ILCA sailor, 2024 ILCA 4 Youth World Champion, 7th at the 2025 Men's Worlds — campaigning toward LA 2028. Follow the journey, partner with the campaign, or support it directly.",
+  /**
+   * Canonical production URL — used for social-share metadata, the sitemap
+   * and structured data. Set NEXT_PUBLIC_SITE_URL once a custom domain
+   * exists; on Vercel the production URL is picked up automatically.
+   */
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000"),
+  contactEmail: "c.charabati@icloud.com",
   supportUrl: "https://www.windathletes.ca/athletes/carlos-charabati",
-  instagramUrl: "#", // TODO: real Instagram profile URL
+  instagramUrl: "https://www.instagram.com/carlos_charabati",
+  linkedinUrl: "https://www.linkedin.com/in/carlos-charabati/",
+  /**
+   * Link to the sponsorship deck (PDF or Drive). While empty, the
+   * "Request the deck" card emails Carlos instead — nothing dead ships.
+   */
+  sponsorDeckUrl: "",
 } as const;
 
 /* ------------------------------------------------------------------- nav */
@@ -53,29 +82,30 @@ export interface HeroContent {
   kicker: string;
   /** One array entry per line of the headline. */
   nameLines: string[];
-  /** `highlight` is rendered in Canadian red. */
-  thesis: { before: string; highlight: string; after: string };
-  primaryCta: CtaLink;
-  secondaryCta: CtaLink;
-  countdown: { target: string; label: string };
+  /**
+   * The wheel counts days until `target` and fills its ring with the share
+   * of the road already travelled since `start`.
+   */
+  countdown: { start: string; target: string; label: string };
   image: ImageRef;
 }
 
 export const hero: HeroContent = {
   kicker: "ILCA Sailor · Engineer · Montréal → the Olympics",
   nameLines: ["Carlos", "Charabati"],
-  thesis: {
-    before:
-      "World champion at 18. Engineering student at McGill & CentraleSupélec. ",
-    highlight: "Chasing the Olympic Games",
-    after: " — one season at a time.",
+  // start = the day after Paris 2024 closed: the first day of this quad.
+  // target = the LA 2028 opening ceremony.
+  countdown: {
+    start: "2024-08-12T00:00:00",
+    target: "2028-07-14T00:00:00",
+    label: "Days to LA 2028",
   },
-  primaryCta: { label: "My project", href: "#about" },
-  secondaryCta: { label: "How you can help", href: "#help" },
-  countdown: { target: "2028-07-14T00:00:00", label: "Days to LA 2028" },
+  // Photos in /images/clean/ are web-ready copies with the event banners
+  // cropped off (made by scripts/crop-banners.mjs).
   image: {
-    src: "/images/29062024-5P7A0650.jpg",
+    src: "/images/clean/hero-viana.jpg",
     alt: "Carlos Charabati racing at the ILCA 4 Youth World Championship",
+    focus: "70% 35%",
   },
 };
 
@@ -101,6 +131,53 @@ export const about: AboutContent = {
     src: "/images/IMG_3906.JPG",
     alt: "Carlos Charabati receiving a medal at a championship ceremony",
   },
+};
+
+/* ------------------------------------------------------------- statement */
+
+export interface StatementContent {
+  /** One entry per line. Each line lights up word by word as you scroll. */
+  lines: string[];
+}
+
+// The full-screen "statement" right after the hero — big, slow, confident.
+// Keep it to 2–4 short lines; the last one lands the punch.
+export const statement: StatementContent = {
+  lines: [
+    "World champion at 18.",
+    "7th of 124 at the Men's Worlds at 19.",
+    "LA 2028 isn't a dream. It's the plan.",
+  ],
+};
+
+/* ------------------------------------------------------------------ race */
+
+export interface RaceContent {
+  eyebrow: string;
+  title: string;
+  /**
+   * The YouTube video shown in this section, as an "embed" link:
+   * https://www.youtube-nocookie.com/embed/VIDEO_ID
+   * To swap the video: open any YouTube link, copy the part after
+   * "watch?v=" (the 11-character ID), and paste it after /embed/ here.
+   */
+  videoUrl: string;
+  /**
+   * What the video is, in a few words — read aloud by screen readers and
+   * shown while the player loads. Update it when you swap the video.
+   */
+  videoTitle: string;
+  /** One short line under the video. */
+  caption: string;
+}
+
+export const race: RaceContent = {
+  eyebrow: "One race, start to finish",
+  title: "What a race looks like.",
+  videoUrl: "https://www.youtube-nocookie.com/embed/rwNQ0mbh3qM",
+  videoTitle: "Quick guide to Olympic sailing (video)",
+  caption:
+    "New to sailing? A short explainer of how an Olympic race works — the course, the start, and the fight to round every mark first.",
 };
 
 /* --------------------------------------------------------------- numbers */
@@ -146,7 +223,6 @@ export interface ScheduleContent {
   eyebrow: string;
   title: string;
   stops: ScheduleStop[];
-  photos: ImageRef[];
 }
 
 export const schedule: ScheduleContent = {
@@ -179,30 +255,57 @@ export const schedule: ScheduleContent = {
       tag: "Key event",
     },
   ],
-  photos: [
-    {
-      src: "/images/ZAG_5526.jpg",
-      alt: "Carlos hiking upwind in heavy spray at the ILCA 4 Youth Worlds",
-    },
-    {
-      src: "/images/IMG_5623.JPG",
-      alt: "Carlos racing his ILCA dinghy under the CAN sail",
-    },
-    {
-      src: "/images/26062024-DJI_0231.jpg",
-      alt: "Aerial view of the ILCA fleet rounding a mark",
-    },
-  ],
 };
+
+/* ------------------------------------------------------------ photo strip */
+
+// The image strip after the schedule — a breather between text sections.
+// Swap, add or remove entries freely; 6 keeps the grid balanced on both
+// mobile (2 columns) and desktop (3 columns).
+export const photoStrip: ImageRef[] = [
+  {
+    src: "/images/clean/fleet-upwind.jpg",
+    alt: "Carlos's CAN 219619 sail leading a packed ILCA fleet upwind",
+    focus: "75% 60%",
+  },
+  {
+    src: "/images/clean/race-viana-1.jpg",
+    alt: "Carlos trimming between races at the Youth Worlds in Viana",
+  },
+  {
+    src: "/images/IMG_5623.JPG",
+    alt: "Carlos hiking hard upwind under the CAN sail",
+    focus: "55% 45%",
+  },
+  {
+    src: "/images/clean/story-spray.jpg",
+    alt: "Carlos driving through heavy spray at the ILCA 4 Youth Worlds",
+    focus: "40% 30%",
+  },
+  {
+    src: "/images/clean/story-aerial.jpg",
+    alt: "Aerial view of the ILCA fleet converging on a mark",
+  },
+  {
+    src: "/images/clean/race-viana-2.jpg",
+    alt: "Carlos smiling on the water at the Youth Worlds in Viana",
+  },
+];
 
 /* ------------------------------------------------------------ newsletter */
 
 // Posts themselves live as .mdx files in content/newsletter/ — the homepage
-// teaser and the archive both read from there (see lib/newsletter.ts).
+// "Follow along" section and the /newsletter archive both read from there.
+// Posts with `draft: true` in their frontmatter stay hidden everywhere; the
+// homepage shows the newest three published ones (and disappears entirely
+// while no post is published yet).
 export interface NewsletterContent {
+  /** Small red label above the title, on the homepage and the archive. */
   eyebrow: string;
   title: string;
+  /** One-sentence description under the title. */
   intro: string;
+  /** Text of the link from the homepage section to the full archive. */
   allPostsLabel: string;
 }
 
@@ -250,7 +353,7 @@ export const help: HelpContent = {
       index: "01",
       title: "Follow & share",
       body: "The simplest help there is: subscribe to the updates, follow on Instagram, and pass the story along to someone who'd care.",
-      cta: { label: "Follow the journey", href: "#news" },
+      cta: { label: "Follow the journey", href: "#subscribe" },
     },
     {
       index: "02",
@@ -261,7 +364,16 @@ export const help: HelpContent = {
         "Reach across a growing social audience",
         "Talks & appearances at your events",
       ],
-      cta: { label: "Request the deck", href: "#" }, // TODO: sponsorship-deck link or mailto
+      // Until a deck link exists (site.sponsorDeckUrl), this emails Carlos
+      // directly with a prefilled subject.
+      cta: site.sponsorDeckUrl
+        ? { label: "Request the deck", href: site.sponsorDeckUrl, external: true }
+        : {
+            label: "Request the deck",
+            href: `mailto:${site.contactEmail}?subject=${encodeURIComponent(
+              "Sponsorship deck — Carlos Charabati",
+            )}`,
+          },
     },
     {
       index: "03",
@@ -293,16 +405,11 @@ export const help: HelpContent = {
 
 /* --------------------------------------------------------------- backers */
 
-export interface Sponsor {
-  name: string;
-  /** Path to a logo image in /public — a monogram placeholder renders until provided. */
-  logo?: string;
-}
-
+// The sponsor logos themselves live in data/sponsors/rank-*.json (rank-1 =
+// top/widest row of the pyramid) — see the README there for how to edit.
 export interface BackersContent {
   label: string;
-  sponsors: Sponsor[];
-  /** The "maybe you?" card inviting new partners. */
+  /** The "maybe you?" card at the pyramid's tip, inviting new partners. */
   joinCta: {
     title: string;
     body: string;
@@ -312,16 +419,6 @@ export interface BackersContent {
 
 export const backers: BackersContent = {
   label: "Proudly supported by",
-  sponsors: [
-    { name: "Sail Canada", logo: "/images/sponsors/sail-canada.png" },
-    { name: "Voile Québec", logo: "/images/sponsors/voile-quebec.png" },
-    { name: "Wind Athletes Canada", logo: "/images/sponsors/wind-athletes.png" },
-    // The Peter Kelly Athlete Assistance Fund is a memorial fund (via Wind
-    // Athletes Canada / PCYC) with no logo of its own — monogram by design.
-    { name: "Peter Kelly Fund" },
-    { name: "YC Pointe-Claire", logo: "/images/sponsors/pcyc.png" },
-    { name: "Clube Naval de Cascais", logo: "/images/sponsors/cn-cascais.png" },
-  ],
   joinCta: {
     title: "Maybe you?",
     body: "There's room on the sail.",
@@ -332,24 +429,40 @@ export const backers: BackersContent = {
 /* ------------------------------------------------------------- subscribe */
 
 export interface SubscribeContent {
+  eyebrow: string;
+  /**
+   * The section's oversized red headline — also reused as the heading
+   * inside the signup window. Keep it to a few words.
+   */
   title: string;
   body: string;
+  /**
+   * The huge red button that opens the signup window. Keep it to a word or
+   * three — it renders big.
+   */
+  ctaLabel: string;
   placeholder: string;
+  /** The submit button inside the signup window, and its "working…" state. */
   button: string;
   buttonBusy: string;
   success: string;
   /** Shown if the request fails without a specific error message. */
   errorFallback: string;
+  /** Small link to the newsletter archive, under the big red button. */
+  archive: CtaLink;
 }
 
 export const subscribe: SubscribeContent = {
+  eyebrow: "How you can support",
   title: "Follow the campaign.",
   body: "One email when something happens — a result, a training block, a milestone. No spam, ever.",
+  ctaLabel: "Join the crew",
   placeholder: "you@email.com",
   button: "Subscribe",
   buttonBusy: "Subscribing…",
   success: "Thank you for subscribing!",
   errorFallback: "Something went wrong — please try again later.",
+  archive: { label: "Read past updates →", href: "/newsletter" },
 };
 
 /* ---------------------------------------------------------------- footer */
@@ -359,14 +472,31 @@ export interface FooterColumn {
   links: CtaLink[];
 }
 
+export interface FooterBrandLink {
+  label: string;
+  href?: string;
+  /**
+   * Renders as a button that assembles the mailto in JS on click, so the
+   * address never appears in the page HTML for scrapers to harvest.
+   */
+  email?: boolean;
+}
+
 export interface FooterContent {
   tagline: string;
+  /** Arrow links under the brand name: contact + socials. */
+  brandLinks: FooterBrandLink[];
   columns: FooterColumn[];
   donationNote: string;
 }
 
 export const footer: FooterContent = {
   tagline: `${site.role} · ${site.country} ${site.sailNumber}`,
+  brandLinks: [
+    { label: "Send an email to Carlos", email: true },
+    { label: "Instagram", href: site.instagramUrl },
+    { label: "LinkedIn", href: site.linkedinUrl },
+  ],
   columns: [
     {
       heading: "Story",
@@ -386,7 +516,7 @@ export const footer: FooterContent = {
       heading: "Connect",
       links: [
         { label: "Subscribe", href: "/#subscribe" },
-        { label: "Contact", href: "#" }, // TODO: contact email or form
+        { label: "Contact", href: `mailto:${site.contactEmail}` },
       ],
     },
   ],
