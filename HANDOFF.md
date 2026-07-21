@@ -182,6 +182,15 @@ tsc + eslint; `npm run build` green at wrap-up. Pushed for Vercel preview.
    budget note) — content task for Carlos.
 4. A dev server from an earlier session still runs on localhost:3113
    (PID 36460); port 3000 is blocked while it lives.
+5. **Delete the session-5 test subscriber from MailerLite.** Verifying
+   /api/subscribe on 2026-07-21 revealed `.env.local` holds LIVE keys, so
+   the happy-path test really subscribed `real@example.com` (subscriber id
+   `193633065794274449`, status active — double opt-in still off). The
+   automated DELETE was blocked by tool permissions. Remove it in the
+   dashboard, or run:
+   `curl -X DELETE -H "Authorization: Bearer $MAILERLITE_API_KEY" https://connect.mailerlite.com/api/subscribers/193633065794274449`
+   Future sessions: assume live keys — do NOT post well-formed emails with
+   elapsedMs ≥ 3000 unless you intend a real signup you'll clean up.
 
 ### Session-3 gotchas worth keeping
 
@@ -261,6 +270,50 @@ refs like that inside `useEffect` (see Subscribe.tsx).
   mobile). Full verification green (see plan status above). Left
   uncommitted for the user's review; MailerLite double opt-in still to
   be enabled in the dashboard by the user.
+- 2026-07-21 (session 5, content/UX pass — the last before merge): Shipped
+  the four-task brief from NEXT_STEPS_PROMPT.md as `676d113` (housekeeping
+  commit — see session-4 entry; also settled the 4 "permanently modified"
+  files: their repo blobs were already LF, the flag was stat-cache
+  staleness that `git add` cleared) + `9f4ffeb` (5A–5D) + this handoff:
+  - 5A `NewsletterTeaser.tsx` (server comp): newest 3 non-draft posts as
+    cards between Budget and Subscribe, `newsletter` config + "All posts
+    →"; renders null while all 4 posts stay `draft: true` (verified both
+    states; draft flip reverted).
+  - 5B Subscribe: section copy kept; inline form replaced by one huge red
+    button (`subscribe.ctaLabel`, "Join the crew") opening a native
+    `<dialog>` (showModal). Form logic and request shape unchanged;
+    `mountedAt` still seeds on page mount (time-trap intact — verified all
+    route paths: 403 cross-site, honeypot/time-trap fake-ok, 400, 429).
+    Backdrop close uses mousedown + `e.target === dialog` with padding on
+    an inner div, so drag-out of the input can't dismiss. Focus probe:
+    Tab cycle is submit → (browser chrome, activeElement=body) → close →
+    email — background inert, nothing outside ever focused.
+  - 5C RaceScroll archived (full source → docs/archive/race-scroll.md;
+    git stored it as a 92%-similar rename) and deleted; `RaceVideo.tsx`
+    renders a lazy 16:9 youtube-nocookie embed in the same slot.
+    `race` config is now eyebrow/title/videoUrl/videoTitle/caption
+    (steps/RaceStep gone). **CSP change:** added
+    `frame-src https://www.youtube-nocookie.com` — without it the embed
+    is silently blocked. Known benign console line on desktop Chrome:
+    YouTube's player probes the Compute Pressure API and gets denied
+    ("Permissions policy violation: compute-pressure") — that's our
+    policy working; do not "fix" it by delegating the permission.
+  - 5D Hero CTAs removed (component + `primaryCta`/`secondaryCta` config);
+    scroll cue is the sole affordance; grid simplified to one row.
+    `Magnetic.tsx` deleted too — the CTAs were its last consumer (restore
+    from git history if magnetic hovers return).
+  - Editability: every new config field commented for Carlos;
+    CONTENT_GUIDE stale sections rewritten (story → photoStrip, sponsor
+    marquee → data/sponsors JSON) + new sections (draft flag & teaser,
+    video swap, button label). No orphaned exports (checked RaceStep,
+    CTAs, Magnetic, usePrefersReducedMotion — last one still used by
+    Countdown).
+  - Verification all green: lint, build, prod server on :3210 — HTML
+    asserts (teaser absent, CTAs absent, button/dialog/iframe present,
+    no mailto in HTML), Playwright interaction suite desktop+mobile
+    (modal open/ESC/backdrop/drag-guard/focus containment, 16:9 iframe,
+    zero console errors after the documented compute-pressure filter),
+    full screenshot tour eyeballed at 1440/390.
 - 2026-07-21 (session 4, housekeeping only — no feature work): Deleted
   `NEXT_STEPS_PROMPT.md` (self-marked historical, and stale twice over
   since it described VenueMap/LatestResult which session 3 deleted).
