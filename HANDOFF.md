@@ -261,3 +261,17 @@ refs like that inside `useEffect` (see Subscribe.tsx).
   mobile). Full verification green (see plan status above). Left
   uncommitted for the user's review; MailerLite double opt-in still to
   be enabled in the dashboard by the user.
+- 2026-07-21 (session 4, housekeeping only — no feature work): Deleted
+  `NEXT_STEPS_PROMPT.md` (self-marked historical, and stale twice over
+  since it described VenueMap/LatestResult which session 3 deleted).
+  Deduped `.gitignore` (`.vercel`/`.env*` were listed twice) and added
+  `.claude/` (untracked local tool config was never ignored). Normalized
+  CRLF→LF in `data/funding.json`, `data/sponsors/rank-{2,3}.json`,
+  `styles/tokens.css` — these showed as permanently "modified" in `git
+  status` with no real content change; confirmed byte-for-byte identical
+  content before/after via JSON parse + diff. Left uncommitted, same as
+  prior sessions. Did NOT touch: the 23 unreferenced raw photos in
+  `public/images/` (content decision, not mine to make — see critique
+  delivered in chat), `CONTENT_GUIDE.md` (exists, just wasn't checked
+  this session), the stray localhost:3113 dev server (can't see the
+  user's actual machine from here — user must kill it themselves).
