@@ -47,10 +47,10 @@ export default function Home() {
         <Numbers />
         <WaveDivider fill="var(--sail)" className="bg-teal-900" />
         <Schedule mapSrc={generatedImage("venues-chart.png")} />
+        <NewsletterTeaser />
         <PhotoStrip />
         <HowYouCanHelp />
         <Budget />
-        <NewsletterTeaser />
         <Subscribe windSrc={generatedImage("wind-flow.png")} />
         <RaceVideo />
         <Backers />
