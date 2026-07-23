@@ -1,26 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { ScheduleStop } from "@/config/content";
 import { useContent } from "@/lib/locale";
 import { VenuesChart } from "./art/Backdrops";
 import Reveal from "./Reveal";
 
-gsap.registerPlugin(ScrollTrigger);
-
 // Each stop kind gets its own dot colour: training blocks are teal, races
-// and the Games keep the campaign red.
-function dotColor(stop: ScheduleStop) {
-  return stop.kind === "training" ? "bg-teal-700" : "bg-red";
-}
-
-function dotHalo(stop: ScheduleStop) {
-  return stop.kind === "training"
+// and the Games keep the campaign red. The halo shows on major stops and on
+// hover.
+function dotClasses(stop: ScheduleStop) {
+  const isTraining = stop.kind === "training";
+  const color = isTraining ? "bg-teal-700" : "bg-red";
+  const halo = isTraining
     ? "shadow-[0_0_0_5px_rgba(22,80,95,.16)]"
     : "shadow-[0_0_0_5px_rgba(212,46,46,.18)]";
+  const hover = isTraining
+    ? "group-hover:shadow-[0_0_0_5px_rgba(22,80,95,.16)]"
+    : "group-hover:shadow-[0_0_0_5px_rgba(212,46,46,.18)]";
+  return `${color} ${stop.major ? halo : ""} ${hover}`;
 }
 
 /** The pills under a stop: a neutral "Training" badge and/or the red tag. */
@@ -48,11 +47,17 @@ function StopBadges({
   );
 }
 
+// Left padding that lines the first card up with the page's content column,
+// so the timeline starts under the heading. Reused by the axis line.
+const GUTTER = "max(calc((100vw-var(--maxw))/2),24px)";
+
 /**
- * The 2026 season. On desktop (motion allowed) the stops travel
- * horizontally as you scroll — a "race course" SVG line draws itself
- * underneath and each stop pops in as it reaches the course. On mobile and
- * under prefers-reduced-motion it falls back to the vertical timeline.
+ * The season, laid out as a fixed chronological timeline. On desktop it's a
+ * horizontal strip you scroll left/right (drag, trackpad, the ‹ › buttons or
+ * the keyboard) — every stop stays fully readable, and a straight axis line
+ * runs through the dots to an arrowhead pointing at the seasons ahead. On
+ * mobile it's the vertical timeline. No scroll-scrubbed motion, so nothing
+ * appears or disappears as you move.
  */
 export default function Schedule({
   mapSrc = null,
@@ -61,63 +66,17 @@ export default function Schedule({
   mapSrc?: string | null;
 }) {
   const { schedule } = useContent();
-  const sectionRef = useRef<HTMLElement>(null);
-  // Which stop is highlighted — shared between the timeline and the venue
-  // chart below it, so hovering either one lights up the other.
-  const [active, setActive] = useState<number | null>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const mm = gsap.matchMedia();
-    mm.add(
-      "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
-      () => {
-        const track = section.querySelector<HTMLElement>("[data-track]");
-        const path = section.querySelector<SVGPathElement>("[data-course]");
-        if (!track || !path) return;
-
-        const distance = () => track.scrollWidth - window.innerWidth;
-        const length = path.getTotalLength();
-        gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
-
-        const tl = gsap.timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: () => `+=${distance()}`,
-            pin: true,
-            scrub: 0.6,
-            invalidateOnRefresh: true,
-            anticipatePin: 1,
-          },
-        });
-
-        tl.to(track, { x: () => -distance() }, 0).to(
-          path,
-          { strokeDashoffset: 0 },
-          0,
-        );
-
-        // Each stop pops in as the track carries it toward center.
-        gsap.utils.toArray<HTMLElement>("[data-stop]").forEach((stop) => {
-          tl.fromTo(
-            stop,
-            { opacity: 0, y: 40, scale: 0.96 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.18, ease: "power2.out" },
-            // Stagger by position along the track.
-            (stop.offsetLeft / track.scrollWidth) * 0.85,
-          );
-        });
-      },
-    );
-
-    // Re-runs when the language flips: the stop cards are re-keyed by their
-    // translated titles, so the scrubbed timeline re-binds to the new nodes.
-    return () => mm.revert();
-  }, [schedule]);
+  function scrollByCards(direction: 1 | -1) {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    scrollerRef.current?.scrollBy({
+      left: direction * 340,
+      behavior: reduce ? "auto" : "smooth",
+    });
+  }
 
   const heading = (
     <>
@@ -131,9 +90,9 @@ export default function Schedule({
   );
 
   return (
-    <section id="schedule" ref={sectionRef} className="scroll-mt-20">
-      {/* ------------------------------------------------ horizontal (md+) */}
-      <div className="relative hidden h-screen flex-col justify-center overflow-hidden py-10 md:motion-safe:flex">
+    <section id="schedule" className="scroll-mt-20">
+      {/* -------------------------------------------- horizontal strip (md+) */}
+      <div className="relative hidden overflow-hidden py-[90px] md:block">
         {mapSrc ? (
           <Image
             src={mapSrc}
@@ -146,80 +105,99 @@ export default function Schedule({
         ) : (
           <VenuesChart className="absolute inset-0 h-full w-full text-ink opacity-[0.08]" />
         )}
-        <div className="wrap relative w-full">{heading}</div>
-        <div data-track className="relative mt-14 flex w-max items-stretch will-change-transform">
-          {/* The race-course line, drawn as you scroll. */}
-          <svg
-            aria-hidden
-            className="pointer-events-none absolute left-0 top-[26px] h-[60px] w-full"
-            viewBox="0 0 1000 60"
-            preserveAspectRatio="none"
-            fill="none"
-          >
-            <path
-              data-course
-              d="M0 45 C 120 10, 220 55, 340 30 S 560 5, 680 35 S 900 55, 1000 20"
-              stroke="var(--red)"
-              strokeWidth="2.5"
-              vectorEffect="non-scaling-stroke"
-            />
-          </svg>
-          <div className="w-[max(calc((100vw-var(--maxw))/2+24px),24px)] shrink-0" />
-          {schedule.stops.map((stop, i) => (
-            <article
-              data-stop
-              key={`${stop.when}-${stop.title}`}
-              onMouseEnter={() => setActive(i)}
-              onFocus={() => setActive(i)}
-              className={`relative mr-8 w-[340px] shrink-0 rounded-[10px] border bg-white px-7 py-6 pt-[76px] shadow-sm ${
-                active === i
-                  ? "border-red/60"
-                  : stop.major
-                    ? "border-red/40"
-                    : "border-line-dark"
-              }`}
+
+        <div className="wrap relative flex items-end justify-between gap-6">
+          <div>{heading}</div>
+          <div className="flex shrink-0 gap-2">
+            <button
+              type="button"
+              onClick={() => scrollByCards(-1)}
+              aria-label="Earlier in the season"
+              className="grid h-11 w-11 place-items-center rounded-full border border-line-dark text-ink-soft transition hover:border-red hover:text-red focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red"
             >
-              <span
-                aria-hidden
-                className={`absolute left-7 top-[38px] h-[13px] w-[13px] rounded-full border-2 border-sail ${dotColor(stop)} ${
-                  stop.major || active === i ? dotHalo(stop) : ""
-                }`}
-              />
-              <span className="font-mono text-[13px] tracking-[.04em] text-red-dark">
-                {stop.when}
-              </span>
-              <h3 className="mt-1.5 font-display text-[21px] font-bold leading-tight">
-                {stop.title}
-              </h3>
-              <p className="mt-1.5 text-sm text-ink-soft">{stop.where}</p>
-              <StopBadges stop={stop} trainingLabel={schedule.trainingLabel} />
-            </article>
-          ))}
-          <div className="w-[10vw] shrink-0" />
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollByCards(1)}
+              aria-label="Later in the season"
+              className="grid h-11 w-11 place-items-center rounded-full border border-line-dark text-ink-soft transition hover:border-red hover:text-red focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+          </div>
         </div>
-        <div className="wrap mt-12 w-full">
-          <p className="font-mono text-[11px] uppercase tracking-[.16em] text-ink-soft">
-            Scroll to travel the season →
-          </p>
+
+        <div
+          ref={scrollerRef}
+          tabIndex={0}
+          role="group"
+          aria-label="Season timeline — scroll left and right"
+          className="relative mt-10 overflow-x-auto pb-4 [scrollbar-color:var(--line-dark)_transparent] [scrollbar-width:thin] focus-visible:outline-none"
+        >
+          <div className="relative flex w-max items-stretch gap-6">
+            {/* The chronological axis: a straight line through the dots, ending
+                in an arrowhead that points at the seasons still ahead. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute right-0 top-[13px] z-0 flex items-center"
+              style={{ left: GUTTER }}
+            >
+              <span className="h-0.5 flex-1 rounded-full bg-ink/25" />
+              <span className="ml-[-1px] border-y-[7px] border-l-[12px] border-y-transparent border-l-red" />
+            </div>
+
+            {/* Leading spacer aligns the first card under the heading. */}
+            <div className="shrink-0" style={{ width: GUTTER }} />
+
+            {schedule.stops.map((stop) => (
+              <article
+                key={`${stop.when}-${stop.title}`}
+                className="group relative flex w-[300px] shrink-0 flex-col pt-10"
+              >
+                <span
+                  aria-hidden
+                  className={`absolute left-1/2 top-[12px] z-10 h-3.5 w-3.5 -translate-x-1/2 rounded-full border-2 border-sail transition-shadow ${dotClasses(stop)}`}
+                />
+                <div
+                  className={`flex-1 rounded-[10px] border bg-white px-6 py-5 shadow-sm transition-colors group-hover:border-red/60 ${
+                    stop.major ? "border-red/40" : "border-line-dark"
+                  }`}
+                >
+                  <span className="font-mono text-[13px] tracking-[.04em] text-red-dark">
+                    {stop.when}
+                  </span>
+                  <h3 className="mt-1.5 font-display text-[21px] font-bold leading-tight">
+                    {stop.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm text-ink-soft">{stop.where}</p>
+                  <StopBadges stop={stop} trainingLabel={schedule.trainingLabel} />
+                </div>
+              </article>
+            ))}
+
+            {/* Trailing room so the arrow points past the final stop. */}
+            <div className="w-[12vw] shrink-0" />
+          </div>
         </div>
       </div>
 
-      {/* --------------------------- vertical (mobile + reduced motion) */}
-      <Reveal className="wrap py-[90px] md:motion-safe:hidden">
+      {/* ------------------------------------------- vertical timeline (mobile) */}
+      <Reveal className="wrap py-[90px] md:hidden">
         {heading}
-        <ol className="mt-[46px] border-l-2 border-line-dark pl-7 md:pl-[30px]">
-          {schedule.stops.map((stop, i) => (
+        <ol className="mt-[46px] border-l-2 border-line-dark pl-7">
+          {schedule.stops.map((stop) => (
             <li
               key={`${stop.when}-${stop.title}`}
-              onMouseEnter={() => setActive(i)}
-              onFocus={() => setActive(i)}
-              className="relative grid grid-cols-[90px_1fr] gap-3.5 border-b border-line-dark py-5 last:border-b-0 md:grid-cols-[120px_1fr] md:gap-6"
+              className="group relative grid grid-cols-[90px_1fr] gap-3.5 border-b border-line-dark py-5 last:border-b-0"
             >
               <span
                 aria-hidden
-                className={`absolute -left-[35px] top-[26px] h-[11px] w-[11px] rounded-full border-2 border-sail md:-left-[37px] ${dotColor(stop)} ${
-                  stop.major || active === i ? dotHalo(stop) : ""
-                }`}
+                className={`absolute -left-[35px] top-[26px] h-[11px] w-[11px] rounded-full border-2 border-sail transition-shadow ${dotClasses(stop)}`}
               />
               <span className="pt-0.5 font-mono text-[13px] tracking-[.04em] text-red-dark">
                 {stop.when}
@@ -229,16 +207,12 @@ export default function Schedule({
                   {stop.title}
                 </h3>
                 <p className="mt-[3px] text-sm text-ink-soft">{stop.where}</p>
-                <StopBadges
-                  stop={stop}
-                  trainingLabel={schedule.trainingLabel}
-                />
+                <StopBadges stop={stop} trainingLabel={schedule.trainingLabel} />
               </div>
             </li>
           ))}
         </ol>
       </Reveal>
-
     </section>
   );
 }
