@@ -2,6 +2,7 @@ import Link from "next/link";
 import { help } from "@/config/content";
 import EmailLink from "./EmailLink";
 import Reveal from "./Reveal";
+import { SubscribeDialogTrigger } from "./SubscribeDialog";
 
 const ctaClass =
   "mt-[22px] inline-block rounded-[2px] bg-red px-[18px] py-2.5 text-center text-sm font-semibold text-white transition hover:-translate-y-px hover:bg-red-bright";
@@ -57,6 +58,12 @@ export default function HowYouCanHelp() {
                 >
                   {card.cta.label}
                 </a>
+              ) : card.cta.href === "#subscribe" ? (
+                // Opens the shared email dialog directly (falling back to a
+                // plain jump to the Subscribe section without JS).
+                <SubscribeDialogTrigger className={ctaClass}>
+                  {card.cta.label}
+                </SubscribeDialogTrigger>
               ) : card.cta.href.startsWith("mailto:") ? (
                 // Assembled in JS on click so the address stays out of the
                 // HTML that email scrapers harvest; only the subject line
