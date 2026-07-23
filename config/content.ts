@@ -125,9 +125,8 @@ export const about: AboutContent = {
   eyebrow: "This is my project",
   title: "I'm chasing the Olympics — by method, not luck.",
   paragraphs: [
-    "I'm an 18-year-old ILCA sailor from Montréal, and an engineering student at McGill and CentraleSupélec. I race for Canada — sail number **CAN 219619** — out of Clube Naval de Cascais.",
-    "In 2024, I became **ILCA 4 Youth World Champion** in front of 277 sailors. A year later, I lined up against the world's best at the 2025 Men's Worlds in Kiel, and finished **7th of 124**. I treat sailing the way I treat engineering: measure, adjust, repeat — **fail fast, recover methodically.**",
-    "2028 and 2032 are on the horizon. This is the long road there. [DRAFT — full story from locked spine; this is the length/tone.]",
+    "I am a 19-year-old sailor from Montreal, driven by a deep passion for the ocean and high-performance sport. I am currently balancing my Olympic campaign with an engineering dual degree at CentraleSupélec and McGill University.",
+    "I compete in the ILCA, formerly known as the Laser, the men's individual Olympic dinghy class. My mission is twofold: to reach the Olympic podium and to create a positive impact on the world along the way.",
   ],
   image: {
     src: "/images/IMG_3906.JPG",
@@ -146,9 +145,8 @@ export interface StatementContent {
 // Keep it to 2–4 short lines; the last one lands the punch.
 export const statement: StatementContent = {
   lines: [
-    "World champion at 18.",
-    "7th of 124 at the Men's Worlds at 19.",
-    "LA 2028 isn't a dream. It's the plan.",
+    "World champion, focused, dedicated and smiling.",
+    "The Olympics isn't a dream. It's the plan.",
   ],
 };
 
@@ -327,8 +325,7 @@ export const notableResults: NotableResultsContent = {
         focus: "75% 60%",
       },
       result: "6th",
-      // TODO copy — confirm the exact 2023 event name.
-      event: "2023 Worlds",
+      event: "ILCA 4 World Championships 2023 · Volos, Greece",
     },
     {
       // TODO photo — confirm this is the right shot for the world title.
@@ -337,7 +334,7 @@ export const notableResults: NotableResultsContent = {
         alt: "Carlos celebrating his ILCA 4 Youth World Championship win",
       },
       result: "Gold",
-      event: "2024 ILCA 4 Youth Worlds",
+      event: "World Championships 2024 · Viana, Portugal",
     },
     {
       // TODO photo — stand-in until the real Kiel 2025 photo is added.
@@ -346,7 +343,7 @@ export const notableResults: NotableResultsContent = {
         alt: "Carlos hiking hard upwind under the CAN sail",
       },
       result: "7th",
-      event: "2025 Men's Worlds, Kiel",
+      event: "ILCA 6 World Championships 2025 · Kiel, Germany",
     },
   ],
 };
@@ -395,8 +392,8 @@ export interface HelpContent {
 
 export const help: HelpContent = {
   eyebrow: "How you can help",
-  title: "Three ways to be part of it.",
-  lead: "Whether you're a company, a fellow sailor, or someone who just likes the story — there's a way in. No pressure; every bit moves the project forward.",
+  title: "Be part of the journey.",
+  lead: "Whether you're a company, a fellow sailor, or someone who loves the adventure — welcome onboard.",
   cards: [
     {
       index: "01",
@@ -575,7 +572,7 @@ export interface SubscribeContent {
 export const subscribe: SubscribeContent = {
   eyebrow: "How you can support",
   title: "Follow the campaign.",
-  body: "One email when something happens — a result, a training block, a milestone. No spam, ever.",
+  body: "Stories from the campaign trail — adventures, training, and lessons.",
   ctaLabel: "Join the crew",
   placeholder: "you@email.com",
   button: "Subscribe",

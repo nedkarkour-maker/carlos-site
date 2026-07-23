@@ -107,7 +107,7 @@ export default function Hero() {
         <div>
           <p
             data-hero-fade
-            className="mb-[22px] font-mono text-[13px] uppercase tracking-[.2em] text-red-bright motion-safe:translate-y-4 motion-safe:opacity-0"
+            className="mb-[22px] font-sans text-[15px] font-semibold uppercase tracking-[.1em] text-red-bright motion-safe:translate-y-4 motion-safe:opacity-0"
           >
             {hero.kicker}
           </p>
