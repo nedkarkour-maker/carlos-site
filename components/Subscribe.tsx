@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { subscribe } from "@/config/content";
+import { useContent } from "@/lib/locale";
 import { WindLines } from "./art/Backdrops";
 import SubscribeDialog, { openSubscribeDialog } from "./SubscribeDialog";
 
@@ -12,6 +12,7 @@ export default function Subscribe({
   /** Generated wind-flow art (passed from the page); SVG fallback if null. */
   windSrc?: string | null;
 }) {
+  const { subscribe } = useContent();
   return (
     <section
       id="subscribe"

@@ -1,12 +1,19 @@
+"use client";
+
 import Image from "next/image";
-import { numbers } from "@/config/content";
-import { generatedImage } from "@/lib/generated";
+import { useContent } from "@/lib/locale";
 import { TopoLines } from "./art/Backdrops";
 import Reveal from "./Reveal";
 import CountUp from "./motion/CountUp";
 
-export default function Numbers() {
-  const topo = generatedImage("stats-topo.png");
+export default function Numbers({
+  topoSrc = null,
+}: {
+  /** Generated topo-lines art (passed from the page); SVG fallback if null. */
+  topoSrc?: string | null;
+}) {
+  const { numbers } = useContent();
+  const topo = topoSrc;
   return (
     <section className="relative overflow-hidden bg-teal-900 py-[90px] text-sail">
       {topo ? (

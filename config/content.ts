@@ -644,3 +644,44 @@ export const footer: FooterContent = {
   ],
   donationNote: "Donations via Wind Athletes Canada",
 };
+
+/* ---------------------------------------------- language bundles (EN/FR) */
+
+// Everything a visitor reads, grouped per language. `en` simply collects
+// the sections defined above — nothing to edit here. The French version
+// lives in config/content.fr.ts and mirrors this shape exactly; the EN/FR
+// toggle in the navbar picks one of the two (EN is the default). `site`
+// (links, email, sail number) is shared and doesn't fork per language.
+export interface ContentBundle {
+  nav: NavContent;
+  hero: HeroContent;
+  about: AboutContent;
+  statement: StatementContent;
+  race: RaceContent;
+  numbers: NumbersContent;
+  schedule: ScheduleContent;
+  notableResults: NotableResultsContent;
+  newsletter: NewsletterContent;
+  help: HelpContent;
+  budget: BudgetContent;
+  backers: BackersContent;
+  subscribe: SubscribeContent;
+  footer: FooterContent;
+}
+
+export const en: ContentBundle = {
+  nav,
+  hero,
+  about,
+  statement,
+  race,
+  numbers,
+  schedule,
+  notableResults,
+  newsletter,
+  help,
+  budget,
+  backers,
+  subscribe,
+  footer,
+};

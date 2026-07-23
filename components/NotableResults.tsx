@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import { notableResults } from "@/config/content";
+import { useContent } from "@/lib/locale";
 import Reveal from "./Reveal";
 
 /**
@@ -8,6 +10,7 @@ import Reveal from "./Reveal";
  * config/content.ts to change photos, results or order.
  */
 export default function NotableResults() {
+  const { notableResults } = useContent();
   return (
     <section>
       <Reveal className="wrap pb-[90px] md:motion-safe:pt-[70px]">

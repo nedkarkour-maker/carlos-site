@@ -62,7 +62,20 @@ export default function BudgetDonut({
   // Proportional to the sum, so the ring stays honest even if the
   // percentages drift from an even 100 while being edited.
   const total = slices.reduce((sum, s) => sum + Math.max(0, s.percent), 0);
+  const segments: { label: string; color: string; visible: number; offset: number }[] = [];
   let start = 0;
+  for (let i = 0; i < slices.length; i++) {
+    const slice = slices[i];
+    if (slice.percent <= 0 || total <= 0) continue;
+    const length = (slice.percent / total) * CIRCUMFERENCE;
+    segments.push({
+      label: slice.label,
+      color: colors[i % colors.length],
+      visible: Math.max(length - GAP, 0.5),
+      offset: -(start + GAP / 2),
+    });
+    start += length;
+  }
 
   return (
     <svg
@@ -71,28 +84,21 @@ export default function BudgetDonut({
       className={`-rotate-90 ${className}`}
       aria-hidden
     >
-      {slices.map((slice, i) => {
-        if (slice.percent <= 0 || total <= 0) return null;
-        const length = (slice.percent / total) * CIRCUMFERENCE;
-        const visible = Math.max(length - GAP, 0.5);
-        const offset = -(start + GAP / 2);
-        start += length;
-        return (
-          <circle
-            key={slice.label}
-            data-segment
-            data-visible={visible}
-            cx={SIZE / 2}
-            cy={SIZE / 2}
-            r={R}
-            fill="none"
-            stroke={colors[i % colors.length]}
-            strokeWidth={STROKE}
-            strokeDasharray={`${visible} ${CIRCUMFERENCE - visible}`}
-            strokeDashoffset={offset}
-          />
-        );
-      })}
+      {segments.map((seg) => (
+        <circle
+          key={seg.label}
+          data-segment
+          data-visible={seg.visible}
+          cx={SIZE / 2}
+          cy={SIZE / 2}
+          r={R}
+          fill="none"
+          stroke={seg.color}
+          strokeWidth={STROKE}
+          strokeDasharray={`${seg.visible} ${CIRCUMFERENCE - seg.visible}`}
+          strokeDashoffset={seg.offset}
+        />
+      ))}
     </svg>
   );
 }

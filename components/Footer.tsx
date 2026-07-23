@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
-import { footer, site } from "@/config/content";
+import { site } from "@/config/content";
+import { useContent } from "@/lib/locale";
 import EmailLink from "./EmailLink";
 
 // Icon buttons under the brand: ≥44px hit target, visible focus ring.
@@ -64,6 +67,7 @@ function FacebookIcon() {
 }
 
 export default function Footer() {
+  const { footer } = useContent();
   return (
     <footer className="bg-teal-950 pb-[30px] pt-[54px] text-sm text-sail/60">
       <div className="wrap">

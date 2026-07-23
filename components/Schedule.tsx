@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { schedule, type ScheduleStop } from "@/config/content";
+import type { ScheduleStop } from "@/config/content";
+import { useContent } from "@/lib/locale";
 import { VenuesChart } from "./art/Backdrops";
 import Reveal from "./Reveal";
 
@@ -23,7 +24,13 @@ function dotHalo(stop: ScheduleStop) {
 }
 
 /** The pills under a stop: a neutral "Training" badge and/or the red tag. */
-function StopBadges({ stop }: { stop: ScheduleStop }) {
+function StopBadges({
+  stop,
+  trainingLabel,
+}: {
+  stop: ScheduleStop;
+  trainingLabel: string;
+}) {
   if (stop.kind !== "training" && !stop.tag) return null;
   const pill =
     "inline-block rounded-[3px] px-[7px] py-0.5 font-mono text-[10px] uppercase tracking-[.1em]";
@@ -31,7 +38,7 @@ function StopBadges({ stop }: { stop: ScheduleStop }) {
     <div className="mt-3 flex flex-wrap gap-1.5">
       {stop.kind === "training" && (
         <span className={`${pill} border border-line-dark text-ink-soft`}>
-          {schedule.trainingLabel}
+          {trainingLabel}
         </span>
       )}
       {stop.tag && (
@@ -53,6 +60,7 @@ export default function Schedule({
   /** Generated nautical venue map (passed from the page); omitted if null. */
   mapSrc?: string | null;
 }) {
+  const { schedule } = useContent();
   const sectionRef = useRef<HTMLElement>(null);
   // Which stop is highlighted — shared between the timeline and the venue
   // chart below it, so hovering either one lights up the other.
@@ -106,8 +114,10 @@ export default function Schedule({
       },
     );
 
+    // Re-runs when the language flips: the stop cards are re-keyed by their
+    // translated titles, so the scrubbed timeline re-binds to the new nodes.
     return () => mm.revert();
-  }, []);
+  }, [schedule]);
 
   const heading = (
     <>
@@ -182,7 +192,7 @@ export default function Schedule({
                 {stop.title}
               </h3>
               <p className="mt-1.5 text-sm text-ink-soft">{stop.where}</p>
-              <StopBadges stop={stop} />
+              <StopBadges stop={stop} trainingLabel={schedule.trainingLabel} />
             </article>
           ))}
           <div className="w-[10vw] shrink-0" />
@@ -219,7 +229,10 @@ export default function Schedule({
                   {stop.title}
                 </h3>
                 <p className="mt-[3px] text-sm text-ink-soft">{stop.where}</p>
-                <StopBadges stop={stop} />
+                <StopBadges
+                  stop={stop}
+                  trainingLabel={schedule.trainingLabel}
+                />
               </div>
             </li>
           ))}

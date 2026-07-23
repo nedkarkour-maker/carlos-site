@@ -4,12 +4,13 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { hero } from "@/config/content";
+import { useContent } from "@/lib/locale";
 
 gsap.registerPlugin(ScrollTrigger);
 import Countdown from "./Countdown";
 
 export default function Hero() {
+  const { hero } = useContent();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {

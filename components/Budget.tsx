@@ -1,4 +1,6 @@
-import { budget } from "@/config/content";
+"use client";
+
+import { useContent } from "@/lib/locale";
 import funding from "@/data/funding.json";
 import Reveal from "./Reveal";
 import BudgetDonut from "./motion/BudgetDonut";
@@ -22,6 +24,7 @@ function totalLine() {
 }
 
 export default function Budget() {
+  const { budget } = useContent();
   return (
     <section id="budget" className="scroll-mt-20 pb-[90px]">
       <Reveal className="wrap">

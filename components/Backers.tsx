@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { backers } from "@/config/content";
+import { useContent } from "@/lib/locale";
 import Reveal from "./Reveal";
 import rank1 from "@/data/sponsors/rank-1.json";
 import rank2 from "@/data/sponsors/rank-2.json";
@@ -81,6 +83,7 @@ function SponsorMark({ entry, box }: { entry: SponsorEntry; box: string }) {
  * tip. Rendered purely from data/sponsors/rank-*.json.
  */
 export default function Backers() {
+  const { backers } = useContent();
   return (
     <section className="py-[72px]">
       <Reveal className="wrap">

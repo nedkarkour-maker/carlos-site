@@ -42,9 +42,9 @@ export default function Home() {
         <Hero />
         <Statement />
         <WaveDivider fill="var(--sail)" className="bg-teal-950" />
-        <About />
+        <About boatSrc={generatedImage("sailboat-line.png")} />
         <WaveDivider fill="var(--teal-900)" />
-        <Numbers />
+        <Numbers topoSrc={generatedImage("stats-topo.png")} />
         <WaveDivider fill="var(--sail)" className="bg-teal-900" />
         <NotableResults />
         <Schedule mapSrc={generatedImage("venues-chart.png")} />

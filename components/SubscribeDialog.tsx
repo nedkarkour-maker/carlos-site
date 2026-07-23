@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { subscribe } from "@/config/content";
+import { useContent } from "@/lib/locale";
 
 type Status =
   | { state: "idle" }
@@ -55,6 +55,7 @@ export function SubscribeDialogTrigger({
 }
 
 export default function SubscribeDialog() {
+  const { subscribe } = useContent();
   const [email, setEmail] = useState("");
   // Honeypot — people never see the field, so a value marks a bot.
   const [company, setCompany] = useState("");

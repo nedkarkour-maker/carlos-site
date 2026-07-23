@@ -1,6 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import { about } from "@/config/content";
-import { generatedImage } from "@/lib/generated";
+import { useContent } from "@/lib/locale";
 import { SailboatLine } from "./art/Backdrops";
 import Parallax from "./motion/Parallax";
 import Reveal from "./Reveal";
@@ -22,8 +23,14 @@ function BoldText({ text }: { text: string }) {
   );
 }
 
-export default function About() {
-  const boat = generatedImage("sailboat-line.png");
+export default function About({
+  boatSrc = null,
+}: {
+  /** Generated sailboat line art (passed from the page); SVG fallback if null. */
+  boatSrc?: string | null;
+}) {
+  const { about } = useContent();
+  const boat = boatSrc;
   return (
     <section id="about" className="relative scroll-mt-20 overflow-hidden py-[90px]">
       {/* Quiet sailing-boat accent in the corner; upgraded automatically when

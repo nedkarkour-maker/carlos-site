@@ -4,6 +4,7 @@ import "../styles/tokens.css";
 import "./globals.css";
 import MotionProvider from "@/components/motion/MotionProvider";
 import ScrollProgress from "@/components/motion/ScrollProgress";
+import { LocaleProvider } from "@/lib/locale";
 import { site } from "@/config/content";
 
 // Configure Archivo (Headings)
@@ -59,7 +60,7 @@ export default function RootLayout({
       <body className={`${archivo.variable} ${plexSans.variable} ${plexMono.variable} font-sans antialiased bg-[var(--sail)] text-[var(--ink)]`}>
         <MotionProvider />
         <ScrollProgress />
-        {children}
+        <LocaleProvider>{children}</LocaleProvider>
       </body>
     </html>
   );
