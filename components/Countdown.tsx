@@ -128,22 +128,33 @@ export default function Countdown({
         <span className="mt-2 px-6 text-center font-mono text-[10px] uppercase tracking-[.18em] text-sail/65 md:text-[11px]">
           {label}
         </span>
-        {/* Games motif — five plain circles in a row, deliberately NOT the
-            interlocking Olympic rings: that mark is IOC-protected and can't
-            be used here without authorization. Single colour, evenly
-            spaced, non-interlocking. */}
-        <svg
-          aria-hidden
-          viewBox="0 0 58 10"
-          className="mt-3 h-[7px] w-[44px] text-sail/45 md:h-2 md:w-[50px]"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        >
-          {[5, 17, 29, 41, 53].map((cx) => (
-            <circle key={cx} cx={cx} cy="5" r="3.6" />
-          ))}
-        </svg>
+        {/* Olympic rings — the actual five-ring mark, added on Carlos's
+            explicit instruction (2026-07-22). NOTE: the rings are an
+            IOC-protected trademark; using them on a fundraising site is a
+            real legal risk Carlos has chosen to accept. Shown full-colour
+            on a light chip so the black ring reads on the dark hero; the
+            ™ is the mark he asked for. Official colours: blue #0081C8,
+            black, red #EE334E, yellow #FCB131, green #00A651. */}
+        <span className="mt-3 inline-flex items-start rounded-[4px] bg-sail/90 px-1.5 py-1 shadow-sm">
+          <svg
+            aria-hidden
+            viewBox="0 0 280 144"
+            className="h-[18px] w-auto md:h-5"
+            fill="none"
+            strokeWidth="11"
+          >
+            {/* Top row: blue · black · red */}
+            <circle cx="52" cy="52" r="40" stroke="#0081C8" />
+            <circle cx="140" cy="52" r="40" stroke="#000000" />
+            <circle cx="228" cy="52" r="40" stroke="#EE334E" />
+            {/* Bottom row: yellow · green, nestled between and over the top */}
+            <circle cx="96" cy="92" r="40" stroke="#FCB131" />
+            <circle cx="184" cy="92" r="40" stroke="#00A651" />
+          </svg>
+          <span className="ml-0.5 font-mono text-[7px] leading-none text-ink/45">
+            ™
+          </span>
+        </span>
       </div>
     </div>
   );

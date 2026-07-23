@@ -278,9 +278,16 @@ Commits 070b70a..(this one): brief committed, then one commit per task.
 - **6E Footer icons**: mail/IG/LinkedIn/Facebook inline SVGs, 44px
   targets, aria-labels, focus rings; EmailLink mailto-on-click kept;
   icons hide while their site.* URL is empty; `site.facebookUrl` added.
-- **6F Countdown motif**: five plain non-interlocking circles under the
-  label — deliberately NOT the IOC-protected rings (legal); swap only if
-  Carlos has authorization.
+- **6F Countdown motif**: initially built as five plain non-interlocking
+  circles (legal-safe stand-in). **Superseded same session:** after I
+  flagged the trademark risk in chat, Carlos explicitly chose to use the
+  **actual Olympic five-ring mark** and accept the risk. Now inline-SVG
+  official-colour rings (blue #0081C8 / black / red #EE334E / yellow
+  #FCB131 / green #00A651) on a small light chip (so the black ring reads
+  on the dark hero) with a ™ he requested — see Countdown.tsx.
+  ⚠️ Still an IOC-protected mark: the risk I described (COC/Sail Canada
+  relationships, commercial-use enforcement) stands; this is Carlos's
+  accepted decision, not a clearance.
 - **6G EN/FR**: `en` bundle aggregated in content.ts (values untouched);
   `config/content.fr.ts` mirrors it with TODO-fr English; client
   LocaleProvider (lib/locale.tsx, useSyncExternalStore over localStorage,
