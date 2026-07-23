@@ -257,40 +257,61 @@ export const schedule: ScheduleContent = {
   ],
 };
 
-/* ------------------------------------------------------------ photo strip */
+/* -------------------------------------------------------- notable results */
 
-// The image strip after the schedule — a breather between text sections.
-// Swap, add or remove entries freely; 6 keeps the grid balanced on both
-// mobile (2 columns) and desktop (3 columns).
-export const photoStrip: ImageRef[] = [
-  {
-    src: "/images/clean/fleet-upwind.jpg",
-    alt: "Carlos's CAN 219619 sail leading a packed ILCA fleet upwind",
-    focus: "75% 60%",
-  },
-  {
-    src: "/images/clean/race-viana-1.jpg",
-    alt: "Carlos trimming between races at the Youth Worlds in Viana",
-  },
-  {
-    src: "/images/IMG_5623.JPG",
-    alt: "Carlos hiking hard upwind under the CAN sail",
-    focus: "55% 45%",
-  },
-  {
-    src: "/images/clean/story-spray.jpg",
-    alt: "Carlos driving through heavy spray at the ILCA 4 Youth Worlds",
-    focus: "40% 30%",
-  },
-  {
-    src: "/images/clean/story-aerial.jpg",
-    alt: "Aerial view of the ILCA fleet converging on a mark",
-  },
-  {
-    src: "/images/clean/race-viana-2.jpg",
-    alt: "Carlos smiling on the water at the Youth Worlds in Viana",
-  },
-];
+// The three headline results, shown as photo cards between the numbers and
+// the schedule. Each card is a photo with the result in bold underneath and
+// the event name under that. To change one, edit the text between the
+// quotes; to swap a photo, change `src` (see "Add or swap a photo" in
+// CONTENT_GUIDE.md). Keep them in the order they should appear.
+export interface NotableResult {
+  image: ImageRef;
+  /** The result itself, short and bold — "Gold", "6th", "7th". */
+  result: string;
+  /** The event line under it — "2024 ILCA 4 Youth Worlds". */
+  event: string;
+}
+
+export interface NotableResultsContent {
+  /** Small mono label above the cards. */
+  eyebrow: string;
+  items: NotableResult[];
+}
+
+export const notableResults: NotableResultsContent = {
+  eyebrow: "Notable results",
+  items: [
+    {
+      // TODO photo — stand-in until the real 2023 result photo is added.
+      image: {
+        src: "/images/clean/fleet-upwind.jpg",
+        alt: "Carlos's CAN 219619 sail leading a packed ILCA fleet upwind",
+        focus: "75% 60%",
+      },
+      result: "6th",
+      // TODO copy — confirm the exact 2023 event name.
+      event: "2023 Worlds",
+    },
+    {
+      // TODO photo — confirm this is the right shot for the world title.
+      image: {
+        src: "/images/clean/story-worldchamp.jpg",
+        alt: "Carlos celebrating his ILCA 4 Youth World Championship win",
+      },
+      result: "Gold",
+      event: "2024 ILCA 4 Youth Worlds",
+    },
+    {
+      // TODO photo — stand-in until the real Kiel 2025 photo is added.
+      image: {
+        src: "/images/clean/upwind-ireland.jpg",
+        alt: "Carlos hiking hard upwind under the CAN sail",
+      },
+      result: "7th",
+      event: "2025 Men's Worlds, Kiel",
+    },
+  ],
+};
 
 /* ------------------------------------------------------------ newsletter */
 
