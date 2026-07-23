@@ -384,21 +384,11 @@ export interface HelpCard {
   cta: CtaLink;
 }
 
-export interface BudgetItem {
-  label: string;
-  share: string;
-}
-
 export interface HelpContent {
   eyebrow: string;
   title: string;
   lead: string;
   cards: HelpCard[];
-  budget: {
-    amount: string;
-    note: string;
-    breakdown: BudgetItem[];
-  };
 }
 
 export const help: HelpContent = {
@@ -448,16 +438,87 @@ export const help: HelpContent = {
       },
     },
   ],
-  budget: {
-    amount: "≈ €22,000",
-    note: "what the 2026 season takes [DRAFT]",
-    breakdown: [
-      { label: "Coaching & camps", share: "35%" },
-      { label: "Travel", share: "30%" },
-      { label: "Boat & gear", share: "20%" },
-      { label: "Entries & lodging", share: "15%" },
-    ],
-  },
+};
+
+/* ---------------------------------------------------------------- budget */
+
+// The budget section: headline + three stat columns on the left, the
+// "where your support goes" ring chart on the right. The big "$55k CAD/yr"
+// line under the chart comes from data/funding.json (`goal`) — change the
+// total there; everything written out below (percentages, amounts) is
+// edited here. Keep the four percentages summing to 100 and the amounts
+// consistent with the total.
+export interface BudgetSlice {
+  /** Pillar name in the legend — "Coaching + boat". */
+  label: string;
+  /** Share of the budget as a number (35 = 35%) — draws the ring segment. */
+  percent: number;
+  /** The approximate dollar figure shown next to the percent — "~$19,250". */
+  amount: string;
+  /** Small line under it — what the money actually buys. */
+  sub: string;
+}
+
+export interface BudgetContent {
+  eyebrow: string;
+  headline: string;
+  body: string;
+  /** The three stat columns under the body text. */
+  stats: { value: string; label: string }[];
+  /** Title on the chart card. */
+  chartTitle: string;
+  breakdown: BudgetSlice[];
+  /** Text after the total under the chart — "see the full breakdown". */
+  totalNote: string;
+  /**
+   * Where "see the full breakdown" links to (a PDF or page). While empty,
+   * the line renders as plain text — nothing dead ships.
+   */
+  breakdownUrl: string;
+}
+
+export const budget: BudgetContent = {
+  eyebrow: "What it costs", // TODO copy — placeholder eyebrow
+  headline:
+    "Most Olympic campaigns don't make it. The ones that do, do it on the back of supporters.",
+  body: "A full year of campaigning costs $55,000 CAD. National funding covers part — donations and sponsorship close the gap. Recurring monthly support is the most useful as it allows me to plan out my entire season.",
+  stats: [
+    // TODO — the supporter-gap amount depends on how much national funding
+    // covers; it hasn't been confirmed, so it ships as "TBC". Do NOT reuse
+    // the old $39,000 figure — it belonged to the previous $67k total.
+    { value: "TBC", label: "Annual supporter gap" },
+    { value: "4 pillars", label: "Coaching · regattas · travel · equipment" },
+    { value: "LA 2028", label: "Olympic Games target" },
+  ],
+  chartTitle: "Where your support goes",
+  breakdown: [
+    {
+      label: "Coaching + boat",
+      percent: 35,
+      amount: "~$19,250",
+      sub: "Coach fees, charter & freight",
+    },
+    {
+      label: "Regattas + housing",
+      percent: 35,
+      amount: "~$19,250",
+      sub: "Entry fees, accommodation",
+    },
+    {
+      label: "Travel",
+      percent: 16,
+      amount: "~$8,800",
+      sub: "Flights, transport to venues",
+    },
+    {
+      label: "Equipment + other",
+      percent: 14,
+      amount: "~$7,700",
+      sub: "Sails, gear, admin",
+    },
+  ],
+  totalNote: "see the full breakdown",
+  breakdownUrl: "", // TODO — link the detailed budget once it exists
 };
 
 /* --------------------------------------------------------------- backers */
