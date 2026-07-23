@@ -128,6 +128,22 @@ export default function Countdown({
         <span className="mt-2 px-6 text-center font-mono text-[10px] uppercase tracking-[.18em] text-sail/65 md:text-[11px]">
           {label}
         </span>
+        {/* Games motif — five plain circles in a row, deliberately NOT the
+            interlocking Olympic rings: that mark is IOC-protected and can't
+            be used here without authorization. Single colour, evenly
+            spaced, non-interlocking. */}
+        <svg
+          aria-hidden
+          viewBox="0 0 58 10"
+          className="mt-3 h-[7px] w-[44px] text-sail/45 md:h-2 md:w-[50px]"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
+          {[5, 17, 29, 41, 53].map((cx) => (
+            <circle key={cx} cx={cx} cy="5" r="3.6" />
+          ))}
+        </svg>
       </div>
     </div>
   );
