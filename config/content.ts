@@ -213,32 +213,49 @@ export interface ScheduleStop {
   when: string;
   title: string;
   where: string;
+  /**
+   * What kind of stop this is — it controls the small badge and dot colour:
+   * "event" (a regatta), "training" (a training block or camp), or
+   * "olympics" (the Games themselves, the big anchors at the end).
+   */
+  kind: "event" | "training" | "olympics";
   /** Highlighted dot on the timeline. */
   major?: boolean;
-  /** Optional red pill, e.g. "Key event". */
+  /** Optional red pill, e.g. "Key event" or "Olympic Games". */
   tag?: string;
 }
 
 export interface ScheduleContent {
   eyebrow: string;
   title: string;
+  /** The badge shown on every `kind: "training"` stop. */
+  trainingLabel: string;
+  /**
+   * The season, stop by stop. To add one, copy a whole block (from `{` to
+   * `},`), paste it where it belongs in the order, and edit the text —
+   * nothing else to update. `major` and `tag` are optional; delete those
+   * lines to drop the highlight or the pill.
+   */
   stops: ScheduleStop[];
 }
 
 export const schedule: ScheduleContent = {
   eyebrow: "Where I'm headed · 2026",
   title: "The season ahead.",
+  trainingLabel: "Training",
   stops: [
     {
       when: "AUG 2026",
       title: "Season restart · training base",
       where: "Building the year's foundation [DRAFT — from your calendar]",
+      kind: "training",
       major: true,
     },
     {
       when: "FALL 2026",
       title: "Senior Canadian Championships",
       where: "Kingston, Ontario",
+      kind: "event",
       major: true,
       tag: "Key event",
     },
@@ -246,13 +263,32 @@ export const schedule: ScheduleContent = {
       when: "2026",
       title: "Training blocks · Europe",
       where: "Cascais & Mediterranean venues",
+      kind: "training",
     },
     {
       when: "2026",
       title: "U21 Europeans",
       where: "Bodrum, Türkiye",
+      kind: "event",
       major: true,
       tag: "Key event",
+    },
+    // The two horizon anchors — the Games this whole road leads to.
+    {
+      when: "2028",
+      title: "LA 2028",
+      where: "Los Angeles, USA",
+      kind: "olympics",
+      major: true,
+      tag: "Olympic Games",
+    },
+    {
+      when: "2032",
+      title: "Brisbane 2032",
+      where: "Brisbane, Australia",
+      kind: "olympics",
+      major: true,
+      tag: "Olympic Games",
     },
   ],
 };

@@ -4,11 +4,42 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { schedule } from "@/config/content";
+import { schedule, type ScheduleStop } from "@/config/content";
 import { VenuesChart } from "./art/Backdrops";
 import Reveal from "./Reveal";
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Each stop kind gets its own dot colour: training blocks are teal, races
+// and the Games keep the campaign red.
+function dotColor(stop: ScheduleStop) {
+  return stop.kind === "training" ? "bg-teal-700" : "bg-red";
+}
+
+function dotHalo(stop: ScheduleStop) {
+  return stop.kind === "training"
+    ? "shadow-[0_0_0_5px_rgba(22,80,95,.16)]"
+    : "shadow-[0_0_0_5px_rgba(212,46,46,.18)]";
+}
+
+/** The pills under a stop: a neutral "Training" badge and/or the red tag. */
+function StopBadges({ stop }: { stop: ScheduleStop }) {
+  if (stop.kind !== "training" && !stop.tag) return null;
+  const pill =
+    "inline-block rounded-[3px] px-[7px] py-0.5 font-mono text-[10px] uppercase tracking-[.1em]";
+  return (
+    <div className="mt-3 flex flex-wrap gap-1.5">
+      {stop.kind === "training" && (
+        <span className={`${pill} border border-line-dark text-ink-soft`}>
+          {schedule.trainingLabel}
+        </span>
+      )}
+      {stop.tag && (
+        <span className={`${pill} bg-red text-white`}>{stop.tag}</span>
+      )}
+    </div>
+  );
+}
 
 /**
  * The 2026 season. On desktop (motion allowed) the stops travel
@@ -140,10 +171,8 @@ export default function Schedule({
             >
               <span
                 aria-hidden
-                className={`absolute left-7 top-[38px] h-[13px] w-[13px] rounded-full border-2 border-sail bg-red ${
-                  stop.major || active === i
-                    ? "shadow-[0_0_0_5px_rgba(212,46,46,.18)]"
-                    : ""
+                className={`absolute left-7 top-[38px] h-[13px] w-[13px] rounded-full border-2 border-sail ${dotColor(stop)} ${
+                  stop.major || active === i ? dotHalo(stop) : ""
                 }`}
               />
               <span className="font-mono text-[13px] tracking-[.04em] text-red-dark">
@@ -153,11 +182,7 @@ export default function Schedule({
                 {stop.title}
               </h3>
               <p className="mt-1.5 text-sm text-ink-soft">{stop.where}</p>
-              {stop.tag && (
-                <span className="mt-3 inline-block rounded-[3px] bg-red px-[7px] py-0.5 font-mono text-[10px] uppercase tracking-[.1em] text-white">
-                  {stop.tag}
-                </span>
-              )}
+              <StopBadges stop={stop} />
             </article>
           ))}
           <div className="w-[10vw] shrink-0" />
@@ -182,10 +207,8 @@ export default function Schedule({
             >
               <span
                 aria-hidden
-                className={`absolute -left-[35px] top-[26px] h-[11px] w-[11px] rounded-full border-2 border-sail bg-red md:-left-[37px] ${
-                  stop.major || active === i
-                    ? "shadow-[0_0_0_4px_rgba(212,46,46,.2)]"
-                    : ""
+                className={`absolute -left-[35px] top-[26px] h-[11px] w-[11px] rounded-full border-2 border-sail md:-left-[37px] ${dotColor(stop)} ${
+                  stop.major || active === i ? dotHalo(stop) : ""
                 }`}
               />
               <span className="pt-0.5 font-mono text-[13px] tracking-[.04em] text-red-dark">
@@ -196,11 +219,7 @@ export default function Schedule({
                   {stop.title}
                 </h3>
                 <p className="mt-[3px] text-sm text-ink-soft">{stop.where}</p>
-                {stop.tag && (
-                  <span className="mt-2 inline-block rounded-[3px] bg-red px-[7px] py-0.5 font-mono text-[10px] uppercase tracking-[.1em] text-white">
-                    {stop.tag}
-                  </span>
-                )}
+                <StopBadges stop={stop} />
               </div>
             </li>
           ))}
