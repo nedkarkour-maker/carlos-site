@@ -12,7 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function NewsletterPage() {
-  const posts = getAllPosts();
+  // Only published posts are listed — drafts stay hidden here, on the
+  // homepage teaser and in the sitemap alike.
+  const posts = getAllPosts().filter((post) => !post.draft);
 
   return (
     <>
