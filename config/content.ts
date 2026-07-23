@@ -52,6 +52,8 @@ export const site = {
   supportUrl: "https://www.windathletes.ca/athletes/carlos-charabati",
   instagramUrl: "https://www.instagram.com/carlos_charabati",
   linkedinUrl: "https://www.linkedin.com/in/carlos-charabati/",
+  /** Leave empty ("") to hide the Facebook icon in the footer. */
+  facebookUrl: "https://www.facebook.com/profile.php?id=100092780283734",
   /**
    * Link to the sponsorship deck (PDF or Drive). While empty, the
    * "Request the deck" card emails Carlos instead — nothing dead ships.
@@ -590,31 +592,33 @@ export interface FooterColumn {
   links: CtaLink[];
 }
 
-export interface FooterBrandLink {
-  label: string;
-  href?: string;
-  /**
-   * Renders as a button that assembles the mailto in JS on click, so the
-   * address never appears in the page HTML for scrapers to harvest.
-   */
-  email?: boolean;
-}
-
 export interface FooterContent {
   tagline: string;
-  /** Arrow links under the brand name: contact + socials. */
-  brandLinks: FooterBrandLink[];
+  /**
+   * Screen-reader labels for the icon buttons under the brand name. The
+   * links themselves come from `site` above (instagramUrl, linkedinUrl,
+   * facebookUrl — an icon hides itself while its URL is empty); the mail
+   * icon assembles the address in JS on click so it never appears in the
+   * page HTML for scrapers to harvest.
+   */
+  socialLabels: {
+    email: string;
+    instagram: string;
+    linkedin: string;
+    facebook: string;
+  };
   columns: FooterColumn[];
   donationNote: string;
 }
 
 export const footer: FooterContent = {
   tagline: `${site.role} · ${site.country} ${site.sailNumber}`,
-  brandLinks: [
-    { label: "Send an email to Carlos", email: true },
-    { label: "Instagram", href: site.instagramUrl },
-    { label: "LinkedIn", href: site.linkedinUrl },
-  ],
+  socialLabels: {
+    email: "Send an email to Carlos",
+    instagram: "Instagram",
+    linkedin: "LinkedIn",
+    facebook: "Facebook",
+  },
   columns: [
     {
       heading: "Story",
