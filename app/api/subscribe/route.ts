@@ -99,11 +99,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const apiKey = process.env.MAILERLITE_API_KEY;
-  const groupId = process.env.MAILERLITE_GROUP_ID;
-  if (!apiKey || !groupId) {
+  const apiKey = process.env.BEEHIIV_API_KEY;
+  const publicationId = process.env.BEEHIIV_PUBLICATION_ID;
+  if (!apiKey || !publicationId) {
     console.error(
-      "MailerLite is not configured — set MAILERLITE_API_KEY and MAILERLITE_GROUP_ID in .env.local",
+      "Beehiiv is not configured — set BEEHIIV_API_KEY and BEEHIIV_PUBLICATION_ID in .env.local",
     );
     return NextResponse.json(
       { error: "Subscriptions aren't set up yet — please try again later." },
@@ -112,35 +112,55 @@ export async function POST(request: Request) {
   }
 
   try {
-    const res = await fetch("https://connect.mailerlite.com/api/subscribers", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${apiKey}`,
+    const res = await fetch(
+      `https://api.beehiiv.com/v2/publications/${publicationId}/subscriptions`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          email,
+          reactivate_existing: false,
+          send_welcome_email: true,
+          utm_source: "website",
+          utm_medium: "subscribe-form",
+        }),
       },
-      body: JSON.stringify({ email, groups: [groupId] }),
-    });
+    );
 
-    // 201 = new subscriber, 200 = already existed and was updated — both fine.
+    // 200/201 = accepted. When double opt-in is on, Beehiiv returns the
+    // subscription with status "validating" until the person confirms by
+    // email — still a success as far as the form is concerned.
     if (res.ok) {
       return NextResponse.json({ ok: true });
     }
 
-    if (res.status === 422) {
+    if (res.status === 400) {
       return NextResponse.json(
         { error: "Please enter a valid email address." },
         { status: 400 },
       );
     }
 
-    console.error("MailerLite error:", res.status, await res.text());
+    if (res.status === 429) {
+      return NextResponse.json(
+        { error: "Too many attempts — please try again in a few minutes." },
+        { status: 429 },
+      );
+    }
+
+    // 401 (bad key) / 404 (bad publication id) land here — the console line
+    // tells you which; the visitor just sees a generic retry message.
+    console.error("Beehiiv error:", res.status, await res.text());
     return NextResponse.json(
       { error: "Something went wrong — please try again later." },
       { status: 502 },
     );
   } catch (err) {
-    console.error("MailerLite request failed:", err);
+    console.error("Beehiiv request failed:", err);
     return NextResponse.json(
       { error: "Something went wrong — please try again later." },
       { status: 502 },

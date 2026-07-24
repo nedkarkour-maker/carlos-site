@@ -9,7 +9,10 @@ import Navbar from "@/components/Navbar";
 import { getAllPosts, getPost } from "@/lib/newsletter";
 
 export function generateStaticParams() {
-  return getAllPosts().map(({ slug }) => ({ slug }));
+  // Drafts are never built — a draft URL 404s until the post is published.
+  return getAllPosts()
+    .filter((post) => !post.draft)
+    .map(({ slug }) => ({ slug }));
 }
 
 // Only slugs from generateStaticParams exist — anything else 404s.
@@ -89,7 +92,8 @@ export default async function NewsletterPostPage({
 }) {
   const { slug } = await params;
   const post = getPost(slug);
-  if (!post) notFound();
+  // Guard drafts too, in case one is ever reached directly.
+  if (!post || post.draft) notFound();
 
   return (
     <>

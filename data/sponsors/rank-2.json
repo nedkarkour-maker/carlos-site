@@ -1,18 +1,22 @@
 [
   {
-    "name": "Sail Canada",
-    "logo": "/images/sponsors/sail-canada.png",
+    "name": "WPG Canada",
+    "logo": "/images/sponsors/wpg-canada.png",
     "url": ""
   },
   {
-    "name": "YC Pointe-Claire",
-    "logo": "/images/sponsors/pcyc.png",
+    "name": "Vela LA",
+    "logo": "/images/sponsors/vela-la.png",
     "url": ""
   },
   {
-    "name": "",
-    "logo": "",
-    "url": "",
-    "placeholder": true
+    "name": "Element Six Evolution",
+    "logo": "/images/sponsors/element-six.png",
+    "url": ""
+  },
+  {
+    "name": "Forward WIP",
+    "logo": "/images/sponsors/forward-wip.png",
+    "url": ""
   }
 ]

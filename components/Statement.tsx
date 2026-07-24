@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { statement } from "@/config/content";
+import { useContent } from "@/lib/locale";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
  * full strength with no pinning.
  */
 export default function Statement() {
+  const { statement } = useContent();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -40,8 +41,10 @@ export default function Statement() {
         },
       });
     });
+    // Re-runs when the language flips: the word spans are re-created, so
+    // the scroll effect must re-bind to the new nodes (mm.revert cleans up).
     return () => mm.revert();
-  }, []);
+  }, [statement]);
 
   return (
     <section

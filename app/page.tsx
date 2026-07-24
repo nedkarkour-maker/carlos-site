@@ -5,7 +5,7 @@ import Statement from "@/components/Statement";
 import RaceVideo from "@/components/RaceVideo";
 import Numbers from "@/components/Numbers";
 import Schedule from "@/components/Schedule";
-import PhotoStrip from "@/components/PhotoStrip";
+import NotableResults from "@/components/NotableResults";
 import HowYouCanHelp from "@/components/HowYouCanHelp";
 import Budget from "@/components/Budget";
 import NewsletterTeaser from "@/components/NewsletterTeaser";
@@ -42,12 +42,12 @@ export default function Home() {
         <Hero />
         <Statement />
         <WaveDivider fill="var(--sail)" className="bg-teal-950" />
-        <About />
+        <About boatSrc={generatedImage("sailboat-line.png")} />
         <WaveDivider fill="var(--teal-900)" />
-        <Numbers />
+        <Numbers topoSrc={generatedImage("stats-topo.png")} />
         <WaveDivider fill="var(--sail)" className="bg-teal-900" />
+        <NotableResults />
         <Schedule mapSrc={generatedImage("venues-chart.png")} />
-        <PhotoStrip />
         <HowYouCanHelp />
         <Budget />
         <NewsletterTeaser />

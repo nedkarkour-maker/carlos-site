@@ -1,4 +1,6 @@
-import { race } from "@/config/content";
+"use client";
+
+import { useContent } from "@/lib/locale";
 import Reveal from "./Reveal";
 
 /**
@@ -9,6 +11,7 @@ import Reveal from "./Reveal";
  * tracking cookies until the visitor actually plays the video.
  */
 export default function RaceVideo() {
+  const { race } = useContent();
   return (
     <section className="bg-teal-950 text-sail">
       <Reveal className="wrap py-[90px]">

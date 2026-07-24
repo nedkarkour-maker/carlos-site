@@ -2,12 +2,40 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { nav, site } from "@/config/content";
+import { site } from "@/config/content";
+import { useContent, useLocale, type Locale } from "@/lib/locale";
 
 const linkClass =
   "text-sm font-medium text-sail/80 transition-colors hover:text-sail";
 const ctaClass =
   "inline-block rounded-[2px] bg-red px-[18px] py-2.5 text-sm font-semibold text-white transition hover:-translate-y-px hover:bg-red-bright";
+
+/** The EN / FR switch — remembers the choice, defaults to EN. */
+function LanguageToggle() {
+  const { locale, setLocale } = useLocale();
+  const option = (value: Locale) => (
+    <button
+      type="button"
+      lang={value}
+      aria-pressed={locale === value}
+      onClick={() => setLocale(value)}
+      className={`px-1 py-2 font-mono text-xs uppercase tracking-[.08em] transition-colors ${
+        locale === value ? "text-sail" : "text-sail/45 hover:text-sail/80"
+      }`}
+    >
+      {value.toUpperCase()}
+    </button>
+  );
+  return (
+    <div className="flex items-center">
+      {option("en")}
+      <span aria-hidden className="text-sail/30">
+        /
+      </span>
+      {option("fr")}
+    </div>
+  );
+}
 
 export default function Navbar({
   alwaysSolid = false,
@@ -15,6 +43,7 @@ export default function Navbar({
   /** Solid background from the start — for pages without a dark hero. */
   alwaysSolid?: boolean;
 }) {
+  const { nav } = useContent();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const solid = alwaysSolid || scrolled;
@@ -49,6 +78,7 @@ export default function Navbar({
               {link.label}
             </Link>
           ))}
+          <LanguageToggle />
           <a
             href={nav.cta.href}
             target="_blank"
@@ -59,17 +89,20 @@ export default function Navbar({
           </a>
         </div>
 
-        <button
-          type="button"
-          aria-label="Toggle menu"
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-          className="flex flex-col gap-[5px] p-1.5 md:hidden"
-        >
-          <span className="block h-0.5 w-6 bg-sail" />
-          <span className="block h-0.5 w-6 bg-sail" />
-          <span className="block h-0.5 w-6 bg-sail" />
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <LanguageToggle />
+          <button
+            type="button"
+            aria-label="Toggle menu"
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+            className="flex flex-col gap-[5px] p-1.5"
+          >
+            <span className="block h-0.5 w-6 bg-sail" />
+            <span className="block h-0.5 w-6 bg-sail" />
+            <span className="block h-0.5 w-6 bg-sail" />
+          </button>
+        </div>
 
         {open && (
           <div className="absolute right-6 top-full mt-2 flex flex-col gap-3.5 rounded-md bg-teal-900 p-[18px] shadow-lg md:hidden">

@@ -52,6 +52,8 @@ export const site = {
   supportUrl: "https://www.windathletes.ca/athletes/carlos-charabati",
   instagramUrl: "https://www.instagram.com/carlos_charabati",
   linkedinUrl: "https://www.linkedin.com/in/carlos-charabati/",
+  /** Leave empty ("") to hide the Facebook icon in the footer. */
+  facebookUrl: "https://www.facebook.com/profile.php?id=100092780283734",
   /**
    * Link to the sponsorship deck (PDF or Drive). While empty, the
    * "Request the deck" card emails Carlos instead — nothing dead ships.
@@ -123,13 +125,12 @@ export const about: AboutContent = {
   eyebrow: "This is my project",
   title: "I'm chasing the Olympics — by method, not luck.",
   paragraphs: [
-    "I'm an 18-year-old ILCA sailor from Montréal, and an engineering student at McGill and CentraleSupélec. I race for Canada — sail number **CAN 219619** — out of Clube Naval de Cascais.",
-    "In 2024, I became **ILCA 4 Youth World Champion** in front of 277 sailors. A year later, I lined up against the world's best at the 2025 Men's Worlds in Kiel, and finished **7th of 124**. I treat sailing the way I treat engineering: measure, adjust, repeat — **fail fast, recover methodically.**",
-    "2028 and 2032 are on the horizon. This is the long road there. [DRAFT — full story from locked spine; this is the length/tone.]",
+    "I am a **19-year-old sailor** from **Montreal**, driven by a deep passion for the ocean and high-performance sport. I am currently balancing my **Olympic campaign** with an **engineering dual degree** at **CentraleSupélec and McGill** University.",
+    "I compete in the **ILCA**, formerly known as the Laser, the men's individual Olympic dinghy class. My mission is twofold: to reach the **Olympic podium** and to create a **positive impact** on the world along the way.",
   ],
   image: {
-    src: "/images/IMG_3906.JPG",
-    alt: "Carlos Charabati receiving a medal at a championship ceremony",
+    src: "/images/img_14.jpg",
+    alt: "Carlos Charabati, World Champion, and Bernardo at ILCA 4.",
   },
 };
 
@@ -144,9 +145,8 @@ export interface StatementContent {
 // Keep it to 2–4 short lines; the last one lands the punch.
 export const statement: StatementContent = {
   lines: [
-    "World champion at 18.",
-    "7th of 124 at the Men's Worlds at 19.",
-    "LA 2028 isn't a dream. It's the plan.",
+    "World champion, focused, dedicated and smiling.",
+    "The Olympics isn't a dream. It's the plan.",
   ],
 };
 
@@ -213,32 +213,49 @@ export interface ScheduleStop {
   when: string;
   title: string;
   where: string;
+  /**
+   * What kind of stop this is — it controls the small badge and dot colour:
+   * "event" (a regatta), "training" (a training block or camp), or
+   * "olympics" (the Games themselves, the big anchors at the end).
+   */
+  kind: "event" | "training" | "olympics";
   /** Highlighted dot on the timeline. */
   major?: boolean;
-  /** Optional red pill, e.g. "Key event". */
+  /** Optional red pill, e.g. "Key event" or "Olympic Games". */
   tag?: string;
 }
 
 export interface ScheduleContent {
   eyebrow: string;
   title: string;
+  /** The badge shown on every `kind: "training"` stop. */
+  trainingLabel: string;
+  /**
+   * The season, stop by stop. To add one, copy a whole block (from `{` to
+   * `},`), paste it where it belongs in the order, and edit the text —
+   * nothing else to update. `major` and `tag` are optional; delete those
+   * lines to drop the highlight or the pill.
+   */
   stops: ScheduleStop[];
 }
 
 export const schedule: ScheduleContent = {
   eyebrow: "Where I'm headed · 2026",
   title: "The season ahead.",
+  trainingLabel: "Training",
   stops: [
     {
       when: "AUG 2026",
       title: "Season restart · training base",
       where: "Building the year's foundation [DRAFT — from your calendar]",
+      kind: "training",
       major: true,
     },
     {
       when: "FALL 2026",
       title: "Senior Canadian Championships",
       where: "Kingston, Ontario",
+      kind: "event",
       major: true,
       tag: "Key event",
     },
@@ -246,51 +263,90 @@ export const schedule: ScheduleContent = {
       when: "2026",
       title: "Training blocks · Europe",
       where: "Cascais & Mediterranean venues",
+      kind: "training",
     },
     {
       when: "2026",
       title: "U21 Europeans",
       where: "Bodrum, Türkiye",
+      kind: "event",
       major: true,
       tag: "Key event",
+    },
+    // The two horizon anchors — the Games this whole road leads to.
+    {
+      when: "2028",
+      title: "LA 2028",
+      where: "Los Angeles, USA",
+      kind: "olympics",
+      major: true,
+      tag: "Olympic Games",
+    },
+    {
+      when: "2032",
+      title: "Brisbane 2032",
+      where: "Brisbane, Australia",
+      kind: "olympics",
+      major: true,
+      tag: "Olympic Games",
     },
   ],
 };
 
-/* ------------------------------------------------------------ photo strip */
+/* -------------------------------------------------------- notable results */
 
-// The image strip after the schedule — a breather between text sections.
-// Swap, add or remove entries freely; 6 keeps the grid balanced on both
-// mobile (2 columns) and desktop (3 columns).
-export const photoStrip: ImageRef[] = [
-  {
-    src: "/images/clean/fleet-upwind.jpg",
-    alt: "Carlos's CAN 219619 sail leading a packed ILCA fleet upwind",
-    focus: "75% 60%",
-  },
-  {
-    src: "/images/clean/race-viana-1.jpg",
-    alt: "Carlos trimming between races at the Youth Worlds in Viana",
-  },
-  {
-    src: "/images/IMG_5623.JPG",
-    alt: "Carlos hiking hard upwind under the CAN sail",
-    focus: "55% 45%",
-  },
-  {
-    src: "/images/clean/story-spray.jpg",
-    alt: "Carlos driving through heavy spray at the ILCA 4 Youth Worlds",
-    focus: "40% 30%",
-  },
-  {
-    src: "/images/clean/story-aerial.jpg",
-    alt: "Aerial view of the ILCA fleet converging on a mark",
-  },
-  {
-    src: "/images/clean/race-viana-2.jpg",
-    alt: "Carlos smiling on the water at the Youth Worlds in Viana",
-  },
-];
+// The three headline results, shown as photo cards between the numbers and
+// the schedule. Each card is a photo with the result in bold underneath and
+// the event name under that. To change one, edit the text between the
+// quotes; to swap a photo, change `src` (see "Add or swap a photo" in
+// CONTENT_GUIDE.md). Keep them in the order they should appear.
+export interface NotableResult {
+  image: ImageRef;
+  /** The result itself, short and bold — "Gold", "6th", "7th". */
+  result: string;
+  /** The event line under it — "2024 ILCA 4 Youth Worlds". */
+  event: string;
+}
+
+export interface NotableResultsContent {
+  /** Small mono label above the cards. */
+  eyebrow: string;
+  items: NotableResult[];
+}
+
+export const notableResults: NotableResultsContent = {
+  eyebrow: "Notable results",
+  items: [
+    {
+      // TODO photo — stand-in until the real 2023 result photo is added.
+      image: {
+        src: "/images/clean/carlos-sixth.jpg",
+        alt: "Carlos's CAN 219619 sail leading a packed ILCA fleet upwind",
+        focus: "75% 60%",
+      },
+      result: "6th",
+      event: "ILCA 4 World Championships 2023 · Volos, Greece",
+    },
+    {
+      // TODO photo — confirm this is the right shot for the world title.
+      image: {
+        src: "/images/clean/carlos-gold.jpg",
+        alt: "Carlos celebrating his ILCA 4 Youth World Championship win",
+      },
+      result: "Gold",
+      event: "World Championships 2024 · Viana, Portugal",
+    },
+    {
+      // TODO photo — stand-in until the real Kiel 2025 photo is added.
+      image: {
+        src: "/images/clean/carlos-seventh.jpg",
+        alt: "Carlos hiking hard upwind under the CAN sail",
+      },
+      result: "7th",
+      event: "ILCA 6 World Championships 2025 · Kiel, Germany",
+    },
+  ],
+};
 
 /* ------------------------------------------------------------ newsletter */
 
@@ -327,27 +383,17 @@ export interface HelpCard {
   cta: CtaLink;
 }
 
-export interface BudgetItem {
-  label: string;
-  share: string;
-}
-
 export interface HelpContent {
   eyebrow: string;
   title: string;
   lead: string;
   cards: HelpCard[];
-  budget: {
-    amount: string;
-    note: string;
-    breakdown: BudgetItem[];
-  };
 }
 
 export const help: HelpContent = {
   eyebrow: "How you can help",
-  title: "Three ways to be part of it.",
-  lead: "Whether you're a company, a fellow sailor, or someone who just likes the story — there's a way in. No pressure; every bit moves the project forward.",
+  title: "Be part of the journey.",
+  lead: "Whether you're a company, a fellow sailor, or someone who loves the adventure — welcome onboard.",
   cards: [
     {
       index: "01",
@@ -358,12 +404,7 @@ export const help: HelpContent = {
     {
       index: "02",
       title: "Partner with me",
-      body: "For brands and companies. Your name travels with me — boat, sail, gear, and content — across Canada, the US, and Europe.",
-      bullets: [
-        "Logo on boat, sail & gear",
-        "Reach across a growing social audience",
-        "Talks & appearances at your events",
-      ],
+      body: "For brands and companies. Your name travels with me — boat, sail, gear, and content — across Canada, US, and Europe.",
       // Until a deck link exists (site.sponsorDeckUrl), this emails Carlos
       // directly with a prefilled subject.
       cta: site.sponsorDeckUrl
@@ -379,11 +420,7 @@ export const help: HelpContent = {
       index: "03",
       title: "Support the campaign",
       body: "Direct support keeps me on the water — and every gift is tax-receipted in Canada, through Wind Athletes Canada.",
-      bullets: [
-        "One-time or monthly",
-        "100% toward the season",
-        "Tax receipt for Canadian donors",
-      ],
+      
       cta: {
         label: "Support — tax-receipted",
         href: site.supportUrl,
@@ -391,16 +428,56 @@ export const help: HelpContent = {
       },
     },
   ],
-  budget: {
-    amount: "≈ €22,000",
-    note: "what the 2026 season takes [DRAFT]",
-    breakdown: [
-      { label: "Coaching & camps", share: "35%" },
-      { label: "Travel", share: "30%" },
-      { label: "Boat & gear", share: "20%" },
-      { label: "Entries & lodging", share: "15%" },
-    ],
-  },
+};
+
+/* ---------------------------------------------------------------- budget */
+
+// The budget section: the "where your support goes" ring chart, with each
+// slice's label, percentage and one-line sub listed beside it. The big
+// "$55k CAD/yr" line under the chart comes from data/funding.json (`goal`)
+// — change the total there. Keep the four percentages summing to 100.
+export interface BudgetSlice {
+  /** Pillar name in the legend — "Coaching + boat". */
+  label: string;
+  /** Share of the budget as a number (35 = 35%) — draws the ring segment. */
+  percent: number;
+  /** Small line under it — what the money actually buys. */
+  sub: string;
+}
+
+export interface BudgetContent {
+  /** Section eyebrow above the chart card. */
+  eyebrow: string;
+  /** Title on the chart card. */
+  chartTitle: string;
+  breakdown: BudgetSlice[];
+}
+
+export const budget: BudgetContent = {
+  eyebrow: "What it costs",
+  chartTitle: "Where your support goes",
+  breakdown: [
+    {
+      label: "Coaching + boat",
+      percent: 35,
+      sub: "Coach fees, charter & freight",
+    },
+    {
+      label: "Regattas + housing",
+      percent: 35,
+      sub: "Entry fees, accommodation",
+    },
+    {
+      label: "Travel",
+      percent: 16,
+      sub: "Flights, transport to venues",
+    },
+    {
+      label: "Equipment + other",
+      percent: 14,
+      sub: "Sails, gear, admin",
+    },
+  ],
 };
 
 /* --------------------------------------------------------------- backers */
@@ -455,7 +532,7 @@ export interface SubscribeContent {
 export const subscribe: SubscribeContent = {
   eyebrow: "How you can support",
   title: "Follow the campaign.",
-  body: "One email when something happens — a result, a training block, a milestone. No spam, ever.",
+  body: "Stories from the campaign trail — adventures, training, and lessons.",
   ctaLabel: "Join the crew",
   placeholder: "you@email.com",
   button: "Subscribe",
@@ -472,31 +549,33 @@ export interface FooterColumn {
   links: CtaLink[];
 }
 
-export interface FooterBrandLink {
-  label: string;
-  href?: string;
-  /**
-   * Renders as a button that assembles the mailto in JS on click, so the
-   * address never appears in the page HTML for scrapers to harvest.
-   */
-  email?: boolean;
-}
-
 export interface FooterContent {
   tagline: string;
-  /** Arrow links under the brand name: contact + socials. */
-  brandLinks: FooterBrandLink[];
+  /**
+   * Screen-reader labels for the icon buttons under the brand name. The
+   * links themselves come from `site` above (instagramUrl, linkedinUrl,
+   * facebookUrl — an icon hides itself while its URL is empty); the mail
+   * icon assembles the address in JS on click so it never appears in the
+   * page HTML for scrapers to harvest.
+   */
+  socialLabels: {
+    email: string;
+    instagram: string;
+    linkedin: string;
+    facebook: string;
+  };
   columns: FooterColumn[];
   donationNote: string;
 }
 
 export const footer: FooterContent = {
   tagline: `${site.role} · ${site.country} ${site.sailNumber}`,
-  brandLinks: [
-    { label: "Send an email to Carlos", email: true },
-    { label: "Instagram", href: site.instagramUrl },
-    { label: "LinkedIn", href: site.linkedinUrl },
-  ],
+  socialLabels: {
+    email: "Send an email to Carlos",
+    instagram: "Instagram",
+    linkedin: "LinkedIn",
+    facebook: "Facebook",
+  },
   columns: [
     {
       heading: "Story",
@@ -521,4 +600,45 @@ export const footer: FooterContent = {
     },
   ],
   donationNote: "Donations via Wind Athletes Canada",
+};
+
+/* ---------------------------------------------- language bundles (EN/FR) */
+
+// Everything a visitor reads, grouped per language. `en` simply collects
+// the sections defined above — nothing to edit here. The French version
+// lives in config/content.fr.ts and mirrors this shape exactly; the EN/FR
+// toggle in the navbar picks one of the two (EN is the default). `site`
+// (links, email, sail number) is shared and doesn't fork per language.
+export interface ContentBundle {
+  nav: NavContent;
+  hero: HeroContent;
+  about: AboutContent;
+  statement: StatementContent;
+  race: RaceContent;
+  numbers: NumbersContent;
+  schedule: ScheduleContent;
+  notableResults: NotableResultsContent;
+  newsletter: NewsletterContent;
+  help: HelpContent;
+  budget: BudgetContent;
+  backers: BackersContent;
+  subscribe: SubscribeContent;
+  footer: FooterContent;
+}
+
+export const en: ContentBundle = {
+  nav,
+  hero,
+  about,
+  statement,
+  race,
+  numbers,
+  schedule,
+  notableResults,
+  newsletter,
+  help,
+  budget,
+  backers,
+  subscribe,
+  footer,
 };

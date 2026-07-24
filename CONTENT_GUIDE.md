@@ -42,47 +42,59 @@ The date format is `YYYY-MM-DD`.
 
 ## Add or edit a schedule event
 
-Find `stops` under `schedule`. Each event is one block. To add one, copy a
-whole block (from `{` to `},`) and edit it:
+Find `stops` under `schedule`. Each stop is one block. To add one, copy a
+whole block (from `{` to `},`), paste it where it belongs in the order,
+and edit it:
 
 ```ts
 {
   when: "MAR 2027",
   title: "ILCA 7 Worlds",
   where: "Cascais, Portugal",
+  kind: "event",      // "event", "training" or "olympics" — picks the badge
   major: true,        // bigger dot on the timeline (optional)
   tag: "Key event",   // red badge (optional — delete the line to remove)
 },
 ```
 
+`kind` is required: `"event"` for regattas (red dot), `"training"` for
+training blocks (teal dot + a neutral "Training" badge), `"olympics"` for
+the Games at the end of the timeline.
+
 ## Change the budget
 
-Find `budget` under `help`:
+Two places, one job each:
 
-```ts
-amount: "≈ €22,000",
-breakdown: [
-  { label: "Coaching & camps", share: "35%" },
-  ...
-]
-```
+- **`data/funding.json`** — the yearly total. `goal: 55000` renders as
+  the "$55k CAD/yr" line under the ring chart.
+- **`budget` in `config/content.ts`** — everything written out: the
+  headline, the three stat columns, and the four `breakdown` slices
+  (label, `percent`, `amount`, sub-line). The ring redraws itself from
+  the percentages — keep them adding up to 100, and keep the amounts
+  consistent with the total.
 
-Edit the amount, or any label/percentage. Bars resize automatically.
-(Keep the percentages adding up to 100 so it reads honestly.)
+The "Annual supporter gap" stat is `"TBC"` until the national-funding
+figure is confirmed — replace it then. To make "see the full breakdown"
+a real link, set `breakdownUrl` to the PDF/page address.
 
-## Change the photo strip
+## Change the notable results
 
-Find `photoStrip` in `config/content.ts`. Each photo is one block:
+Find `notableResults` in `config/content.ts`. Each card is one block:
 
 ```ts
 {
-  src: "/images/clean/fleet-upwind.jpg",
-  alt: "Carlos leading a packed ILCA fleet upwind",  // for screen readers
-  focus: "75% 60%",                                  // optional crop point
+  image: {
+    src: "/images/clean/fleet-upwind.jpg",
+    alt: "Carlos leading a packed ILCA fleet upwind",  // for screen readers
+    focus: "75% 60%",                                  // optional crop point
+  },
+  result: "Gold",                    // the bold line under the photo
+  event: "2024 ILCA 4 Youth Worlds", // the line under it
 },
 ```
 
-Six photos keep the grid balanced; swap, add or remove freely.
+Three cards keep the row balanced. The current photos are stand-ins
+(marked `TODO photo`) — swap `src` when the real result photos are in.
 
 ## Swap the race video
 
@@ -112,6 +124,27 @@ ctaLabel: "Join the crew",
 Keep it to a word or three — it renders huge. (`button` and `buttonBusy`
 are the smaller submit button inside the signup window that opens when
 someone clicks it.)
+
+## French version (EN / FR toggle)
+
+The site has an EN / FR switch in the top-right corner. English lives in
+`config/content.ts`; French lives in **`config/content.fr.ts`** — same
+structure, one file each. Right now every French string is still the
+English text, marked `TODO fr`: to translate, open `content.fr.ts` and
+change the text between the quotes, section by section. Don't add or
+remove fields — the two files must keep the same shape.
+
+If you change a photo, date, link or percentage in `content.ts`, mirror
+it in `content.fr.ts` (those aren't translations, they should match).
+Newsletter posts are English-only for now and show as-is in both
+languages.
+
+## Social links (footer icons)
+
+The footer's icon buttons read from the top of `config/content.ts`:
+`instagramUrl`, `linkedinUrl`, `facebookUrl`. Change an address there, or
+set it to `""` to hide that icon. The mail icon needs no setup — it uses
+`contactEmail` (assembled on click, invisible to email scrapers).
 
 ## Add or swap a photo (anywhere)
 

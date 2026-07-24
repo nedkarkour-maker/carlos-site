@@ -250,6 +250,75 @@ required for absolute OG URLs. New this session: the repo's eslint
 (react-hooks/purity) rejects `useRef(Date.now())` in render — seed
 refs like that inside `useEffect` (see Subscribe.tsx).
 
+## Session 6 (2026-07-22) — final pre-publish pass, all tasks shipped
+
+Commits 070b70a..(this one): brief committed, then one commit per task.
+
+- **6A NotableResults** replaces PhotoStrip; page reordered to the brief's
+  target list (results before schedule, teaser between budget and
+  subscribe — deliberately undoes 9674e1b per the newer brief). The three
+  photos are stand-ins from public/images/clean with `TODO photo` marks;
+  "2023 Worlds" event name still `TODO copy`.
+- **6B Schedule kinds**: stops stay in config (one-object copy-paste,
+  documented); `kind: event|training|olympics` drives teal dots + neutral
+  "Training" badge vs red pills; LA 2028 + **Brisbane** 2032 anchors
+  (Brisbane is the confirmed 2032 host — the prompt's "Los Angeles 2032"
+  was wrong; flag to Carlos).
+- **6C SubscribeDialog** extracted from Subscribe (form verbatim,
+  time-trap still seeds on page mount); module-scoped
+  `openSubscribeDialog()` + `SubscribeDialogTrigger` (anchor fallback to
+  #subscribe without JS); help card 01 opens the same single dialog.
+- **6D Budget donut**: new `budget` config shape (headline/body/stats/
+  breakdown percent+CAD+sub), BudgetBars + FundingBar deleted, inline-SVG
+  ring (stroked circles, 2px gaps, staggered draw-in, static under
+  reduced motion) on the teal-800 card, monochrome ramp #F6F3EC→#4E5B5E
+  (CVD-validated; darkest slice relies on the fully-labelled legend).
+  funding.json → CAD/55000; goal derives "$55k CAD/yr". Supporter gap =
+  "TBC" — do NOT reuse the stale $39,000.
+- **6E Footer icons**: mail/IG/LinkedIn/Facebook inline SVGs, 44px
+  targets, aria-labels, focus rings; EmailLink mailto-on-click kept;
+  icons hide while their site.* URL is empty; `site.facebookUrl` added.
+- **6F Countdown motif**: initially built as five plain non-interlocking
+  circles (legal-safe stand-in). **Superseded same session:** after I
+  flagged the trademark risk in chat, Carlos explicitly chose to use the
+  **actual Olympic five-ring mark** and accept the risk. Now inline-SVG
+  official-colour rings (blue #0081C8 / black / red #EE334E / yellow
+  #FCB131 / green #00A651) on a small light chip (so the black ring reads
+  on the dark hero) with a ™ he requested — see Countdown.tsx.
+  ⚠️ Still an IOC-protected mark: the risk I described (COC/Sail Canada
+  relationships, commercial-use enforcement) stands; this is Carlos's
+  accepted decision, not a clearance.
+- **6G EN/FR**: `en` bundle aggregated in content.ts (values untouched);
+  `config/content.fr.ts` mirrors it with TODO-fr English; client
+  LocaleProvider (lib/locale.tsx, useSyncExternalStore over localStorage,
+  default EN, syncs `<html lang>`); navbar toggle desktop+mobile. Copy
+  sections became client components; About/Numbers take generated-art src
+  as props from the page; NewsletterTeaser split server(fs)/client(copy).
+  Homepage still fully static; /newsletter stays EN by design.
+- **Task 12 sponsors: NOT done — blocked.** The referenced pyramid
+  screenshot was never attached to the session; rank JSONs untouched.
+- Verification (prod build on :3210): lint/tsc/build green, homepage
+  static; security headers + CSP unchanged bar the existing
+  youtube-nocookie frame-src; HTML asserts all pass (order, no email/
+  mailto, teaser hidden while drafts, CAD figures, icons); subscribe
+  route honeypot/time-trap fake-ok, cross-site 403 (note: 403 returns
+  BEFORE the rate limiter so it doesn't count), 6th counted hit 429;
+  Playwright 18/18 (dialog big-button + help-card open same dialog, ESC/
+  backdrop close, focus contained, FR flips lang + persists reload,
+  T–723 correct, reduced-motion statics, zero console errors); teaser
+  card-render confirmed on a dev server with one draft flipped
+  (reverted); screenshot tour eyeballed at 1440/390 incl. dialog open.
+- Gotchas: a stale `next start` from session 5 still occupied :3210 and
+  silently served the OLD build to the first header check — killed it
+  (PID 22668). Always confirm the background server actually started.
+  eslint react-hooks: no setState-in-effect (use useSyncExternalStore
+  for storage-backed state) and no closure mutation inside JSX maps.
+- Still open for Carlos: real result photos + 2023 event name; sponsor
+  pyramid screenshot; supporter-gap figure; French translation
+  (content.fr.ts); un-draft a post to surface the teaser; breakdownUrl;
+  MailerLite test-subscriber deletion + double opt-in (see session 5);
+  merge only with his explicit go.
+
 ## Actions log
 
 - 2026-07-08 (session 1, part 1): Full codebase analysis; this file

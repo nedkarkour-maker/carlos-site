@@ -12,7 +12,7 @@ export interface PostMeta {
   /** Formatted for display, e.g. "JUN 2026" or "JUN 2026 · [DRAFT]". */
   displayDate: string;
   excerpt: string;
-  /** Optional path into /public, e.g. "/images/IMG_5623.JPG". */
+  /** Optional path into /public, e.g. "/images/img_25.jpg". */
   cover?: string;
   draft: boolean;
 }
