@@ -125,12 +125,12 @@ export const about: AboutContent = {
   eyebrow: "This is my project",
   title: "I'm chasing the Olympics — by method, not luck.",
   paragraphs: [
-    "I am a 19-year-old sailor from Montreal, driven by a deep passion for the ocean and high-performance sport. I am currently balancing my Olympic campaign with an engineering dual degree at CentraleSupélec and McGill University.",
-    "I compete in the ILCA, formerly known as the Laser, the men's individual Olympic dinghy class. My mission is twofold: to reach the Olympic podium and to create a positive impact on the world along the way.",
+    "I am a **19-year-old sailor** from **Montreal**, driven by a deep passion for the ocean and high-performance sport. I am currently balancing my **Olympic campaign** with an **engineering dual degree** at **CentraleSupélec and McGill** University.",
+    "I compete in the **ILCA**, formerly known as the Laser, the men's individual Olympic dinghy class. My mission is twofold: to reach the **Olympic podium** and to create a **positive impact** on the world along the way.",
   ],
   image: {
-    src: "/images/IMG_3906.JPG",
-    alt: "Carlos Charabati receiving a medal at a championship ceremony",
+    src: "/images/30062024-5P7A1836 2.jpg",
+    alt: "Carlos Charabati, World Champion, and Bernardo at ILCA 4.",
   },
 };
 
