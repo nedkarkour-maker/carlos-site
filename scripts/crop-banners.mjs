@@ -4,7 +4,7 @@
  * touched. Re-run any time with:  node scripts/crop-banners.mjs
  */
 import sharp from "sharp";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, existsSync } from "node:fs";
 import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
@@ -25,6 +25,12 @@ const JOBS = [
 ];
 
 for (const job of JOBS) {
+  // Some source press photos were removed to shrink the repo; the cropped
+  // copies in /clean already exist, so just skip any missing source.
+  if (!existsSync(src(job.in))) {
+    console.warn(`↷ skip ${job.out} — source ${job.in} no longer in repo`);
+    continue;
+  }
   const img = sharp(src(job.in));
   const { width, height } = await img.metadata();
   const top = Math.round(height * (job.cropTop ?? 0));

@@ -247,48 +247,33 @@ export const fr: ContentBundle = {
   },
 
   /* ---------------------------------------------------------- budget */
-  // TODO fr — translate headline, body, stat labels, chart title, slice
-  // labels/subs and totalNote. Keep percentages and amounts identical to
-  // content.ts.
+  // TODO fr — translate chart title and slice labels/subs. Keep percentages
+  // identical to content.ts.
   budget: {
     eyebrow: "What it costs",
-    headline:
-      "Most Olympic campaigns don't make it. The ones that do, do it on the back of supporters.",
-    body: "A full year of campaigning costs $55,000 CAD. National funding covers part — donations and sponsorship close the gap. Recurring monthly support is the most useful as it allows me to plan out my entire season.",
-    stats: [
-      { value: "TBC", label: "Annual supporter gap" },
-      { value: "4 pillars", label: "Coaching · regattas · travel · equipment" },
-      { value: "LA 2028", label: "Olympic Games target" },
-    ],
     chartTitle: "Where your support goes",
     breakdown: [
       {
         label: "Coaching + boat",
         percent: 35,
-        amount: "~$19,250",
         sub: "Coach fees, charter & freight",
       },
       {
         label: "Regattas + housing",
         percent: 35,
-        amount: "~$19,250",
         sub: "Entry fees, accommodation",
       },
       {
         label: "Travel",
         percent: 16,
-        amount: "~$8,800",
         sub: "Flights, transport to venues",
       },
       {
         label: "Equipment + other",
         percent: 14,
-        amount: "~$7,700",
         sub: "Sails, gear, admin",
       },
     ],
-    totalNote: "see the full breakdown",
-    breakdownUrl: "",
   },
 
   /* --------------------------------------------------------- backers */

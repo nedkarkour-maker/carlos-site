@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useContent } from "@/lib/locale";
 import Reveal from "./Reveal";
@@ -15,43 +14,41 @@ interface SponsorEntry {
   logo?: string;
   /** Optional link — opens in a new tab. */
   url?: string;
+  /** Render on a dark panel — for white/light logos that vanish on the cream page. */
+  dark?: boolean;
   /** Invisible slot for a sponsor still to be added (see the README). */
   placeholder?: boolean;
 }
 
-/** rank-1 = widest top row; see data/sponsors/README.md for editing. */
+/** rank-1 = sponsors, then associations, federations/clubs; see README. */
 const RANKS: SponsorEntry[][] = [rank1, rank2, rank3, rank4];
 
-// Logo box + spacing per rank — each row down is narrower and smaller,
-// shaping the inverted pyramid on both mobile and desktop.
-const ROW_BOX = [
-  "h-10 w-24 md:h-14 md:w-40",
-  "h-9 w-20 md:h-11 md:w-32",
-  "h-8 w-18 md:h-9 md:w-28",
-  "h-7 w-16 md:h-8 md:w-24",
-];
-const ROW_GAP = [
-  "gap-x-7 gap-y-5 md:gap-x-14",
-  "gap-x-6 gap-y-4 md:gap-x-11",
-  "gap-x-6 gap-y-4 md:gap-x-9",
-  "gap-x-5 gap-y-3 md:gap-x-8",
-];
+// Every logo renders at the same height (width auto) so wordmarks and crests
+// read as one size — a fixed box + object-contain would make wide logos look
+// huge and square ones tiny. max-w caps only pathologically wide art.
+const LOGO = "h-10 w-auto max-w-[190px] object-contain md:h-14 md:max-w-[230px]";
+const ROW_GAP = "gap-x-8 gap-y-6 md:gap-x-14 md:gap-y-8";
 
-function SponsorMark({ entry, box }: { entry: SponsorEntry; box: string }) {
+function SponsorMark({ entry }: { entry: SponsorEntry }) {
+  const logo = (
+    // Plain <img>: uniform height with auto width; next/image needs fixed
+    // dimensions we don't have for these path-referenced logos.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={entry.logo!} alt={`${entry.name} logo`} className={LOGO} />
+  );
   const mark = entry.logo ? (
-    <span className={`relative block ${box}`}>
-      <Image
-        src={entry.logo}
-        alt={`${entry.name} logo`}
-        fill
-        sizes="160px"
-        className="object-contain"
-      />
-    </span>
+    // Light logos (e.g. a white wordmark) need a dark backing to stay visible.
+    entry.dark ? (
+      <span className="inline-flex items-center rounded-md bg-teal-950 px-3 py-2">
+        {logo}
+      </span>
+    ) : (
+      logo
+    )
   ) : (
     // No logo file (e.g. a memorial fund): the name is the mark.
     <span
-      className={`flex items-center justify-center text-center font-display text-sm font-bold leading-tight text-ink-soft md:text-base ${box}`}
+      className="flex h-10 items-center justify-center text-center font-display text-sm font-bold leading-tight text-ink-soft md:h-14 md:text-base"
     >
       {entry.name}
     </span>
@@ -64,23 +61,23 @@ function SponsorMark({ entry, box }: { entry: SponsorEntry; box: string }) {
         target="_blank"
         rel="noopener noreferrer"
         title={entry.name}
-        className="block opacity-75 transition hover:opacity-100"
+        className="block transition hover:opacity-70"
       >
         {mark}
       </a>
     );
   }
   return (
-    <span title={entry.name} className="block opacity-75 transition hover:opacity-100">
+    <span title={entry.name} className="block">
       {mark}
     </span>
   );
 }
 
 /**
- * Sponsors as an inverted pyramid: plain logos on the page background, the
- * widest row on top, funneling down to the "maybe you?" invitation at the
- * tip. Rendered purely from data/sponsors/rank-*.json.
+ * Sponsors grouped by category (sponsors, associations, federations/clubs),
+ * plain logos on the page background at a uniform height, funneling down to
+ * the "maybe you?" invitation. Rendered purely from data/sponsors/rank-*.json.
  */
 export default function Backers() {
   const { backers } = useContent();
@@ -98,11 +95,11 @@ export default function Backers() {
             return (
               <ul
                 key={i}
-                className={`flex flex-wrap items-center justify-center ${ROW_GAP[i]}`}
+                className={`flex flex-wrap items-center justify-center ${ROW_GAP}`}
               >
                 {visible.map((entry) => (
                   <li key={entry.name}>
-                    <SponsorMark entry={entry} box={ROW_BOX[i]} />
+                    <SponsorMark entry={entry} />
                   </li>
                 ))}
               </ul>
