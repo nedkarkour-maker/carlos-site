@@ -5,13 +5,18 @@
     "url": "https://www.windathletes.ca"
   },
   {
+    "name": "Sail Canada",
+    "logo": "/images/sponsors/sail-canada.png",
+    "url": ""
+  },
+  {
     "name": "Voile Québec",
     "logo": "/images/sponsors/voile-quebec.png",
     "url": ""
   },
   {
-    "name": "Clube Naval de Cascais",
-    "logo": "/images/sponsors/cn-cascais.png",
+    "name": "Institut national du sport du Québec",
+    "logo": "/images/sponsors/ins-quebec.png",
     "url": ""
   }
 ]

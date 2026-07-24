@@ -20,14 +20,16 @@ Create `.env.local` (never committed) with:
 
 | Variable | Required | What it does |
 | --- | --- | --- |
-| `MAILERLITE_API_KEY` | for the subscribe form | MailerLite API token. Without it the form returns a friendly 503. |
-| `MAILERLITE_GROUP_ID` | for the subscribe form | The MailerLite group new subscribers join. |
+| `BEEHIIV_API_KEY` | for the subscribe form | Beehiiv API key (Dashboard → Settings → API). Without it the form returns a friendly 503. |
+| `BEEHIIV_PUBLICATION_ID` | for the subscribe form | The publication the subscriber joins — the `pub_…` id from the same API settings page. |
 | `NEXT_PUBLIC_SITE_URL` | optional | Canonical production URL used for social-share metadata, the sitemap and structured data. Falls back to Vercel's production URL, then localhost. |
 | `GEMINI_API_KEY` | optional | Only for regenerating background art via `scripts/generate-images.mjs`. |
 
-**MailerLite:** enable *double opt-in* in the MailerLite dashboard so every
-signup is confirmed by email — the form's honeypot and time-trap stop casual
-bots, but confirmed opt-in is what protects sender reputation.
+**Beehiiv:** enable *double opt-in* in the Beehiiv dashboard (Settings → Email
+Preferences) so every signup is confirmed by email — the form's honeypot and
+time-trap stop casual bots, but confirmed opt-in is what protects sender
+reputation. On Vercel, set `BEEHIIV_API_KEY` and `BEEHIIV_PUBLICATION_ID` in
+Project → Settings → Environment Variables too, not just in local `.env.local`.
 
 ## Editing the site
 
