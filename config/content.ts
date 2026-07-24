@@ -129,7 +129,7 @@ export const about: AboutContent = {
     "I compete in the **ILCA**, formerly known as the Laser, the men's individual Olympic dinghy class. My mission is twofold: to reach the **Olympic podium** and to create a **positive impact** on the world along the way.",
   ],
   image: {
-    src: "/images/30062024-5P7A1836 2.jpg",
+    src: "/images/img_14.jpg",
     alt: "Carlos Charabati, World Champion, and Bernardo at ILCA 4.",
   },
 };

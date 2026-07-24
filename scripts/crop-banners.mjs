@@ -14,14 +14,14 @@ mkdirSync(outDir, { recursive: true });
 
 // cropBottom / cropTop are fractions of image height to remove.
 const JOBS = [
-  { in: "29062024-5P7A0650.jpg", out: "hero-viana.jpg", cropBottom: 0.115 },
-  { in: "ZAG_5526.jpg", out: "story-spray.jpg", cropBottom: 0.25 },
-  { in: "26062024-DJI_0231.jpg", out: "story-aerial.jpg", cropBottom: 0.145 },
-  { in: "30062024-5P7A2090.jpg", out: "story-worldchamp.jpg", cropBottom: 0.11 },
-  { in: "ZAG_0166.jpg", out: "fleet-upwind.jpg", cropBottom: 0.2 },
-  { in: "30062024-5P7A1540.jpg", out: "race-viana-1.jpg", cropBottom: 0.11 },
-  { in: "30062024-5P7A1234-2.jpg", out: "race-viana-2.jpg", cropBottom: 0.11 },
-  { in: "IMG_7268.jpeg", out: "upwind-ireland.jpg", cropTop: 0.045 },
+  { in: "img_4.jpg", out: "hero-viana.jpg", cropBottom: 0.115 },
+  { in: "img_32.jpg", out: "story-spray.jpg", cropBottom: 0.25 },
+  { in: "img_2.jpg", out: "story-aerial.jpg", cropBottom: 0.145 },
+  { in: "img_20.jpg", out: "story-worldchamp.jpg", cropBottom: 0.11 },
+  { in: "img_31.jpg", out: "fleet-upwind.jpg", cropBottom: 0.2 },
+  { in: "img_6.jpg", out: "race-viana-1.jpg", cropBottom: 0.11 },
+  { in: "img_5.jpg", out: "race-viana-2.jpg", cropBottom: 0.11 },
+  { in: "img_27.jpg", out: "upwind-ireland.jpg", cropTop: 0.045 },
 ];
 
 for (const job of JOBS) {
