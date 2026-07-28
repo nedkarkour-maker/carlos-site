@@ -146,7 +146,7 @@ export interface StatementContent {
 export const statement: StatementContent = {
   lines: [
     "World champion, focused, dedicated and smiling.",
-    "The Olympics isn't a dream. It's the plan.",
+    "Working towards the Olympic dream.",
   ],
 };
 
