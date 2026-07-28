@@ -7,16 +7,26 @@
   {
     "name": "Sail Canada",
     "logo": "/images/sponsors/sail-canada.png",
-    "url": ""
+    "url": "https://www.sailing.ca/"
   },
   {
     "name": "Voile Québec",
     "logo": "/images/sponsors/voile-quebec.png",
-    "url": ""
+    "url": "https://voile.qc.ca/fr/"
   },
   {
     "name": "Institut national du sport du Québec",
     "logo": "/images/sponsors/ins-quebec.png",
-    "url": ""
+    "url": "https://www.insquebec.org/"
+  },
+  {
+    "name": "Yacht Club de Pointe-Claire",
+    "logo": "/images/sponsors/pcyc.png",
+    "url": "https://www.pcyc.qc.ca/en/"
+  },
+  {
+    "name": "Clube Naval de Cascais",
+    "logo": "/images/sponsors/cn-cascais.png",
+    "url": "https://www.cncascais.com/"
   }
 ]
