@@ -247,9 +247,8 @@ export const schedule: ScheduleContent = {
     {
       when: "AUG 2026",
       title: "Season restart · training base",
-      where: "Building the year's foundation [DRAFT — from your calendar]",
+      where: "Cascais, Portugal",
       kind: "training",
-      major: true,
     },
     {
       when: "FALL 2026",
@@ -259,21 +258,60 @@ export const schedule: ScheduleContent = {
       major: true,
       tag: "Key event",
     },
-    {
-      when: "2026",
-      title: "Training blocks · Europe",
-      where: "Cascais & Mediterranean venues",
-      kind: "training",
-    },
+    
     {
       when: "2026",
       title: "U21 Europeans",
       where: "Bodrum, Türkiye",
       kind: "event",
       major: true,
-      tag: "Key event",
+      tag: "Major event",
+    },
+    {
+      when: "2026",
+      title: "Training blocks · Europe",
+      where: "Cascais & Mediterranean venues",
+      kind: "training",
     },
     // The two horizon anchors — the Games this whole road leads to.
+    {
+      when: "2027",
+      title: "U21 World Championship",
+      where: "Melbourne, Australia",
+      kind: "event",
+      major: true,
+      tag: "Major event",
+    },
+    {
+      when: "2027",
+      title: "Training blocks · Europe",
+      where: "Cascais & Mediterranean venues",
+      kind: "training",
+    },
+    {
+      when: "2027",
+      title: "Princess Sofia Grand Slam",
+      where: "Palma de Mallorca, Spain",
+      kind: "event",
+    },
+    {
+      when: "2027",
+      title: "Semaine Olympique Française",
+      where: "Hyère, France",
+      kind: "event",
+    },
+    {
+      when: "2027",
+      title: "Kieler Woche Grand Slam",
+      where: "Kiel, Germany",
+      kind: "event",
+    },
+    {
+      when: "2028",
+      title: "To Be Determined",
+      where: "...",
+      kind: "event",
+    },
     {
       when: "2028",
       title: "LA 2028",

@@ -1,244 +1,268 @@
 /**
  * FRENCH COPY — config/content.fr.ts
  *
- * ⚠️ TODO fr: every string below is still the English text. To translate,
- * change the text between the quotes — nothing else. The structure must
- * stay identical to config/content.ts (same fields, same order of the
- * schedule stops, budget slices, …).
+ * Traduction française de config/content.ts. Pour modifier le texte, changez
+ * ce qui est entre les guillemets — rien d'autre. La structure doit rester
+ * identique à config/content.ts (mêmes champs, même ordre des étapes du
+ * calendrier, des tranches du budget, …).
  *
- * Things that are NOT text (photo paths, dates, links, percentages) should
- * always match config/content.ts — if you change one there, mirror it here.
- * Photo `alt` lines ARE text (read aloud by screen readers) — translate them.
+ * Ce qui n'est PAS du texte (chemins des photos, dates, liens, pourcentages)
+ * doit toujours correspondre à config/content.ts — si vous changez l'un
+ * là-bas, faites le même changement ici. Les `alt` des photos SONT du texte
+ * (lus à voix haute par les lecteurs d'écran) — traduisez-les.
+ *
+ * [DRAFT] est un marqueur interne (voir content.ts) : gardez-le en anglais
+ * pour qu'il reste repérable dans les deux fichiers.
  */
 
 import { site, type ContentBundle } from "./content";
 
 export const fr: ContentBundle = {
   /* ------------------------------------------------------------- nav */
-  // TODO fr — translate the labels.
   nav: {
     links: [
-      { label: "About", href: "/#about" },
-      { label: "Schedule", href: "/#schedule" },
-      { label: "Newsletter", href: "/newsletter" },
-      { label: "How to help", href: "/#help" },
+      { label: "À propos", href: "/#about" },
+      { label: "Calendrier", href: "/#schedule" },
+      { label: "Infolettre", href: "/newsletter" },
+      { label: "Comment aider", href: "/#help" },
     ],
-    cta: { label: "Support", href: site.supportUrl, external: true },
+    cta: { label: "Soutenir", href: site.supportUrl, external: true },
   },
 
   /* ------------------------------------------------------------ hero */
-  // TODO fr — translate kicker, countdown label and the photo alt.
   hero: {
-    kicker: "ILCA Sailor · Engineer · Montréal → the Olympics",
+    kicker: "Marin ILCA · Ingénieur · Montréal → les Jeux olympiques",
     nameLines: ["Carlos", "Charabati"],
     countdown: {
       start: "2024-08-12T00:00:00",
       target: "2028-07-14T00:00:00",
-      label: "Days to LA 2028",
+      label: "Jours avant LA 2028",
     },
     image: {
       src: "/images/clean/hero-viana.jpg",
-      alt: "Carlos Charabati racing at the ILCA 4 Youth World Championship",
+      alt: "Carlos Charabati en régate au Championnat du monde jeunesse ILCA 4",
       focus: "70% 35%",
     },
   },
 
   /* ----------------------------------------------------------- about */
-  // TODO fr — translate title and paragraphs (keep the **bold** marks).
   about: {
-    eyebrow: "This is my project",
-    title: "I'm chasing the Olympics — by method, not luck.",
+    eyebrow: "Voici mon projet",
+    title: "Je vise les Jeux olympiques — par la méthode, pas par chance.",
     paragraphs: [
-      "I am a 19-year-old sailor from Montreal, driven by a deep passion for the ocean and high-performance sport. I am currently balancing my Olympic campaign with an engineering dual degree at CentraleSupélec and McGill University.",
-      "I compete in the ILCA, formerly known as the Laser, the men's individual Olympic dinghy class. My mission is twofold: to reach the Olympic podium and to create a positive impact on the world along the way.",
+      "Je suis un **marin de 19 ans** originaire de **Montréal**, animé par une passion profonde pour l'océan et le sport de haut niveau. Je mène actuellement de front ma **campagne olympique** et un **double diplôme d'ingénieur** à **CentraleSupélec et à l'Université McGill**.",
+      "Je cours en **ILCA**, autrefois appelé Laser, la classe olympique de dériveur individuel masculin. Ma mission est double : atteindre le **podium olympique** et avoir un **impact positif** sur le monde en chemin.",
     ],
     image: {
-      src: "/images/img_23.jpg",
-      alt: "Carlos Charabati receiving a medal at a championship ceremony",
+      src: "/images/clean/carlos-and-bernardo.jpg",
+      alt: "Carlos Charabati, champion du monde, et Bernardo en ILCA 4.",
     },
   },
 
   /* ------------------------------------------------------- statement */
-  // TODO fr — translate the three lines.
   statement: {
     lines: [
-      "World champion, focused, dedicated and smiling.",
-      "The Olympics isn't a dream. It's the plan.",
+      "Champion du monde, concentré, dévoué et souriant.",
+      "En route vers le rêve olympique.",
     ],
   },
 
   /* ------------------------------------------------------------ race */
-  // TODO fr — translate eyebrow, title, videoTitle and caption. If a
-  // French-language explainer video exists, swap videoUrl here too.
+  // Si une vidéo explicative en français existe, remplacez aussi videoUrl.
   race: {
-    eyebrow: "One race, start to finish",
-    title: "What a race looks like.",
+    eyebrow: "Une course, du départ à l'arrivée",
+    title: "À quoi ressemble une course.",
     videoUrl: "https://www.youtube-nocookie.com/embed/rwNQ0mbh3qM",
-    videoTitle: "Quick guide to Olympic sailing (video)",
+    videoTitle: "Petit guide de la voile olympique (vidéo)",
     caption:
-      "New to sailing? A short explainer of how an Olympic race works — the course, the start, and the fight to round every mark first.",
+      "Nouveau dans le monde de la voile ? Une courte explication du déroulement d'une course olympique — le parcours, le départ et la lutte pour virer chaque bouée en tête.",
   },
 
   /* --------------------------------------------------------- numbers */
-  // TODO fr — translate eyebrow, title and the stat labels.
   numbers: {
-    eyebrow: "What I've done · last two years",
-    title: "The work, in numbers.",
+    eyebrow: "Ce que j'ai accompli · deux dernières années",
+    title: "Le travail, en chiffres.",
     stats: [
-      { value: "4,000", label: "Nautical miles sailed" },
-      { value: "280", label: "Days on the water" },
-      { value: "160", label: "Races" },
+      { value: "4 000", label: "Milles nautiques parcourus" },
+      { value: "280", label: "Jours sur l'eau" },
+      { value: "160", label: "Courses" },
       { value: "42", label: "Podiums" },
-      { value: "1", label: "World title", accent: true },
+      { value: "1", label: "Titre mondial", accent: true },
     ],
   },
 
   /* -------------------------------------------------------- schedule */
-  // TODO fr — translate eyebrow, title, trainingLabel and each stop's
-  // title/where/tag. Keep the stops in the same order as content.ts.
   schedule: {
-    eyebrow: "Where I'm headed · 2026",
-    title: "The season ahead.",
-    trainingLabel: "Training",
+    eyebrow: "Où je m'en vais · 2026",
+    title: "La saison à venir.",
+    trainingLabel: "Entraînement",
     stops: [
       {
-        when: "AUG 2026",
-        title: "Season restart · training base",
-        where: "Building the year's foundation [DRAFT — from your calendar]",
-        kind: "training",
-        major: true,
-      },
-      {
-        when: "FALL 2026",
-        title: "Senior Canadian Championships",
-        where: "Kingston, Ontario",
-        kind: "event",
-        major: true,
-        tag: "Key event",
-      },
-      {
-        when: "2026",
-        title: "Training blocks · Europe",
-        where: "Cascais & Mediterranean venues",
+        when: "AOÛT 2026",
+        title: "Reprise de saison · base d'entraînement",
+        where: "Cascais (Portugal)",
         kind: "training",
       },
       {
-        when: "2026",
-        title: "U21 Europeans",
-        where: "Bodrum, Türkiye",
+        when: "AUTOMNE 2026",
+        title: "Championnats canadiens séniors",
+        where: "Kingston (Ontario)",
         kind: "event",
         major: true,
-        tag: "Key event",
+        tag: "Événement clé",
+      },
+      {
+        when: "2026",
+        title: "Championnats d'Europe U21",
+        where: "Bodrum (Turquie)",
+        kind: "event",
+        major: true,
+        tag: "Événement majeur",
+      },
+      {
+        when: "2026",
+        title: "Blocs d'entraînement · Europe",
+        where: "Cascais et sites méditerranéens",
+        kind: "training",
+      },
+      {
+        when: "2027",
+        title: "Championnat du monde U21",
+        where: "Melbourne (Australie)",
+        kind: "event",
+        major: true,
+        tag: "Événement majeur",
+      },
+      {
+        when: "2027",
+        title: "Blocs d'entraînement · Europe",
+        where: "Cascais et sites méditerranéens",
+        kind: "training",
+      },
+      {
+        when: "2027",
+        title: "Grand Slam Princesse Sofia",
+        where: "Palma de Majorque (Espagne)",
+        kind: "event",
+      },
+      {
+        // Nom déjà français dans content.ts — rien à traduire.
+        when: "2027",
+        title: "Semaine Olympique Française",
+        where: "Hyères (France)",
+        kind: "event",
+      },
+      {
+        when: "2027",
+        title: "Grand Slam Kieler Woche",
+        where: "Kiel (Allemagne)",
+        kind: "event",
       },
       {
         when: "2028",
+        title: "À déterminer",
+        where: "...",
+        kind: "event",
+      },
+      // Les deux repères à l'horizon — les Jeux vers lesquels mène ce parcours.
+      {
+        when: "2028",
         title: "LA 2028",
-        where: "Los Angeles, USA",
+        where: "Los Angeles (États-Unis)",
         kind: "olympics",
         major: true,
-        tag: "Olympic Games",
+        tag: "Jeux olympiques",
       },
       {
         when: "2032",
         title: "Brisbane 2032",
-        where: "Brisbane, Australia",
+        where: "Brisbane (Australie)",
         kind: "olympics",
         major: true,
-        tag: "Olympic Games",
+        tag: "Jeux olympiques",
       },
     ],
   },
 
   /* ------------------------------------------------- notable results */
-  // TODO fr — translate eyebrow, results and photo alts.
   notableResults: {
-    eyebrow: "Notable results",
+    eyebrow: "Résultats marquants",
     items: [
       {
         image: {
-          src: "/images/clean/fleet-upwind.jpg",
-          alt: "Carlos's CAN 219619 sail leading a packed ILCA fleet upwind",
+          src: "/images/clean/carlos-sixth.jpg",
+          alt: "La voile CAN 219619 de Carlos en tête d'une flotte ILCA compacte au près",
           focus: "75% 60%",
         },
-        result: "6th",
-        event: "ILCA 4 World Championships 2023 · Volos, Greece",
+        result: "6e",
+        event: "Championnats du monde ILCA 4 2023 · Volos, Grèce",
       },
       {
         image: {
-          src: "/images/clean/story-worldchamp.jpg",
-          alt: "Carlos celebrating his ILCA 4 Youth World Championship win",
+          src: "/images/clean/carlos-gold.jpg",
+          alt: "Carlos célébrant sa victoire au Championnat du monde jeunesse ILCA 4",
         },
-        result: "Gold",
-        event: "World Championships 2024 · Viana, Portugal",
+        result: "Or",
+        event: "Championnats du monde 2024 · Viana, Portugal",
       },
       {
         image: {
-          src: "/images/clean/upwind-ireland.jpg",
-          alt: "Carlos hiking hard upwind under the CAN sail",
+          src: "/images/clean/carlos-seventh.jpg",
+          alt: "Carlos au rappel dans le près, sous la voile CAN",
         },
-        result: "7th",
-        event: "ILCA 6 World Championships 2025 · Kiel, Germany",
+        result: "7e",
+        event: "Championnats du monde ILCA 6 2025 · Kiel, Allemagne",
       },
     ],
   },
 
   /* ------------------------------------------------------ newsletter */
-  // TODO fr — translate. Note: the posts themselves are English-only for
-  // now; the archive shows them as-is in both languages.
+  // Note : les publications elles-mêmes ne sont qu'en anglais pour l'instant ;
+  // l'archive les affiche telles quelles dans les deux langues.
   newsletter: {
-    eyebrow: "Follow along",
-    title: "The journey, post by post.",
+    eyebrow: "Suivez l'aventure",
+    title: "Le parcours, publication par publication.",
     intro:
-      "Race recaps, training notes, and the parts you don't usually see — published here and emailed to anyone who wants to follow.",
-    allPostsLabel: "All posts →",
+      "Récits de courses, notes d'entraînement et les coulisses qu'on ne voit pas d'habitude — publiés ici et envoyés par courriel à qui veut suivre.",
+    allPostsLabel: "Toutes les publications →",
   },
 
   /* ------------------------------------------------------------ help */
-  // TODO fr — translate titles, bodies, bullets and button labels.
   help: {
-    eyebrow: "How you can help",
-    title: "Be part of the journey.",
-    lead: "Whether you're a company, a fellow sailor, or someone who loves the adventure — welcome onboard.",
+    eyebrow: "Comment vous pouvez aider",
+    title: "Faites partie de l'aventure.",
+    lead: "Que vous soyez une entreprise, un marin ou simplement amateur d'aventure — bienvenue à bord.",
     cards: [
       {
         index: "01",
-        title: "Follow & share",
-        body: "The simplest help there is: subscribe to the updates, follow on Instagram, and pass the story along to someone who'd care.",
-        cta: { label: "Follow the journey", href: "#subscribe" },
+        title: "Suivre et partager",
+        body: "L'aide la plus simple qui existe : abonnez-vous aux nouvelles, suivez-moi sur Instagram et transmettez l'histoire à quelqu'un que ça pourrait toucher.",
+        cta: { label: "Suivre l'aventure", href: "#subscribe" },
       },
       {
         index: "02",
-        title: "Partner with me",
-        body: "For brands and companies. Your name travels with me — boat, sail, gear, and content — across Canada, the US, and Europe.",
-        bullets: [
-          "Logo on boat, sail & gear",
-          "Reach across a growing social audience",
-          "Talks & appearances at your events",
-        ],
+        title: "Devenir partenaire",
+        body: "Pour les marques et les entreprises. Votre nom voyage avec moi — bateau, voile, équipement et contenu — au Canada, aux États-Unis et en Europe.",
         cta: site.sponsorDeckUrl
           ? {
-              label: "Request the deck",
+              label: "Demander le dossier",
               href: site.sponsorDeckUrl,
               external: true,
             }
           : {
-              label: "Request the deck",
+              label: "Demander le dossier",
               href: `mailto:${site.contactEmail}?subject=${encodeURIComponent(
-                "Sponsorship deck — Carlos Charabati",
+                "Dossier de partenariat — Carlos Charabati",
               )}`,
             },
       },
       {
         index: "03",
-        title: "Support the campaign",
-        body: "Direct support keeps me on the water — and every gift is tax-receipted in Canada, through Wind Athletes Canada.",
-        bullets: [
-          "One-time or monthly",
-          "100% toward the season",
-          "Tax receipt for Canadian donors",
-        ],
+        title: "Soutenir la campagne",
+        body: "Le soutien direct me garde sur l'eau — et chaque don donne droit à un reçu fiscal au Canada, via Wind Athletes Canada.",
+
         cta: {
-          label: "Support — tax-receipted",
+          label: "Soutenir — avec reçu fiscal",
           href: site.supportUrl,
           external: true,
         },
@@ -247,94 +271,92 @@ export const fr: ContentBundle = {
   },
 
   /* ---------------------------------------------------------- budget */
-  // TODO fr — translate chart title and slice labels/subs. Keep percentages
-  // identical to content.ts.
+  // Les pourcentages doivent rester identiques à ceux de content.ts.
   budget: {
-    eyebrow: "What it costs",
-    chartTitle: "Where your support goes",
+    eyebrow: "Ce que ça coûte",
+    chartTitle: "Où va votre soutien",
     breakdown: [
       {
-        label: "Coaching + boat",
+        label: "Entraîneur + bateau",
         percent: 35,
-        sub: "Coach fees, charter & freight",
+        sub: "Honoraires d'entraîneur, location et transport",
       },
       {
-        label: "Regattas + housing",
+        label: "Régates + hébergement",
         percent: 35,
-        sub: "Entry fees, accommodation",
+        sub: "Frais d'inscription, logement",
       },
       {
-        label: "Travel",
+        label: "Déplacements",
         percent: 16,
-        sub: "Flights, transport to venues",
+        sub: "Vols, transport vers les sites",
       },
       {
-        label: "Equipment + other",
+        label: "Équipement + divers",
         percent: 14,
-        sub: "Sails, gear, admin",
+        sub: "Voiles, matériel, administration",
       },
     ],
   },
 
   /* --------------------------------------------------------- backers */
-  // TODO fr — translate.
   backers: {
-    label: "Proudly supported by",
+    label: "Fièrement soutenu par",
     joinCta: {
-      title: "Maybe you?",
-      body: "There's room on the sail.",
+      title: "Vous, peut-être ?",
+      body: "Il reste de la place sur la voile.",
       href: "/#help",
     },
   },
 
   /* ------------------------------------------------------- subscribe */
-  // TODO fr — translate everything except placeholder-style emails.
   subscribe: {
-    eyebrow: "How you can support",
-    title: "Follow the campaign.",
-    body: "Stories from the campaign trail — adventures, training, and lessons.",
-    ctaLabel: "Join the crew",
-    placeholder: "you@email.com",
-    button: "Subscribe",
-    buttonBusy: "Subscribing…",
-    success: "Thank you for subscribing!",
-    errorFallback: "Something went wrong — please try again later.",
-    archive: { label: "Read past updates →", href: "/newsletter" },
+    eyebrow: "Comment vous pouvez soutenir",
+    title: "Suivez la campagne.",
+    body: "Des histoires de la campagne — aventures, entraînements et leçons apprises.",
+    ctaLabel: "Rejoindre l'équipage",
+    placeholder: "vous@courriel.com",
+    button: "S'abonner",
+    buttonBusy: "Abonnement…",
+    success: "Merci de vous être abonné !",
+    errorFallback: "Une erreur s'est produite — veuillez réessayer plus tard.",
+    archive: { label: "Lire les nouvelles précédentes →", href: "/newsletter" },
   },
 
   /* ---------------------------------------------------------- footer */
-  // TODO fr — translate socialLabels, column headings and link labels.
+  // `site.role` n'existe qu'en anglais ("ILCA Sailor") — le rôle est donc
+  // écrit ici en français ; le pays et le numéro de voile viennent de `site`.
   footer: {
-    tagline: `${site.role} · ${site.country} ${site.sailNumber}`,
+    tagline: `Marin ILCA · ${site.country} ${site.sailNumber}`,
     socialLabels: {
-      email: "Send an email to Carlos",
+      email: "Envoyer un courriel à Carlos",
       instagram: "Instagram",
       linkedin: "LinkedIn",
       facebook: "Facebook",
     },
     columns: [
       {
-        heading: "Story",
+        heading: "Parcours",
         links: [
-          { label: "About", href: "/#about" },
-          { label: "Newsletter", href: "/newsletter" },
+          { label: "À propos", href: "/#about" },
+          { label: "Infolettre", href: "/newsletter" },
         ],
       },
       {
-        heading: "Campaign",
+        heading: "Campagne",
         links: [
-          { label: "Schedule", href: "/#schedule" },
-          { label: "How to help", href: "/#help" },
+          { label: "Calendrier", href: "/#schedule" },
+          { label: "Comment aider", href: "/#help" },
         ],
       },
       {
-        heading: "Connect",
+        heading: "Me joindre",
         links: [
-          { label: "Subscribe", href: "/#subscribe" },
+          { label: "S'abonner", href: "/#subscribe" },
           { label: "Contact", href: `mailto:${site.contactEmail}` },
         ],
       },
     ],
-    donationNote: "Donations via Wind Athletes Canada",
+    donationNote: "Dons via Wind Athletes Canada",
   },
 };
