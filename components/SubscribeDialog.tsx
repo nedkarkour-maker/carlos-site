@@ -72,14 +72,31 @@ export default function SubscribeDialog() {
   }, []);
 
   useEffect(() => {
-    opener = () => {
+    const open = () => {
+      // showModal() throws if the dialog is already open.
+      if (dialogRef.current?.open) return;
       dialogRef.current?.showModal();
       // The dialog spec would honor an `autofocus` attribute here, but React
       // doesn't render one — focus the field by hand instead.
       emailRef.current?.focus();
     };
+    opener = open;
+
+    // A #subscribe deep link opens the dialog outright instead of only
+    // scrolling to the section — the newsletter's "Subscribe" button points
+    // here, and a reader who got the issue forwarded shouldn't have to hunt
+    // for the Join the crew button before seeing an email field. Runs on
+    // mount (arriving with the hash already set) and on later hash changes
+    // (an in-page anchor jump, e.g. the no-JS trigger fallback).
+    const openOnHash = () => {
+      if (window.location.hash === "#subscribe") open();
+    };
+    openOnHash();
+    window.addEventListener("hashchange", openOnHash);
+
     return () => {
       opener = null;
+      window.removeEventListener("hashchange", openOnHash);
     };
   }, []);
 
