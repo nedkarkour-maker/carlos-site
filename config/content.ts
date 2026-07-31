@@ -93,7 +93,7 @@ export interface HeroContent {
 }
 
 export const hero: HeroContent = {
-  kicker: "ILCA Sailor · Engineer · Montréal → the Olympics",
+  kicker: "ILCA Sailor · Engineering student · Montréal → the Olympics",
   nameLines: ["Carlos", "Charabati"],
   // start = the day after Paris 2024 closed: the first day of this quad.
   // target = the LA 2028 opening ceremony.
@@ -125,7 +125,7 @@ export const about: AboutContent = {
   eyebrow: "This is my project",
   title: "I'm chasing the Olympics — by method, not luck.",
   paragraphs: [
-    "I am a **19-year-old sailor** from **Montreal**, driven by a deep passion for the ocean and high-performance sport. I am currently balancing my **Olympic campaign** with an **engineering dual degree** at **CentraleSupélec and McGill** University.",
+    "I am a **19-year-old sailor** from **Montréal**, driven by a deep passion for the ocean and high-performance sport. I am currently balancing my **Olympic campaign** with an **engineering dual degree** at **CentraleSupélec and McGill** University.",
     "I compete in the **ILCA**, formerly known as the Laser, the men's individual Olympic dinghy class. My mission is twofold: to reach the **Olympic podium** and to create a **positive impact** on the world along the way.",
   ],
   image: {
@@ -225,6 +225,17 @@ export interface ScheduleStop {
   tag?: string;
 }
 
+/**
+ * A "…" marker on the timeline — the stretch of years that isn't planned
+ * yet. Written as a single line, `{ gap: true },`, wherever the pause
+ * belongs between two stops.
+ */
+export interface ScheduleGap {
+  gap: true;
+}
+
+export type ScheduleEntry = ScheduleStop | ScheduleGap;
+
 export interface ScheduleContent {
   eyebrow: string;
   title: string;
@@ -234,9 +245,10 @@ export interface ScheduleContent {
    * The season, stop by stop. To add one, copy a whole block (from `{` to
    * `},`), paste it where it belongs in the order, and edit the text —
    * nothing else to update. `major` and `tag` are optional; delete those
-   * lines to drop the highlight or the pill.
+   * lines to drop the highlight or the pill. `{ gap: true },` inserts the
+   * "…" pause marker instead of a card.
    */
-  stops: ScheduleStop[];
+  stops: ScheduleEntry[];
 }
 
 export const schedule: ScheduleContent = {
@@ -252,17 +264,19 @@ export const schedule: ScheduleContent = {
     },
     {
       when: "FALL 2026",
-      title: "Senior Canadian Championships",
+      // Sail Canada's own name for it — sailing.ca lists the ILCA 6 & 7
+      // senior championships in Kingston for 25–27 September 2026.
+      title: "Sail Canada Senior Championships",
       where: "Kingston, Ontario",
       kind: "event",
       major: true,
       tag: "Key event",
     },
-    
+
     {
       when: "2026",
       title: "U21 Europeans",
-      where: "Bodrum, Türkiye",
+      where: "Bodrum, Turkey",
       kind: "event",
       major: true,
       tag: "Major event",
@@ -306,12 +320,8 @@ export const schedule: ScheduleContent = {
       where: "Kiel, Germany",
       kind: "event",
     },
-    {
-      when: "2028",
-      title: "To Be Determined",
-      where: "...",
-      kind: "event",
-    },
+    // The years between the planned season and the Games — still to be filled.
+    { gap: true },
     {
       when: "2028",
       title: "LA 2028",
@@ -320,6 +330,7 @@ export const schedule: ScheduleContent = {
       major: true,
       tag: "Olympic Games",
     },
+    { gap: true },
     {
       when: "2032",
       title: "Brisbane 2032",
@@ -342,7 +353,10 @@ export interface NotableResult {
   image: ImageRef;
   /** The result itself, short and bold — "Gold", "6th", "7th". */
   result: string;
-  /** The event line under it — "2024 ILCA 4 Youth Worlds". */
+  /**
+   * The event line under it. Start it with the year so the three cards read
+   * left to right as a timeline — "2024 ILCA 4 Youth World Championships".
+   */
   event: string;
 }
 
@@ -363,7 +377,7 @@ export const notableResults: NotableResultsContent = {
         focus: "75% 60%",
       },
       result: "6th",
-      event: "ILCA 4 World Championships 2023 · Volos, Greece",
+      event: "2023 ILCA 4 Youth World Championships · Volos, Greece",
     },
     {
       // TODO photo — confirm this is the right shot for the world title.
@@ -372,7 +386,8 @@ export const notableResults: NotableResultsContent = {
         alt: "Carlos celebrating his ILCA 4 Youth World Championship win",
       },
       result: "Gold",
-      event: "World Championships 2024 · Viana, Portugal",
+      event:
+        "2024 ILCA 4 Youth World Championships · Viana do Castelo, Portugal",
     },
     {
       // TODO photo — stand-in until the real Kiel 2025 photo is added.
@@ -381,7 +396,7 @@ export const notableResults: NotableResultsContent = {
         alt: "Carlos hiking hard upwind under the CAN sail",
       },
       result: "7th",
-      event: "ILCA 6 World Championships 2025 · Kiel, Germany",
+      event: "2025 ILCA 6 World Championships · Kiel, Germany",
     },
   ],
 };
@@ -436,7 +451,7 @@ export const help: HelpContent = {
     {
       index: "01",
       title: "Follow & share",
-      body: "The simplest help there is: subscribe to the updates, follow on Instagram, and pass the story along to someone who'd care.",
+      body: "The simplest help there is: subscribe to the updates, follow on Instagram, and pass the story along to someone who would care.",
       cta: { label: "Follow the journey", href: "#subscribe" },
     },
     {
@@ -457,10 +472,10 @@ export const help: HelpContent = {
     {
       index: "03",
       title: "Support the campaign",
-      body: "Direct support keeps me on the water — and every gift is tax-receipted in Canada, through Wind Athletes Canada.",
-      
+      body: "Direct support keeps me on the water — and every gift comes with a tax receipt in Canada, through Wind Athletes Canada.",
+
       cta: {
-        label: "Support — tax-receipted",
+        label: "Support — with a tax receipt",
         href: site.supportUrl,
         external: true,
       },
@@ -498,7 +513,7 @@ export const budget: BudgetContent = {
     {
       label: "Coaching + boat",
       percent: 35,
-      sub: "Coach fees, charter & freight",
+      sub: "Coach fees, boat charter & shipping",
     },
     {
       label: "Regattas + housing",
@@ -511,9 +526,9 @@ export const budget: BudgetContent = {
       sub: "Flights, transport to venues",
     },
     {
-      label: "Equipment + other",
+      label: "Equipment + fitness",
       percent: 14,
-      sub: "Sails, gear, admin",
+      sub: "Sails, gear, physical training",
     },
   ],
 };

@@ -31,7 +31,7 @@ export const fr: ContentBundle = {
 
   /* ------------------------------------------------------------ hero */
   hero: {
-    kicker: "Marin ILCA · Ingénieur · Montréal → les Jeux olympiques",
+    kicker: "Marin ILCA · Étudiant en génie · Montréal → les Jeux olympiques",
     nameLines: ["Carlos", "Charabati"],
     countdown: {
       start: "2024-08-12T00:00:00",
@@ -105,7 +105,8 @@ export const fr: ContentBundle = {
       },
       {
         when: "AUTOMNE 2026",
-        title: "Championnats canadiens séniors",
+        // Nom officiel de Sail Canada — gardé tel quel, comme sur sailing.ca.
+        title: "Sail Canada Senior Championships",
         where: "Kingston (Ontario)",
         kind: "event",
         major: true,
@@ -158,12 +159,8 @@ export const fr: ContentBundle = {
         where: "Kiel (Allemagne)",
         kind: "event",
       },
-      {
-        when: "2028",
-        title: "À déterminer",
-        where: "...",
-        kind: "event",
-      },
+      // Les années encore à écrire entre la saison planifiée et les Jeux.
+      { gap: true },
       // Les deux repères à l'horizon — les Jeux vers lesquels mène ce parcours.
       {
         when: "2028",
@@ -173,6 +170,7 @@ export const fr: ContentBundle = {
         major: true,
         tag: "Jeux olympiques",
       },
+      { gap: true },
       {
         when: "2032",
         title: "Brisbane 2032",
@@ -195,7 +193,8 @@ export const fr: ContentBundle = {
           focus: "75% 60%",
         },
         result: "6e",
-        event: "Championnats du monde ILCA 4 2023 · Volos, Grèce",
+        event:
+          "2023 Championnats du monde jeunesse ILCA 4 · Volos, Grèce",
       },
       {
         image: {
@@ -203,7 +202,8 @@ export const fr: ContentBundle = {
           alt: "Carlos célébrant sa victoire au Championnat du monde jeunesse ILCA 4",
         },
         result: "Or",
-        event: "Championnats du monde 2024 · Viana, Portugal",
+        event:
+          "2024 Championnats du monde jeunesse ILCA 4 · Viana do Castelo, Portugal",
       },
       {
         image: {
@@ -211,7 +211,7 @@ export const fr: ContentBundle = {
           alt: "Carlos au rappel dans le près, sous la voile CAN",
         },
         result: "7e",
-        event: "Championnats du monde ILCA 6 2025 · Kiel, Allemagne",
+        event: "2025 Championnats du monde ILCA 6 · Kiel, Allemagne",
       },
     ],
   },
@@ -279,7 +279,7 @@ export const fr: ContentBundle = {
       {
         label: "Entraîneur + bateau",
         percent: 35,
-        sub: "Honoraires d'entraîneur, location et transport",
+        sub: "Honoraires d'entraîneur, location et transport du bateau",
       },
       {
         label: "Régates + hébergement",
@@ -292,9 +292,9 @@ export const fr: ContentBundle = {
         sub: "Vols, transport vers les sites",
       },
       {
-        label: "Équipement + divers",
+        label: "Équipement + préparation physique",
         percent: 14,
-        sub: "Voiles, matériel, administration",
+        sub: "Voiles, matériel, préparateur physique",
       },
     ],
   },

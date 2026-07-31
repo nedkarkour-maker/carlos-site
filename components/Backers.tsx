@@ -25,9 +25,13 @@ const RANKS: SponsorEntry[][] = [rank1, rank2, rank3, rank4];
 
 // Every logo renders at the same height (width auto) so wordmarks and crests
 // read as one size — a fixed box + object-contain would make wide logos look
-// huge and square ones tiny. max-w caps only pathologically wide art.
-const LOGO = "h-10 w-auto max-w-[190px] object-contain md:h-14 md:max-w-[230px]";
-const ROW_GAP = "gap-x-8 gap-y-6 md:gap-x-14 md:gap-y-8";
+// huge and square ones tiny. max-w caps only pathologically wide art;
+// max-w-full lets a logo give way when its row is squeezed onto one line.
+const LOGO =
+  "h-10 w-auto max-w-[190px] object-contain md:h-14 md:max-w-[230px] lg:max-w-full";
+// From lg up each rank stays on a single line (lg:flex-nowrap) — logos share
+// the width and shrink to fit rather than wrapping. Below that they wrap.
+const ROW_GAP = "gap-x-8 gap-y-6 md:gap-x-14 md:gap-y-8 lg:gap-x-10";
 
 function SponsorMark({ entry }: { entry: SponsorEntry }) {
   const logo = (
@@ -95,10 +99,12 @@ export default function Backers() {
             return (
               <ul
                 key={i}
-                className={`flex flex-wrap items-center justify-center ${ROW_GAP}`}
+                className={`flex w-full flex-wrap items-center justify-center lg:flex-nowrap ${ROW_GAP}`}
               >
                 {visible.map((entry) => (
-                  <li key={entry.name}>
+                  // min-w-0 is what lets a logo shrink below its natural width
+                  // once the row is set to nowrap.
+                  <li key={entry.name} className="min-w-0">
                     <SponsorMark entry={entry} />
                   </li>
                 ))}

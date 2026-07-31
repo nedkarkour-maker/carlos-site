@@ -107,7 +107,9 @@ export default function Hero() {
         <div>
           <p
             data-hero-fade
-            className="mb-[22px] font-sans text-[15px] font-semibold uppercase tracking-[.1em] text-red-bright motion-safe:translate-y-4 motion-safe:opacity-0"
+            // Generous gap under the kicker so the huge name sits well clear of
+            // it (and of the navbar wordmark) instead of crowding underneath.
+            className="mb-9 font-sans text-[15px] font-semibold uppercase tracking-[.1em] text-red-bright motion-safe:translate-y-4 motion-safe:opacity-0 md:mb-14"
           >
             {hero.kicker}
           </p>

@@ -2,10 +2,17 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import type { ScheduleStop } from "@/config/content";
+import type {
+  ScheduleEntry,
+  ScheduleGap,
+  ScheduleStop,
+} from "@/config/content";
 import { useContent } from "@/lib/locale";
 import { VenuesChart } from "./art/Backdrops";
 import Reveal from "./Reveal";
+
+/** `{ gap: true }` entries are the "…" pause markers, not real stops. */
+const isGap = (entry: ScheduleEntry): entry is ScheduleGap => "gap" in entry;
 
 // Each stop kind gets its own dot colour: training blocks are teal, races
 // and the Games keep the campaign red. The halo shows on major stops and on
@@ -154,31 +161,49 @@ export default function Schedule({
             {/* Leading spacer aligns the first card under the heading. */}
             <div className="shrink-0" style={{ width: GUTTER }} />
 
-            {schedule.stops.map((stop) => (
-              <article
-                key={`${stop.when}-${stop.title}`}
-                className="group relative flex w-[300px] shrink-0 flex-col pt-10"
-              >
-                <span
-                  aria-hidden
-                  className={`absolute left-1/2 top-[12px] z-10 h-3.5 w-3.5 -translate-x-1/2 rounded-full border-2 border-sail transition-shadow ${dotClasses(stop)}`}
-                />
-                <div
-                  className={`flex-1 rounded-[10px] border bg-white px-6 py-5 shadow-sm transition-colors group-hover:border-red/60 ${
-                    stop.major ? "border-red/40" : "border-line-dark"
-                  }`}
+            {schedule.stops.map((entry, i) => {
+              // A pause on the axis: no card, no dot — just three dots
+              // standing for the years that aren't planned yet.
+              if (isGap(entry))
+                return (
+                  <div
+                    key={`gap-${i}`}
+                    aria-hidden
+                    className="flex w-[104px] shrink-0 items-center justify-center pt-10 font-display text-[34px] leading-none text-ink/35"
+                  >
+                    …
+                  </div>
+                );
+              const stop = entry;
+              return (
+                <article
+                  key={`${stop.when}-${stop.title}`}
+                  className="group relative flex w-[300px] shrink-0 flex-col pt-10"
                 >
-                  <span className="font-mono text-[13px] tracking-[.04em] text-red-dark">
-                    {stop.when}
-                  </span>
-                  <h3 className="mt-1.5 font-display text-[21px] font-bold leading-tight">
-                    {stop.title}
-                  </h3>
-                  <p className="mt-1.5 text-sm text-ink-soft">{stop.where}</p>
-                  <StopBadges stop={stop} trainingLabel={schedule.trainingLabel} />
-                </div>
-              </article>
-            ))}
+                  <span
+                    aria-hidden
+                    className={`absolute left-1/2 top-[12px] z-10 h-3.5 w-3.5 -translate-x-1/2 rounded-full border-2 border-sail transition-shadow ${dotClasses(stop)}`}
+                  />
+                  <div
+                    className={`flex-1 rounded-[10px] border bg-white px-6 py-5 shadow-sm transition-colors group-hover:border-red/60 ${
+                      stop.major ? "border-red/40" : "border-line-dark"
+                    }`}
+                  >
+                    <span className="font-mono text-[13px] tracking-[.04em] text-red-dark">
+                      {stop.when}
+                    </span>
+                    <h3 className="mt-1.5 font-display text-[21px] font-bold leading-tight">
+                      {stop.title}
+                    </h3>
+                    <p className="mt-1.5 text-sm text-ink-soft">{stop.where}</p>
+                    <StopBadges
+                      stop={stop}
+                      trainingLabel={schedule.trainingLabel}
+                    />
+                  </div>
+                </article>
+              );
+            })}
 
             {/* Trailing room so the arrow points past the final stop. */}
             <div className="w-[12vw] shrink-0" />
@@ -190,27 +215,44 @@ export default function Schedule({
       <Reveal className="wrap py-[90px] md:hidden">
         {heading}
         <ol className="mt-[46px] border-l-2 border-line-dark pl-7">
-          {schedule.stops.map((stop) => (
-            <li
-              key={`${stop.when}-${stop.title}`}
-              className="group relative grid grid-cols-[90px_1fr] gap-3.5 border-b border-line-dark py-5 last:border-b-0"
-            >
-              <span
-                aria-hidden
-                className={`absolute -left-[35px] top-[26px] h-[11px] w-[11px] rounded-full border-2 border-sail transition-shadow ${dotClasses(stop)}`}
-              />
-              <span className="pt-0.5 font-mono text-[13px] tracking-[.04em] text-red-dark">
-                {stop.when}
-              </span>
-              <div>
-                <h3 className="font-display text-[19px] font-bold">
-                  {stop.title}
-                </h3>
-                <p className="mt-[3px] text-sm text-ink-soft">{stop.where}</p>
-                <StopBadges stop={stop} trainingLabel={schedule.trainingLabel} />
-              </div>
-            </li>
-          ))}
+          {schedule.stops.map((entry, i) => {
+            // The same pause marker, running down the vertical axis.
+            if (isGap(entry))
+              return (
+                <li
+                  key={`gap-${i}`}
+                  aria-hidden
+                  className="py-3 text-center font-display text-[26px] leading-none text-ink/35"
+                >
+                  …
+                </li>
+              );
+            const stop = entry;
+            return (
+              <li
+                key={`${stop.when}-${stop.title}`}
+                className="group relative grid grid-cols-[90px_1fr] gap-3.5 border-b border-line-dark py-5 last:border-b-0"
+              >
+                <span
+                  aria-hidden
+                  className={`absolute -left-[35px] top-[26px] h-[11px] w-[11px] rounded-full border-2 border-sail transition-shadow ${dotClasses(stop)}`}
+                />
+                <span className="pt-0.5 font-mono text-[13px] tracking-[.04em] text-red-dark">
+                  {stop.when}
+                </span>
+                <div>
+                  <h3 className="font-display text-[19px] font-bold">
+                    {stop.title}
+                  </h3>
+                  <p className="mt-[3px] text-sm text-ink-soft">{stop.where}</p>
+                  <StopBadges
+                    stop={stop}
+                    trainingLabel={schedule.trainingLabel}
+                  />
+                </div>
+              </li>
+            );
+          })}
         </ol>
       </Reveal>
     </section>
