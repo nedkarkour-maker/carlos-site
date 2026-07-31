@@ -113,7 +113,7 @@ export default function Hero() {
           >
             {hero.kicker}
           </p>
-          <h1 className="font-display text-[clamp(46px,9vw,124px)] font-black uppercase leading-[1.03] tracking-[-0.02em]">
+          <h1 className="font-display text-[clamp(38px,7vw,92px)] font-black uppercase leading-[1.03] tracking-[-0.02em]">
             {hero.nameLines.map((line) => (
               <span key={line} className="block overflow-hidden">
                 <span

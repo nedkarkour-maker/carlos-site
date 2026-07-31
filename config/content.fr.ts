@@ -194,7 +194,7 @@ export const fr: ContentBundle = {
         },
         result: "6e",
         event:
-          "2023 Championnats du monde jeunesse ILCA 4 · Volos, Grèce",
+          "2023 · Championnats du monde jeunesse ILCA 4 · Volos, Grèce",
       },
       {
         image: {
@@ -203,7 +203,7 @@ export const fr: ContentBundle = {
         },
         result: "Or",
         event:
-          "2024 Championnats du monde jeunesse ILCA 4 · Viana do Castelo, Portugal",
+          "2024 · Championnats du monde jeunesse ILCA 4 · Viana do Castelo, Portugal",
       },
       {
         image: {
@@ -211,7 +211,7 @@ export const fr: ContentBundle = {
           alt: "Carlos au rappel dans le près, sous la voile CAN",
         },
         result: "7e",
-        event: "2025 Championnats du monde ILCA 6 · Kiel, Allemagne",
+        event: "2025 · Championnats du monde ILCA 6 · Kiel, Allemagne",
       },
     ],
   },

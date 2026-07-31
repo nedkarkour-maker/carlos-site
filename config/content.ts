@@ -354,8 +354,9 @@ export interface NotableResult {
   /** The result itself, short and bold — "Gold", "6th", "7th". */
   result: string;
   /**
-   * The event line under it. Start it with the year so the three cards read
-   * left to right as a timeline — "2024 ILCA 4 Youth World Championships".
+   * The event line under it. Start it with the year, set off by a "·", so the
+   * three cards read left to right as a timeline —
+   * "2024 · ILCA 4 Youth World Championships · Viana do Castelo, Portugal".
    */
   event: string;
 }
@@ -377,7 +378,7 @@ export const notableResults: NotableResultsContent = {
         focus: "75% 60%",
       },
       result: "6th",
-      event: "2023 ILCA 4 Youth World Championships · Volos, Greece",
+      event: "2023 · ILCA 4 Youth World Championships · Volos, Greece",
     },
     {
       // TODO photo — confirm this is the right shot for the world title.
@@ -387,7 +388,7 @@ export const notableResults: NotableResultsContent = {
       },
       result: "Gold",
       event:
-        "2024 ILCA 4 Youth World Championships · Viana do Castelo, Portugal",
+        "2024 · ILCA 4 Youth World Championships · Viana do Castelo, Portugal",
     },
     {
       // TODO photo — stand-in until the real Kiel 2025 photo is added.
@@ -396,7 +397,7 @@ export const notableResults: NotableResultsContent = {
         alt: "Carlos hiking hard upwind under the CAN sail",
       },
       result: "7th",
-      event: "2025 ILCA 6 World Championships · Kiel, Germany",
+      event: "2025 · ILCA 6 World Championships · Kiel, Germany",
     },
   ],
 };
