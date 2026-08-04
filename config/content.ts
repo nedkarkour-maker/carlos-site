@@ -80,28 +80,44 @@ export const nav: NavContent = {
 
 /* ------------------------------------------------------------------ hero */
 
+/**
+ * One countdown wheel. The number is days remaining to `target`; the ring
+ * fills with the share of the road from `start` to `target` already behind.
+ */
+export interface CountdownRing {
+  start: string;
+  target: string;
+  label: string;
+}
+
 export interface HeroContent {
   kicker: string;
   /** One array entry per line of the headline. */
   nameLines: string[];
-  /**
-   * The wheel counts days until `target` and fills its ring with the share
-   * of the road already travelled since `start`.
-   */
-  countdown: { start: string; target: string; label: string };
+  /** One wheel per entry, rendered in order. */
+  countdowns: CountdownRing[];
   image: ImageRef;
 }
 
 export const hero: HeroContent = {
   kicker: "ILCA Sailor · Engineering student · Montréal → the Olympics",
   nameLines: ["Carlos", "Charabati"],
-  // start = the day after Paris 2024 closed: the first day of this quad.
-  // target = the LA 2028 opening ceremony.
-  countdown: {
-    start: "2024-08-12T00:00:00",
-    target: "2028-07-14T00:00:00",
-    label: "Days to LA 2028",
-  },
+  // Both rings measure the same road, so both share a start: the day after
+  // Paris 2024 closed, the first day of this campaign. Targets are the two
+  // opening ceremonies (Brisbane 2032 runs 23 July – 8 August).
+  countdowns: [
+    {
+      start: "2024-08-12T00:00:00",
+      target: "2028-07-14T00:00:00",
+      label: "Days to LA 2028",
+    },
+    {
+      start: "2024-08-12T00:00:00",
+      target: "2032-07-23T00:00:00",
+      // Short label so it stays on one line inside the ring.
+      label: "Brisbane 2032",
+    },
+  ],
   // Photos in /images/clean/ are web-ready copies with the event banners
   // cropped off (made by scripts/crop-banners.mjs).
   image: {

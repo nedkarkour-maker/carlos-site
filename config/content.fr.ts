@@ -33,11 +33,19 @@ export const fr: ContentBundle = {
   hero: {
     kicker: "Marin ILCA · Étudiant en génie · Montréal → les Jeux olympiques",
     nameLines: ["Carlos", "Charabati"],
-    countdown: {
-      start: "2024-08-12T00:00:00",
-      target: "2028-07-14T00:00:00",
-      label: "Jours avant LA 2028",
-    },
+    countdowns: [
+      {
+        start: "2024-08-12T00:00:00",
+        target: "2028-07-14T00:00:00",
+        label: "Jours avant LA 2028",
+      },
+      {
+        start: "2024-08-12T00:00:00",
+        target: "2032-07-23T00:00:00",
+        // Nom propre — identique en anglais, rien à traduire.
+        label: "Brisbane 2032",
+      },
+    ],
     image: {
       src: "/images/clean/hero-viana.jpg",
       alt: "Carlos Charabati en régate au Championnat du monde jeunesse ILCA 4",

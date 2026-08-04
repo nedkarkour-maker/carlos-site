@@ -11,8 +11,8 @@ const R = (SIZE - STROKE) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * R;
 
 /**
- * Circular countdown to LA 2028. The red ring shows how much of the road
- * from `start` (this quad's first day) to `target` (opening ceremony) is
+ * One circular countdown to a Games. The red ring shows how much of the road
+ * from `start` (the campaign's first day) to `target` (opening ceremony) is
  * already behind; the number is days remaining. Both are computed on the
  * client after mount — the server renders the empty ring and "T–0" — so
  * there is no hydration mismatch across timezones.

@@ -127,15 +127,22 @@ export default function Hero() {
           </h1>
         </div>
 
+        {/* The wheels stack on phones (two side by side would overflow a
+            375px screen), sit side by side once there is room, and stack
+            again from lg — where they share the narrow right-hand column and
+            a row would squeeze the name. Scales to a third wheel unchanged. */}
         <div
           data-hero-fade
-          className="justify-self-center motion-safe:translate-y-4 motion-safe:opacity-0 lg:col-start-2 lg:self-center lg:justify-self-end"
+          className="flex flex-col items-center gap-8 justify-self-center motion-safe:translate-y-4 motion-safe:opacity-0 sm:flex-row sm:gap-10 lg:col-start-2 lg:flex-col lg:gap-7 lg:self-center lg:justify-self-end"
         >
-          <Countdown
-            start={hero.countdown.start}
-            target={hero.countdown.target}
-            label={hero.countdown.label}
-          />
+          {hero.countdowns.map((ring) => (
+            <Countdown
+              key={ring.label}
+              start={ring.start}
+              target={ring.target}
+              label={ring.label}
+            />
+          ))}
         </div>
       </div>
 
