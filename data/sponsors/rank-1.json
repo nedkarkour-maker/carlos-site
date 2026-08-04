@@ -1,10 +1,5 @@
 [
   {
-    "name": "Wind Athletes Canada",
-    "logo": "/images/sponsors/wind-athletes.png",
-    "url": "https://www.windathletes.ca"
-  },
-  {
     "name": "Sail Canada",
     "logo": "/images/sponsors/sail-canada.png",
     "url": "https://www.sailing.ca/"
@@ -15,11 +10,6 @@
     "url": "https://voile.qc.ca/fr/"
   },
   {
-    "name": "Institut national du sport du Québec",
-    "logo": "/images/sponsors/ins-quebec.png",
-    "url": "https://www.insquebec.org/"
-  },
-  {
     "name": "Yacht Club de Pointe-Claire",
     "logo": "/images/sponsors/pcyc.png",
     "url": "https://www.pcyc.qc.ca/en/"
@@ -28,5 +18,10 @@
     "name": "Clube Naval de Cascais",
     "logo": "/images/sponsors/cn-cascais.png",
     "url": "https://www.cncascais.com/"
+  },
+  {
+    "name": "Peter Kelly",
+    "logo": "/images/sponsors/PeterKelly.png",
+    "url": "https://www.pcyc.qc.ca/en/peter-kelly-athlete-assistance-fund/"
   }
 ]

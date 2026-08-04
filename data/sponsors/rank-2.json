@@ -1,17 +1,17 @@
 [
   {
-    "name": "WPG Canada",
-    "logo": "/images/sponsors/wpg-canada.png",
-    "url": "https://wpgcanada.com/"
+    "name": "Wind Athletes Canada",
+    "logo": "/images/sponsors/wind-athletes.png",
+    "url": "https://www.windathletes.ca"
+  },
+  {
+    "name": "Institut national du sport du Québec",
+    "logo": "/images/sponsors/ins-quebec.png",
+    "url": "https://www.insquebec.org/"
   },
   {
     "name": "Vela LA",
     "logo": "/images/sponsors/vela-la.png",
     "url": "https://www.vela-la.com"
-  },
-  {
-    "name": "Forward WIP",
-    "logo": "/images/sponsors/forward-wip.png",
-    "url": "https://www.forward-wip.com/"
   }
 ]

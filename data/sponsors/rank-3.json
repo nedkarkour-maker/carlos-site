@@ -1,5 +1,10 @@
 [
   {
+    "name": "WPG Canada",
+    "logo": "/images/sponsors/wpg-canada.png",
+    "url": "https://wpgcanada.com/"
+  },
+  {
     "name": "Robline",
     "logo": "/images/sponsors/robline.png",
     "url": "https://www.roblineropes.com/en/"
@@ -8,6 +13,10 @@
     "name": "Allen",
     "logo": "/images/sponsors/allen.png",
     "url": "https://www.allenbrothers.co.uk/"
+  },
+  {
+    "name": "Forward WIP",
+    "logo": "/images/sponsors/forward-wip.png",
+    "url": "https://www.forward-wip.com/"
   }
-  
 ]
