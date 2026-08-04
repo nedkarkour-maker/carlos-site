@@ -36,6 +36,11 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // AGENTS.md is hand-maintained and is the canonical project-instructions
+  // file — `next dev` otherwise rewrites a block inside it on every version
+  // bump. The same warning already lives in its "Before editing" section.
+  agentRules: false,
+
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
