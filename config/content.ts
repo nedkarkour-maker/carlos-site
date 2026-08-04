@@ -309,7 +309,7 @@ export const schedule: ScheduleContent = {
     {
       when: "2027",
       title: "Semaine Olympique Française",
-      where: "Hyère, France",
+      where: "Hyères, France",
       kind: "event",
     },
     {
