@@ -308,11 +308,10 @@ export const fr: ContentBundle = {
     donate: {
       heading: "Soutenir chaque mois",
       body: "Un montant régulier chaque mois garde la saison financée, course après course.",
-      presets: [{ amount: 20 }, { amount: 25 }, { amount: 100 }],
+      presets: [{ amount: 20 }, { amount: 50 }, { amount: 100 }],
       perMonth: "/mois",
       customPlaceholder: "Montant libre",
       ctaLabel: "Donner chaque mois",
-      pendingNote: "Le don en ligne arrive bientôt — ce bouton n'est pas encore actif.",
     },
   },
 

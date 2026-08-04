@@ -60,12 +60,11 @@ export const site = {
    */
   sponsorDeckUrl: "",
   /**
-   * Donorbox (or other checkout) campaign URL for the monthly-support card.
-   * While empty, the card's give button is a visibly inactive placeholder.
-   * Once set, the button links to checkout with the chosen amount appended
-   * as ?amount= — wiring in payments is just filling in this one string.
+   * Donorbox campaign slug for the monthly-support card — the popup opens
+   * this campaign, and https://donorbox.org/<slug> is the hosted fallback
+   * if the widget script hasn't loaded yet.
    */
-  donateCheckoutUrl: "",
+  donorboxCampaign: "monthly-support-955596",
 } as const;
 
 /* ------------------------------------------------------------------- nav */
@@ -539,8 +538,6 @@ export interface DonateContent {
   customPlaceholder: string;
   /** The red give button. */
   ctaLabel: string;
-  /** Small line under the button while site.donateCheckoutUrl is empty. */
-  pendingNote: string;
 }
 
 export interface BudgetContent {
@@ -577,15 +574,14 @@ export const budget: BudgetContent = {
       sub: "Sails, gear, physical training",
     },
   ],
-  // The give button goes live once site.donateCheckoutUrl is set.
+  // Giving runs through the Donorbox popup (site.donorboxCampaign).
   donate: {
     heading: "Support monthly",
     body: "A steady amount each month keeps the season funded race to race.",
-    presets: [{ amount: 20 }, { amount: 25 }, { amount: 100 }],
+    presets: [{ amount: 20 }, { amount: 50 }, { amount: 100 }],
     perMonth: "/mo",
     customPlaceholder: "Custom amount",
     ctaLabel: "Give monthly",
-    pendingNote: "Online giving opens soon — this button isn't live yet.",
   },
 };
 
