@@ -59,6 +59,13 @@ export const site = {
    * "Request the deck" card emails Carlos instead — nothing dead ships.
    */
   sponsorDeckUrl: "",
+  /**
+   * Donorbox (or other checkout) campaign URL for the monthly-support card.
+   * While empty, the card's give button is a visibly inactive placeholder.
+   * Once set, the button links to checkout with the chosen amount appended
+   * as ?amount= — wiring in payments is just filling in this one string.
+   */
+  donateCheckoutUrl: "",
 } as const;
 
 /* ------------------------------------------------------------------- nav */
@@ -513,12 +520,36 @@ export interface BudgetSlice {
   sub: string;
 }
 
+/** One preset monthly amount on the support card — its own button. */
+export interface DonationPreset {
+  /** Whole dollars per month — rendered as "$25" + the /mo suffix. */
+  amount: number;
+}
+
+/** The monthly-support card beside the budget chart. */
+export interface DonateContent {
+  heading: string;
+  /** One short line under the heading. */
+  body: string;
+  /** One button per entry, rendered in order; a third tier is a data-only edit. */
+  presets: DonationPreset[];
+  /** Suffix after every amount — "/mo". */
+  perMonth: string;
+  /** Placeholder text in the custom-amount input. */
+  customPlaceholder: string;
+  /** The red give button. */
+  ctaLabel: string;
+  /** Small line under the button while site.donateCheckoutUrl is empty. */
+  pendingNote: string;
+}
+
 export interface BudgetContent {
   /** Section eyebrow above the chart card. */
   eyebrow: string;
   /** Title on the chart card. */
   chartTitle: string;
   breakdown: BudgetSlice[];
+  donate: DonateContent;
 }
 
 export const budget: BudgetContent = {
@@ -546,6 +577,16 @@ export const budget: BudgetContent = {
       sub: "Sails, gear, physical training",
     },
   ],
+  // The give button goes live once site.donateCheckoutUrl is set.
+  donate: {
+    heading: "Support monthly",
+    body: "A steady amount each month keeps the season funded race to race.",
+    presets: [{ amount: 20 }, { amount: 25 }, { amount: 100 }],
+    perMonth: "/mo",
+    customPlaceholder: "Custom amount",
+    ctaLabel: "Give monthly",
+    pendingNote: "Online giving opens soon — this button isn't live yet.",
+  },
 };
 
 /* --------------------------------------------------------------- backers */
