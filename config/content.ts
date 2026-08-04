@@ -264,9 +264,7 @@ export const schedule: ScheduleContent = {
     },
     {
       when: "FALL 2026",
-      // Sail Canada's own name for it — sailing.ca lists the ILCA 6 & 7
-      // senior championships in Kingston for 25–27 September 2026.
-      title: "Sail Canada Senior Championships",
+      title: "CORK OCR & Lima 2027 Pan American Games Country Qualifying Event",
       where: "Kingston, Ontario",
       kind: "event",
       major: true,

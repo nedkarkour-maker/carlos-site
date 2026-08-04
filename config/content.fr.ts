@@ -105,8 +105,8 @@ export const fr: ContentBundle = {
       },
       {
         when: "AUTOMNE 2026",
-        // Nom officiel de Sail Canada — gardé tel quel, comme sur sailing.ca.
-        title: "Sail Canada Senior Championships",
+        title:
+          "CORK OCR et épreuve de qualification par pays pour les Jeux panaméricains de Lima 2027",
         where: "Kingston (Ontario)",
         kind: "event",
         major: true,
