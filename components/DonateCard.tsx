@@ -73,7 +73,9 @@ export default function DonateCard() {
         // CSS puts pointer-events:none on the dialog and never re-enables
         // it inside (their non-modal flow routed clicks differently);
         // without the auto override the whole modal form is unclickable.
-        "#dialog{max-height:100dvh!important;max-width:100vw!important;overflow-y:auto!important;pointer-events:auto!important}",
+        // overscroll-behavior stops a scroll that reaches the dialog's top
+        // or bottom from chaining onward to the document.
+        "#dialog{max-height:100dvh!important;max-width:100vw!important;overflow-y:auto!important;overscroll-behavior:contain!important;pointer-events:auto!important}",
         // The widget's own backdrop div would double up with the native
         // ::backdrop, but it cannot be display:none — Donorbox's CSS ties
         // the dialog's rendering to the backdrop being rendered (verified
@@ -88,12 +90,35 @@ export default function DonateCard() {
       // <dialog> itself; clicks inside the form are stopped by the
       // widget's own handlers before they bubble this far.
       const dialog = shadow.querySelector<HTMLDialogElement>("#dialog");
+
+      // Keeping the page still while the dialog is open is this line plus
+      // overscroll-behavior above — deliberately NOT a body scroll lock.
+      // Lenis drives the page from its own wheel listener, so it ignores
+      // overflow:hidden; and applying overflow:hidden mid-glide surfaces a
+      // different underlying offset, jumping the page ~500px when someone
+      // clicks an amount during momentum scrolling. This attribute is
+      // Lenis's own opt-out: wheel and touch inside the dialog fall through
+      // to native scrolling, which scrolls the dialog, and
+      // overscroll-behavior stops it chaining onward.
+      //
+      // Load-bearing, and it rests on an implementation detail: Lenis has
+      // to test this attribute against the event's composedPath() for it to
+      // be seen at all, because the dialog lives inside a shadow root — a
+      // plain target/closest() check would never find it. That behaviour is
+      // not part of any documented contract, so re-test the popup's
+      // scrolling (steps 2 and 3, desktop and mobile) after any Lenis
+      // upgrade: if it stops honouring composedPath, wheeling over the
+      // dialog silently scrolls the page behind it again.
+      dialog?.setAttribute("data-lenis-prevent", "");
       dialog?.addEventListener("click", (e) => {
         if (e.target === dialog) dialog.close();
       });
       // The host is aria-hidden while the dialog is closed (it is visually
       // nothing); un-hide it while the dialog is open so the form is
       // exposed to assistive tech, and restore on close.
+      // `close` fires however the dialog was dismissed — Escape, the X, a
+      // backdrop click, or a programmatic close — so it is the one place
+      // that reliably restores the host's closed-state aria-hidden.
       dialog?.addEventListener("close", () => {
         el.setAttribute("aria-hidden", "true");
       });
