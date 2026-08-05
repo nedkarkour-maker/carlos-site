@@ -40,6 +40,28 @@ A Next.js 16 App Router site presenting Carlos’s Olympic sailing campaign, sea
 - Newsletter signup uses MailerLite via `app/api/subscribe/route.ts`.
 - Photos are maintained in `public/images/`.
 
+## Pinned dependencies
+
+`lenis` is pinned to an exact version in `package.json` — no caret. Do not
+loosen it. (package.json is strict JSON and cannot carry comments, which is
+why this note lives here.)
+
+The donation popup's scrolling depends on Lenis behaviour that is not part of
+any documented contract: Lenis consumes wheel events site-wide, and the popup
+stays scrollable only because it opts out via `data-lenis-prevent`, which
+Lenis matches against the event's `composedPath()` — the only reason it is
+seen at all, since the dialog lives inside a shadow root. See the comment at
+that attribute in `components/DonateCard.tsx`.
+
+If Lenis stops honouring it, wheeling over the open popup silently scrolls the
+page behind it instead, the form's later steps become unreachable, and nobody
+can complete a donation. It fails silently — no error, nothing in the build.
+
+So when upgrading Lenis, re-test the popup by hand before merging: open the
+donation card, and on a short window (~700px tall) scroll through the
+name/address step and the payment step, at desktop width and at 390px. The
+dialog must scroll and the page behind it must not move.
+
 ## Collaboration
 
 Carlos edits copy and photos on his own branch. Coordinate before touching shared files.
