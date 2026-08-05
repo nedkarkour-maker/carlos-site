@@ -123,7 +123,10 @@ export default function Countdown({
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="font-mono text-[40px] font-semibold leading-none md:text-[46px]">
-          T–{shownDays.toLocaleString("en-US")}
+          {/* Raw digits, no grouping separator: "T–2180". Formatting per
+              locale would put a comma in EN and a narrow space in FR, and
+              this reads as a countdown rather than a quantity. */}
+          T–{shownDays}
         </span>
         <span className="mt-2 px-6 text-center font-mono text-[10px] uppercase tracking-[.18em] text-sail/65 md:text-[11px]">
           {label}
