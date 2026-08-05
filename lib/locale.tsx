@@ -17,8 +17,9 @@ import { fr } from "@/config/content.fr";
  * choice is re-applied right after hydration and remembered in
  * localStorage. `<html lang>` is kept in sync for assistive tech.
  *
- * Newsletter posts are English-only for now and render as-is in both
- * languages (TODO — translate posts separately if it ever matters).
+ * Newsletter posts follow the same switch: a post is translated when a
+ * matching file exists in content/newsletter/fr/, otherwise the English
+ * version renders in both languages. See components/LocalizedPost.tsx.
  */
 
 export type Locale = "en" | "fr";

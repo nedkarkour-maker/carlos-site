@@ -3,6 +3,15 @@ import path from "node:path";
 import matter from "gray-matter";
 
 const POSTS_DIR = path.join(process.cwd(), "content", "newsletter");
+/**
+ * French translations live in a subfolder and reuse the English filename.
+ * getAllPosts() only ever reads POSTS_DIR and filters on ".mdx", so this
+ * directory is skipped there — translations must never appear as separate
+ * entries in the index or claim their own route.
+ */
+const FR_POSTS_DIR = path.join(POSTS_DIR, "fr");
+
+export type Locale = "en" | "fr";
 
 export interface PostMeta {
   slug: string;
@@ -22,15 +31,23 @@ export interface Post extends PostMeta {
   content: string;
 }
 
-function formatDisplayDate(date: string, draft: boolean): string {
+function formatDisplayDate(
+  date: string,
+  draft: boolean,
+  locale: Locale = "en",
+): string {
   const label = new Date(`${date}T00:00:00`)
-    .toLocaleDateString("en-US", { month: "short", year: "numeric" })
+    .toLocaleDateString(locale === "fr" ? "fr-CA" : "en-US", {
+      month: "short",
+      year: "numeric",
+    })
     .toUpperCase();
   return draft ? `${label} · [DRAFT]` : label;
 }
 
-function parsePost(filename: string): Post {
-  const raw = fs.readFileSync(path.join(POSTS_DIR, filename), "utf8");
+function parsePost(filename: string, locale: Locale = "en"): Post {
+  const dir = locale === "fr" ? FR_POSTS_DIR : POSTS_DIR;
+  const raw = fs.readFileSync(path.join(dir, filename), "utf8");
   const { data, content } = matter(raw);
   const { title, date, excerpt, cover, draft } = data as Record<string, unknown>;
 
@@ -52,7 +69,7 @@ function parsePost(filename: string): Post {
     slug: filename.replace(/\.mdx$/, ""),
     title,
     date,
-    displayDate: formatDisplayDate(date, isDraft),
+    displayDate: formatDisplayDate(date, isDraft, locale),
     excerpt,
     cover,
     draft: isDraft,
@@ -66,7 +83,7 @@ export function getAllPosts(): Post[] {
   return fs
     .readdirSync(POSTS_DIR)
     .filter((f) => f.endsWith(".mdx"))
-    .map(parsePost)
+    .map((f) => parsePost(f))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
@@ -77,4 +94,17 @@ export function getPost(slug: string): Post | null {
   const file = path.join(POSTS_DIR, `${slug}.mdx`);
   if (!fs.existsSync(file)) return null;
   return parsePost(`${slug}.mdx`);
+}
+
+/**
+ * The French translation of a post, or null when the post hasn't been
+ * translated. Callers fall back to the English version, which is what the
+ * older English-only posts in the archive rely on.
+ */
+export function getFrenchPost(slug: string): Post | null {
+  // Same guard as getPost — the slug reaches here straight from the URL.
+  if (!/^[\w-]+$/.test(slug)) return null;
+  const file = path.join(FR_POSTS_DIR, `${slug}.mdx`);
+  if (!fs.existsSync(file)) return null;
+  return parsePost(`${slug}.mdx`, "fr");
 }

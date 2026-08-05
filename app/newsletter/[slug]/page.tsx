@@ -5,8 +5,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Footer from "@/components/Footer";
+import LocalizedPost from "@/components/LocalizedPost";
 import Navbar from "@/components/Navbar";
-import { getAllPosts, getPost } from "@/lib/newsletter";
+import { getAllPosts, getFrenchPost, getPost } from "@/lib/newsletter";
 
 export function generateStaticParams() {
   // Drafts are never built — a draft URL 404s until the post is published.
@@ -95,6 +96,25 @@ export default async function NewsletterPostPage({
   // Guard drafts too, in case one is ever reached directly.
   if (!post || post.draft) notFound();
 
+  // Null for posts with no French file — LocalizedPost then shows English
+  // in both languages. A translation left in draft is ignored too, so the
+  // English version can go live on its own.
+  const french = getFrenchPost(slug);
+  const frenchPost = french && !french.draft ? french : null;
+
+  const cover = post.cover ? (
+    <div className="relative mt-8 aspect-[2/1] overflow-hidden rounded-[10px]">
+      <Image
+        src={post.cover}
+        alt=""
+        fill
+        priority
+        sizes="(max-width: 800px) 100vw, 760px"
+        className="object-cover"
+      />
+    </div>
+  ) : null;
+
   return (
     <>
       <Navbar alwaysSolid />
@@ -106,25 +126,28 @@ export default async function NewsletterPostPage({
           >
             ← All posts
           </Link>
-          <p className="mt-8 font-mono text-xs tracking-[.05em] text-red-dark">
-            {post.displayDate}
-          </p>
-          <h1 className="mt-2 font-display text-[clamp(30px,5vw,48px)] font-extrabold leading-[1.05] tracking-[-0.02em]">
-            {post.title}
-          </h1>
-          {post.cover && (
-            <div className="relative mt-8 aspect-[2/1] overflow-hidden rounded-[10px]">
-              <Image
-                src={post.cover}
-                alt=""
-                fill
-                priority
-                sizes="(max-width: 800px) 100vw, 760px"
-                className="object-cover"
-              />
-            </div>
-          )}
-          <MDXRemote source={post.content} components={mdxComponents} />
+          <LocalizedPost
+            cover={cover}
+            en={{
+              title: post.title,
+              displayDate: post.displayDate,
+              body: (
+                <MDXRemote source={post.content} components={mdxComponents} />
+              ),
+            }}
+            fr={
+              frenchPost && {
+                title: frenchPost.title,
+                displayDate: frenchPost.displayDate,
+                body: (
+                  <MDXRemote
+                    source={frenchPost.content}
+                    components={mdxComponents}
+                  />
+                ),
+              }
+            }
+          />
         </article>
       </main>
       <Footer />

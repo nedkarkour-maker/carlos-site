@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { LocalizedPostMeta } from "@/components/LocalizedPost";
 import Navbar from "@/components/Navbar";
 import { newsletter } from "@/config/content";
-import { getAllPosts } from "@/lib/newsletter";
+import { getAllPosts, getFrenchPost } from "@/lib/newsletter";
 
 export const metadata: Metadata = {
   title: "Newsletter — Carlos Charabati",
@@ -14,7 +15,14 @@ export const metadata: Metadata = {
 export default function NewsletterPage() {
   // Only published posts are listed — drafts stay hidden here, on the
   // homepage teaser and in the sitemap alike.
-  const posts = getAllPosts().filter((post) => !post.draft);
+  // Each card carries its French copy alongside, so the index follows the
+  // language toggle. Untranslated posts pass null and stay English.
+  const posts = getAllPosts()
+    .filter((post) => !post.draft)
+    .map((post) => {
+      const french = getFrenchPost(post.slug);
+      return { post, french: french && !french.draft ? french : null };
+    });
 
   return (
     <>
@@ -40,23 +48,26 @@ export default function NewsletterPage() {
               No posts yet — the first one lands soon.
             </p>
           )}
-          {posts.map((post) => (
+          {posts.map(({ post, french }) => (
             <Link
               key={post.slug}
               href={`/newsletter/${post.slug}`}
               className="flex items-center justify-between gap-6 border-b border-line-dark py-[22px] transition-[padding-left] duration-200 first:border-t hover:pl-2"
             >
-              <div>
-                <p className="font-mono text-xs tracking-[.05em] text-red-dark">
-                  {post.displayDate}
-                </p>
-                <h2 className="my-1.5 font-display text-[21px] font-bold">
-                  {post.title}
-                </h2>
-                <p className="max-w-[680px] text-[14.5px] text-ink-soft">
-                  {post.excerpt}
-                </p>
-              </div>
+              <LocalizedPostMeta
+                en={{
+                  title: post.title,
+                  displayDate: post.displayDate,
+                  excerpt: post.excerpt,
+                }}
+                fr={
+                  french && {
+                    title: french.title,
+                    displayDate: french.displayDate,
+                    excerpt: french.excerpt,
+                  }
+                }
+              />
               {post.cover && (
                 <div className="relative hidden aspect-[4/3] w-40 shrink-0 overflow-hidden rounded-md sm:block">
                   <Image
