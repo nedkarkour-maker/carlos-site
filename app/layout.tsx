@@ -6,6 +6,7 @@ import MotionProvider from "@/components/motion/MotionProvider";
 import ScrollProgress from "@/components/motion/ScrollProgress";
 import { LocaleProvider } from "@/lib/locale";
 import { site } from "@/config/content";
+import { Analytics } from '@vercel/analytics/next';
 
 // Configure Archivo (Headings)
 const archivo = Archivo({ 
@@ -61,6 +62,7 @@ export default function RootLayout({
         <MotionProvider />
         <ScrollProgress />
         <LocaleProvider>{children}</LocaleProvider>
+        <Analytics />
       </body>
     </html>
   );
